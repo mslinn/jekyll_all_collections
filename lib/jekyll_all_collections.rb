@@ -9,7 +9,7 @@ module JekyllAllCollections
   # @param payload [Hash] contains final values of variables after rendering the entire site (useful for sitemaps, feeds, etc).
   Jekyll::Hooks.register(:site, :post_render, priority: :high) do |site, _payload|
     @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
-    @logger.info { "JekyllAllCollections invoked Jekyll::Hooks.register(:site, :post_render, priority: :high)." }
+    @logger.info { "JekyllAllCollections invoked Jekyll::Hooks.register(:site, :pre_render, priority: :high)." }
 
     site.class.module_eval { attr_accessor :all_collections }
     site.all_collections =
