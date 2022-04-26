@@ -1,0 +1,72 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "cwd": "${workspaceRoot}",
+      "name": "Listen for rdebug-ide",
+      "type": "Ruby",
+      "request": "attach",
+      "remoteHost": "127.0.0.1",
+      "remotePort": "1234",
+      "remoteWorkspaceRoot": "${workspaceRoot}"
+    },
+    {
+      "cwd": "${workspaceRoot}",
+      "name": "Debug Demo",
+      // "postLaunchTask": "Stop rdebug-ide", # Not sure how to do this
+      // "preLaunchTask": "Debug demo",
+      "request": "attach",
+      "remoteHost": "localhost",
+      "remotePort": "1234",
+      "remoteWorkspaceRoot": "/",
+      "restart": true,
+      "showDebuggerOutput": true,
+      "stopOnEntry": true,
+      "type": "Ruby",
+    },
+    {
+      "cwd": "${workspaceRoot}",
+      "name": "Attach rdebug-ide",
+      "request": "attach",
+      "remoteHost": "localhost",
+      "remotePort": "1234",
+      "remoteWorkspaceRoot": "/",
+      "restart": true,
+      "showDebuggerOutput": true,
+      "stopOnEntry": true,
+      "type": "Ruby",
+    },
+    {
+      "args": [
+        "-I",
+        "${workspaceRoot}"
+      ],
+      "cwd": "${workspaceRoot}",
+      "name": "RSpec - all",
+      "program": "${workspaceRoot}/exe/rspec",
+      "request": "launch",
+      "see": "https://relishapp.com/rspec/rspec-core/docs/command-line",
+      "showDebuggerOutput": true,
+      "type": "Ruby",
+      "useBundler": true,
+    },
+    {
+      "args": [
+        "-I",
+        "${workspaceRoot}",
+        "${file}"
+      ],
+      "cwd": "${workspaceRoot}",
+      "name": "RSpec - active spec file only",
+      "program": "${workspaceRoot}/exe/rspec",
+      "request": "launch",
+      "see": "https://relishapp.com/rspec/rspec-core/docs/command-line",
+      "showDebuggerOutput": false,
+      "type": "Ruby",
+      "useBundler": false,
+    }
+  ]
+}
