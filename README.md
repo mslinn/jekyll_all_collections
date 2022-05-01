@@ -4,7 +4,11 @@
 
 `jekyll_all_collections` is a Jekyll plugin that add a new property called `all_collections` to `site`.
 
-
+## Usage
+Simply pass the `site` variable to `maybe_compute_all_collections`. This is idempotent. The first invocation causes `site.all_collections` to be computed, and will be available in the invoking code, as well as any code that gets called afterwards. Subsequent invocations do nothing.
+```
+JekyllAllCollections::maybe_compute_all_collections(site)
+```
 
 ## Debugging
 Run `bin/attach` and pass it the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
