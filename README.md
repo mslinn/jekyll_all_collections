@@ -5,15 +5,30 @@
 `jekyll_all_collections` is a Jekyll plugin that add a new property called `all_collections` to `site`.
 
 ## Usage
-Simply pass the `site` variable to `maybe_compute_all_collections`. This is idempotent. The first invocation causes `site.all_collections` to be computed, and will be available in the invoking code, as well as any code that gets called afterwards. Subsequent invocations do nothing.
-```
-JekyllAllCollections::maybe_compute_all_collections(site)
+Simply pass the `site` variable to `maybe_compute_all_collections`.
+This is idempotent.
+The first invocation causes the value of `site.all_collections` to be computed and returned.
+`site.all_collections` will also be available in the invoking code,
+as well as any code that gets called afterward.
+Subsequent invocations do no computation, instead, they merely return the previously computed value.
+```ruby
+JekyllAllCollections.maybe_compute_all_collections(site)
 ```
 
+## Demo
+The [`demo`](./demo) directory contains a demonstration website,
+which defines a plugin that invokes `JekyllAllCollections.maybe_compute_all_collections`.
+To run, type:
+```console
+$ demo/_bin/debug -r
+```
+Now point your web browser to http://localhost:4444
+
+
 ## Debugging
-Run `bin/attach` and pass it the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
+Run `bin/attach` and pass the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
 The `demo` subdirectory fits this description.
-```script
+```console
 $ bin/attach demo
 Successfully uninstalled jekyll_all_collections-0.1.2
 jekyll_all_collections 0.1.2 built to pkg/jekyll_all_collections-0.1.2.gem.
@@ -21,16 +36,19 @@ jekyll_all_collections (0.1.2) installed.
 Fast Debugger (ruby-debug-ide 0.7.3, debase 0.2.4.1, file filtering is supported) listens on 0.0.0.0:1234
 ```
 Now attach to the debugger process.
-This git repo includes a Visual Studio Code launcher for this purpose labeled `Attach rdebug-ide`.
+This git repo includes a [Visual Studio Code launcher](./.vscode/launch.json) for this purpose labeled `Listen for rdebug-ide`.
+
+Now point your web browser to http://localhost:4444
 
 
 ## Additional Information
-More information is available on Mike Slinn's web site about
+More information is available on Mike Slinn's website about
 [Jekyll plugins](https://www.mslinn.com/blog/index.html#Jekyll).
 
 
 ## Installation
-This has already been done for the demo; these instructions are for incorporating the plugin(s) into other Jekyll websites.
+This has already been done for the demo;
+these instructions are for incorporating the plugin(s) into other Jekyll websites.
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -42,10 +60,6 @@ end
 And then execute:
 
     $ bundle install
-
-Or install it yourself as:
-
-    $ gem install jekyll_all_collections
 
 
 ## Development
@@ -75,13 +89,12 @@ $ gem info jekyll_all_collections
 *** LOCAL GEMS ***
 
 jekyll_all_collections (0.1.0)
-    Author: Firstname Lastname
-    Homepage:
-    https://github.com/username/jekyll_all_collections
+    Author: Mike Slinn
+    Homepage: https://www.mslinn.com/blog/2020/12/30/jekyll-plugin-template-collection.html
     License: MIT
-    Installed at: /home/mslinn/.gems
+    Installed at: /home/mslinn/.rbenv/versions/3.1.0/lib/ruby/gems/3.1.0
 
-    Write a short summary; RubyGems requires one.
+    Provides a collection of all collections in site.all_collections.
 ```
 
 

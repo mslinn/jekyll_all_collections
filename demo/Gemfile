@@ -1,16 +1,14 @@
-# frozen_string_literal: true
-
 source 'https://rubygems.org'
 
-gem 'jekyll', '~> 4.2.2'
-gem 'nokogumbo', '=2.0.3'
-gem 'sprockets'
-gem 'webrick'
+gem 'jekyll', "~> 4.3.2"
+# gem 'nokogumbo', '=2.0.3'
+# gem 'sprockets', '~> 3.7'
+# gem 'webrick'
 
 group :jekyll_plugins do
   gem 'classifier-reborn'
   gem 'html-proofer'
-  gem 'jekyll_all_collections'
+  gem 'jekyll_all_collections', path:'../'
   gem 'jekyll-assets'
   gem 'jekyll-environment-variables'
   gem "jekyll_plugin_logger"
@@ -19,9 +17,11 @@ group :jekyll_plugins do
   gem 'kramdown'
 end
 
-# Debugging:
-gem 'debase', require: false
-gem "rake", "~> 13.0", require: false
+gem "bundler", require: false
+gem 'debase', '0.2.5.beta2', require: false
+gem "rake", require: false
 gem 'rspec', require: false
-gem 'rubocop', '= 1.18.0', require: false
+gem 'rubocop', require: false
+gem 'rubocop-rake', require: false
+gem 'rubocop-rspec', require: false
 gem 'ruby-debug-ide', require: false
