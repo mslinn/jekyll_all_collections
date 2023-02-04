@@ -1,53 +1,81 @@
-# frozen_string_literal: true
+require 'jekyll'
+require 'jekyll_plugin_logger'
+require_relative 'jekyll_all_collections/version'
 
-require "jekyll"
-require "jekyll_plugin_logger"
-require_relative "jekyll_all_collections/version"
-
-# Creates a hashmap called site.all_collections
+# Creates an array of `APage` called site.all_collections, which will be available from :site, :pre_render onwards
 module JekyllAllCollections
   @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
-  # Creates a hashmap[String, String|Array[String]] called site.all_collections if it does not already exist
-  # Each hashmap entry is one document.
-  # Returns hashmap
-  def maybe_compute_all_collections(site)
-    @logger.debug { "JekyllAllCollections.maybe_compute_all_collections invoked" }
-    return site.all_collections if site.class.method_defined? :all_collections
+  # No, all_collections is not defined for this hook
+  Jekyll::Hooks.register(:site, :after_init, priority: :normal) do |site|
+    defined = JekyllAllCollections.all_collections_defined?(site)
+    @logger.info { "Jekyll::Hooks.register(:site, :after_init: #{defined}" }
+  end
 
-    @logger.debug { "JekyllAllCollections.maybe_compute_all_collections creating site.all_collections" }
+  # Creates a `Array[String]` property called site.all_collections if it does not already exist
+  # Each `APage` entry is one document or page.
+  Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
+    defined = JekyllAllCollections.all_collections_defined?(site)
+    @logger.info { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
+    JekyllAllCollections.compute(site) unless site.class.method_defined? :all_collections
+  end
 
+  # Yes, all_collections is defined for this hook
+  Jekyll::Hooks.register(:site, :post_read, priority: :low) do |site|
+    defined = JekyllAllCollections.all_collections_defined?(site)
+    @logger.info { "Jekyll::Hooks.register(:site, :post_read, :low: #{defined}" }
+  end
+
+  # Yes, all_collections is defined for this hook
+  Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
+    defined = JekyllAllCollections.all_collections_defined?(site)
+    @logger.info { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
+  end
+
+  # Yes, all_collections is defined for this hook
+  Jekyll::Hooks.register(:site, :pre_render, priority: :normal) do |site, _payload|
+    defined = JekyllAllCollections.all_collections_defined?(site)
+    @logger.info { "Jekyll::Hooks.register(:site, :pre_render: #{defined}" }
+  end
+
+  def self.compute(site)
     objects = site.collections
                   .values
                   .map { |x| x.class.method_defined?(:docs) ? x.docs : x }
                   .flatten
 
     site.class.module_eval { attr_accessor :all_collections }
-    site.all_collections = JekyllAllCollections.hashes_from_objects(objects)
-    site.all_collections
+    site.all_collections = JekyllAllCollections.apages_from_objects(objects)
   end
 
   # The collection value is just the collection label, not the entire collection object
-  def self.hash_from_object(obj)
-    hash = {}
-    %w[collection content data destination path relative_path type url].each do |name_stub|
-      name_symbol = "@#{name_stub}".to_sym
-      value = obj.instance_variable_get(name_symbol)
-      hash[name_stub] = value
-    end
-    hash['collection'] = hash['collection'].label
-    hash
-  end
-
-  def self.hashes_from_objects(objects)
-    array = []
+  def self.apages_from_objects(objects)
+    pages = []
     objects.each do |object|
-      array << JekyllAllCollections.hash_from_object(object)
+      pages << APage.new(object)
     end
-    array
+    pages
   end
 
-  module_function :maybe_compute_all_collections
+  def self.all_collections_defined?(site)
+    "site.all_collections #{site.class.method_defined?(:all_collections) ? 'IS' : 'IS NOT'} defined"
+  end
 
-  PluginMetaLogger.instance.logger.info { "Loaded JekyllAllCollections v#{JekyllAllCollectionsVersion::VERSION} plugin." }
+  class APage
+    attr_reader :content, :data, :destination, :label, :path, :relative_path, :type, :url
+
+    def initialize(obj)
+      @content = obj.content
+      @data = obj.data
+      @destination = obj.destination('') # TODO: What _config.yml setting should be passed to destination()?
+      @label = obj.collection.label
+      @path = obj.path
+      @type = obj.type
+      @url = obj.url
+    end
+  end
+
+  PluginMetaLogger.instance.logger.info { "Loaded JekyllAllCollections v#{JekyllAllCollectionsVersion::VERSION} :site, :pre_render, :normal hook plugin." }
 end
+
+Liquid::Template.register_filter(JekyllAllCollections)

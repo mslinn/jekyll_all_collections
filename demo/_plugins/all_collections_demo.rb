@@ -1,8 +1,11 @@
 require 'cgi'
+require 'jekyll_plugin_logger'
 
 # @author Copyright 2020 Michael Slinn
 # @license SPDX-License-Identifier: Apache-2.0
 module AllCollectionsDemoModule
+  PLUGIN_NAME = 'all_collections_demo'.freeze
+
   # This tag is just used for 2020-10-03-i-prefer-to-write-jekyll-plugins-instead-of-includes.html
   class AllCollectionsDemo < Liquid::Tag
     # Constructor.
@@ -13,20 +16,25 @@ module AllCollectionsDemoModule
     def initialize(tag_name, command_line, tokens)
       super(tag_name, command_line, tokens)
       @command_line = command_line.strip
+      @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
     end
 
     # Method prescribed by the Jekyll plugin lifecycle.
     # @return [String]
     def render(liquid_context)
       site = liquid_context.registers[:site]
-      JekyllAllCollections.maybe_compute_all_collections(site)
       result = site.all_collections.map do |entry|
-        line = entry.map { |k, v| "<b>#{k}</b>=#{CGI.escapeHTML(v.to_s.strip)}\n" }
-        "<pre>#{line.join}</pre>"
+        lines = []
+        entry.instance_variables.each do |name|
+          value = entry.instance_variable_get(name).to_s.strip
+          lines << "<b>#{name.to_s.delete_prefix '@'}</b>=#{CGI.escapeHTML(value)}\n"
+        end
+        "<pre>#{lines.join}</pre>\n"
       end
       result.join("<br>\n")
     end
   end
 end
 
-Liquid::Template.register_tag('all_collections_demo', AllCollectionsDemoModule::AllCollectionsDemo)
+Liquid::Template.register_tag(AllCollectionsDemoModule::PLUGIN_NAME, AllCollectionsDemoModule::AllCollectionsDemo)
+PluginMetaLogger.instance.info { "Loaded #{AllCollectionsDemoModule::PLUGIN_NAME} v#{JekyllAllCollectionsVersion::VERSION} tag plugin." }

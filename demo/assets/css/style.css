@@ -18,7 +18,8 @@ body {
   margin: 0;
 }
 
-code, pre, tt, .codeLabel {
+
+code, pre, tt, .codeLabel, .posts > *:nth-child(odd) {
   font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-stretch: semi-condensed;
 }
@@ -113,6 +114,15 @@ pre {
   padding-top: 0.5em;
 }
 
+.draftPost {
+  text-align: center;
+  font-style: italic;
+  width: 15ch;
+  position: absolute;
+  top: 7px;
+  left: 0;
+}
+
 .inner {
   margin: 0 auto;
   position: relative;
@@ -127,6 +137,24 @@ pre {
 .unselectable.numbered_line,
 .numbered_line.unselectable {
   color: #5fb25f;
+}
+
+.posts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  line-height: 170%;
+}
+
+.posts > *:nth-child(odd) {
+  width: 120px;
+  font-family: $mono-font;
+  font-stretch: semi-condensed;
+  font-size: 10pt;
+}
+
+.posts > *:nth-child(even) {
+  width: calc(100% - 120px);
 }
 
 .unselectable {
