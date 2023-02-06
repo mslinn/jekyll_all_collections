@@ -7,10 +7,10 @@ module AllCollectionsHooks
   @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
   # No, all_collections is not defined for this hook
-  Jekyll::Hooks.register(:site, :after_init, priority: :normal) do |site|
-    defined = AllCollectionsHooks.all_collections_defined?(site)
-    @logger.debug { "Jekyll::Hooks.register(:site, :after_init: #{defined}" }
-  end
+  # Jekyll::Hooks.register(:site, :after_init, priority: :normal) do |site|
+  #   defined = AllCollectionsHooks.all_collections_defined?(site)
+  #   @logger.debug { "Jekyll::Hooks.register(:site, :after_init: #{defined}" }
+  # end
 
   # Creates a `Array[String]` property called site.all_collections if it does not already exist
   # Each `APage` entry is one document or page.
@@ -21,22 +21,22 @@ module AllCollectionsHooks
   end
 
   # Yes, all_collections is defined for this hook
-  Jekyll::Hooks.register(:site, :post_read, priority: :low) do |site|
-    defined = AllCollectionsHooks.all_collections_defined?(site)
-    @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :low: #{defined}" }
-  end
+  # Jekyll::Hooks.register(:site, :post_read, priority: :low) do |site|
+  #   defined = AllCollectionsHooks.all_collections_defined?(site)
+  #   @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :low: #{defined}" }
+  # end
 
   # Yes, all_collections is defined for this hook
-  Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
-    defined = AllCollectionsHooks.all_collections_defined?(site)
-    @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
-  end
+  # Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
+  #   defined = AllCollectionsHooks.all_collections_defined?(site)
+  #   @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
+  # end
 
   # Yes, all_collections is defined for this hook
-  Jekyll::Hooks.register(:site, :pre_render, priority: :normal) do |site, _payload|
-    defined = AllCollectionsHooks.all_collections_defined?(site)
-    @logger.debug { "Jekyll::Hooks.register(:site, :pre_render: #{defined}" }
-  end
+  # Jekyll::Hooks.register(:site, :pre_render, priority: :normal) do |site, _payload|
+  #   defined = AllCollectionsHooks.all_collections_defined?(site)
+  #   @logger.debug { "Jekyll::Hooks.register(:site, :pre_render: #{defined}" }
+  # end
 
   def self.compute(site)
     objects = site.collections

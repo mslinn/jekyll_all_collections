@@ -2,12 +2,52 @@
 [![Gem Version](https://badge.fury.io/rb/jekyll_all_collections.svg)](https://badge.fury.io/rb/jekyll_all_collections)
 ===========
 
-`jekyll_all_collections` is a Jekyll plugin that add a new property called `all_collections` to `site`.
+<style type="text/css">
+  ol    { list-style-type: decimal;}
+  ol ol {list-style-type: lower-alpha;}
+</style>
+
+`Jekyll_all_collections` is a Jekyll plugin that adds a new property called `all_collections` to `site`.
+It also provides a new Jekyll tag called `all_collections`, which creates a formatted listing of all posts and documents from all collections, sorted by age.
 
 
 ## Usage
+
+### `Site.all_collections`
 No explicit initialization or setup is required.
-Jekyll pages and documents can access the value of `site.all_collections`.
+Jekyll plugins can access the value of `site.all_collections`, however Liquid code in Jekyll pages and documents cannot.
+
+### `All_collections` Tag
+Add the following CSS to your stylesheet:
+```css
+.posts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  line-height: 170%;
+}
+
+.posts > *:nth-child(odd) {
+  width: 120px;
+  font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-stretch: semi-condensed;
+  font-size: 10pt;
+}
+
+.posts > *:nth-child(even) {
+  width: calc(100% - 120px);
+}
+```
+
+Use the Jekyll tag like this:
+```
+---
+description: Dump of all collections.
+layout: default
+title: Testing, 1, 2, 3
+---
+{% all_collections %}
+```
 
 
 ## Demo
@@ -20,19 +60,40 @@ Now point your web browser to http://localhost:4444
 
 
 ## Debugging
-Run `bin/attach` and pass the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
-The `demo` subdirectory fits this description.
-```console
-$ bin/attach demo
-Successfully uninstalled jekyll_all_collections-0.1.2
-jekyll_all_collections 0.1.2 built to pkg/jekyll_all_collections-0.1.2.gem.
-jekyll_all_collections (0.1.2) installed.
-Fast Debugger (ruby-debug-ide 0.7.3, debase 0.2.4.1, file filtering is supported) listens on 0.0.0.0:1234
-```
-Now attach to the debugger process.
-This git repo includes a [Visual Studio Code launcher](./.vscode/launch.json) for this purpose labeled `Listen for rdebug-ide`.
+1. You have two options for initiating a debug session:
 
-Now point your web browser to http://localhost:4444
+   1. Run `demo/_bin/debug`, without the `-r` options shown above.
+      ```
+      ... lots of output as bundle update runs...
+      Bundle updated!
+
+      INFO PluginMetaLogger: Loaded AllCollectionsHooks v0.2.0 :site, :pre_render, :normal hook plugin.
+      INFO PluginMetaLogger: Loaded DraftFilter plugin.
+      INFO PluginMetaLogger: Loaded all_collections v0.2.0 tag plugin.
+      Configuration file: /mnt/_/work/jekyll/my_plugins/jekyll_all_collections/demo/_config.yml
+                Cleaner: Removing /mnt/_/work/jekyll/my_plugins/jekyll_all_collections/demo/_site...
+                Cleaner: Removing /mnt/_/work/jekyll/my_plugins/jekyll_all_collections/demo/.jekyll-metadata...
+                Cleaner: Removing /mnt/_/work/jekyll/my_plugins/jekyll_all_collections/demo/.jekyll-cache...
+                Cleaner: Nothing to do for .sass-cache.
+      Fast Debugger (ruby-debug-ide 0.7.3, debase 0.2.5.beta2, file filtering is supported) listens on 0.0.0.0:1234
+      ```
+
+   2. Run `bin/attach` and pass the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
+      The `demo` subdirectory fits this description.
+      ```console
+      $ bin/attach demo
+      Successfully uninstalled jekyll_all_collections-0.1.2
+      jekyll_all_collections 0.1.2 built to pkg/jekyll_all_collections-0.1.2.gem.
+      jekyll_all_collections (0.1.2) installed.
+      Fast Debugger (ruby-debug-ide 0.7.3, debase 0.2.4.1, file filtering is supported) listens on 0.0.0.0:1234
+      ```
+
+2. Set breakpoints in Ruby code.
+
+3. Attach to the debugger process.
+  This git repo includes a [Visual Studio Code launcher](./.vscode/launch.json) for this purpose labeled `Listen for rdebug-ide`.
+
+4. Point your web browser to http://localhost:4444
 
 
 ## Additional Information

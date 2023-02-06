@@ -19,7 +19,7 @@ body {
 }
 
 
-code, pre, tt, .codeLabel, .posts > *:nth-child(odd) {
+code, pre, tt, .codeLabel {
   font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-stretch: semi-condensed;
 }
@@ -148,7 +148,7 @@ pre {
 
 .posts > *:nth-child(odd) {
   width: 120px;
-  font-family: $mono-font;
+  font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-stretch: semi-condensed;
   font-size: 10pt;
 }

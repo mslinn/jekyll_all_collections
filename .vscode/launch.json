@@ -8,26 +8,14 @@
       "cwd": "${workspaceRoot}",
       "name": "Listen for rdebug-ide",
       "type": "Ruby",
-      "request": "attach",
       "remoteHost": "127.0.0.1",
       "remotePort": "1234",
-      "remoteWorkspaceRoot": "${workspaceRoot}"
+      "remoteWorkspaceRoot": "${workspaceRoot}",
+      "request": "attach",
     },
     {
       "cwd": "${workspaceRoot}",
       "name": "Debug Demo",
-      // "postLaunchTask": "Stop rdebug-ide", # Not sure how to do this
-      // "preLaunchTask": "Debug demo",
-      "request": "attach",
-      "remoteHost": "localhost",
-      "remotePort": "1234",
-      "remoteWorkspaceRoot": "/",
-      "showDebuggerOutput": true,
-      "type": "Ruby",
-    },
-    {
-      "cwd": "${workspaceRoot}",
-      "name": "Attach rdebug-ide",
       "request": "attach",
       "remoteHost": "localhost",
       "remotePort": "1234",
