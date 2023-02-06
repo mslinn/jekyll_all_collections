@@ -3,28 +3,7 @@ description: Dump of all collections.
 layout: default
 title: Testing, 1, 2, 3
 ---
-<h2 id="posts">All Collections</h2>
-{% assign ac = all_collections %}</pre>
-<div class="posts">
-  {% for post in ac %}
-    {% assign draft = post | draft_html %}
-    <span>post:</span><span>{{ post }}</span>
-    <span>post.data:</span><span>{{ post.data }}</span>
-    <span>{{ post.data['date'] | date: "%Y-%m-%d" }}</span>
-    <span><a href="{{ post.url }}">{{ post.title }}</a>{{draft}}</span>
-  {% endfor %}
-</div>
-
-<h2 id="posts">Posts Sorted By Age</h2>
-<div class="posts">
-  {% for post in site.all_collections %}
-    {% assign draft = post | draft_html %}
-    <span>post:</span><span>{{ post }}</span>
-    <span>post.data:</span><span>{{ post.data }}</span>
-    <span>{{ post.data['date'] | date: "%Y-%m-%d" }}</span>
-    <span><a href="{{ post.url }}">{{ post.title }}</a>{{draft}}</span>
-  {% endfor %}
-</div>
+{% all_collections %}
 
 <h2 id="demo">Demo Plugin</h2>
 {% all_collections_demo %}

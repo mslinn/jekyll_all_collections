@@ -9,6 +9,7 @@
 No explicit initialization or setup is required.
 Jekyll pages and documents can access the value of `site.all_collections`.
 
+
 ## Demo
 The [`demo`](./demo) directory contains a demonstration website, which uses the plugin.
 To run, type:

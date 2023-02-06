@@ -8,8 +8,9 @@ gem 'jekyll', "~> 4.3.2"
 group :jekyll_plugins do
   gem 'classifier-reborn'
   gem 'html-proofer'
-  gem 'jekyll_all_collections', path:'../'
+  gem 'jekyll_all_collections', path: '../'
   gem 'jekyll-assets'
+  gem 'jekyll_draft'
   gem 'jekyll-environment-variables'
   gem "jekyll_plugin_logger"
   gem 'jekyll-sort'
