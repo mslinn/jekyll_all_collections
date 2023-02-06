@@ -10,6 +10,11 @@
 `Jekyll_all_collections` is a Jekyll plugin that adds a new property called `all_collections` to `site`.
 It also provides a new Jekyll tag called `all_collections`, which creates a formatted listing of all posts and documents from all collections, sorted by age.
 
+The collection consists of an array of objects with the following properties:
+`content` (HTML or Markdown), `data` (array), `date` (Ruby Date), `description`, `destination`,
+`draft` (Boolean), `excerpt` (HTML or Markdown), `ext`, `label`, `last_modified` (Ruby Date),
+`layout`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
+
 
 ## Usage
 
@@ -42,11 +47,31 @@ Add the following CSS to your stylesheet:
 Use the Jekyll tag like this:
 ```
 ---
-description: Dump of all collections.
-layout: default
+description: Dump of all collections, sorted by date originally written, newest to oldest.
+layout: defaultwritten
 title: Testing, 1, 2, 3
 ---
 {% all_collections %}
+```
+
+The collection can be sorted by any of these attributes:
+`date`, `destination`, `draft`, `label`, `last_modified`, `path`, `relative_path`, `title`, `type`, and `url`.
+
+This is the default sort:
+```
+{% all_collections sort_by="date" %}
+```
+
+Sort by the date last modified, oldest to newest:
+```
+{% all_collections sort_by="last_modified" %}
+```
+
+Sort in descending order with the `reverse` keyword.
+
+Sort by the date last modified, newest to oldest:
+```
+{% all_collections sort_by="last_modified" reverse %}
 ```
 
 

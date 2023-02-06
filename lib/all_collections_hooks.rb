@@ -49,13 +49,15 @@ module AllCollectionsHooks
     site.all_collections = apages
   end
 
+  @sort_by = ->(apages, criteria) { [apages.sort_by(criteria)] }
+
   # The collection value is just the collection label, not the entire collection object
-  def self.apages_from_objects(objects)
+  def self.apages_from_objects(objects, sort_criteria = lambda(&:date))
     pages = []
     objects.each do |object|
       pages << APage.new(object)
     end
-    pages
+    @sort_by.call(pages, sort_criteria)
   end
 
   def self.all_collections_defined?(site)
@@ -63,7 +65,8 @@ module AllCollectionsHooks
   end
 
   class APage
-    attr_reader :content, :data, :destination, :draft, :label, :path, :relative_path, :title, :type, :url
+    attr_reader :content, :data, :date, :description, :destination, :draft, :excerpt, :ext, \
+                :label, :last_modified, :layout, :path, :relative_path, :tags, :title, :type, :url
 
     def initialize(obj) # rubocop:disable Metrics/AbcSize
       @content = obj.content
@@ -78,6 +81,7 @@ module AllCollectionsHooks
       @last_modified = @data['last_modified']
       @layout = @data['layout']
       @path = obj.path
+      @relative_path = obj.relative_path
       @tags = @data['tags']
       @title = @data['title']
       @type = obj.type
