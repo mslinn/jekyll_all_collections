@@ -1,13 +1,13 @@
 require "jekyll"
 require_relative "../lib/jekyll_all_collections"
 
-class Obj # rubocop:disable Lint/ConstantDefinitionInBlock
+class Obj
   attr_reader :v1, :v2, :v3
 
-  def initialize(v1, v2, v3) # rubocop:disable Naming/MethodParameterName
-    @v1 = v1
-    @v2 = v2
-    @v3 = v3
+  def initialize(param1, param2, param3)
+    @v1 = param1
+    @v2 = param2
+    @v3 = param3
   end
 end
 

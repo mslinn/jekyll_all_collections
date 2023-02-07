@@ -56,10 +56,13 @@ title: Testing, 1, 2, 3
 
 The collection can be sorted by any of these attributes:
 `date`, `destination`, `draft`, `label`, `last_modified`, `path`, `relative_path`, `title`, `type`, and `url`.
+One of two sort orders can be appended to an attribute; either `asc` or `desc`.
+Ascending sorts are the default
 
-This is the default sort:
+Here are two examples of how you can express the default sort:
 ```
 {% all_collections sort_by="date" %}
+{% all_collections sort_by="date:asc" %}
 ```
 
 Sort by the date last modified, oldest to newest:
@@ -67,11 +70,16 @@ Sort by the date last modified, oldest to newest:
 {% all_collections sort_by="last_modified" %}
 ```
 
-Sort in descending order with the `reverse` keyword.
-
 Sort by the date last modified, newest to oldest:
 ```
-{% all_collections sort_by="last_modified" reverse %}
+{% all_collections sort_by="last_modified:desc" %}
+```
+
+Several attributes can be specified as sort criteria by passing them as an array:
+```
+{% all_collections sort_by=[ "last_modified:desc", "date:desc" ] %}
+{% all_collections sort_by=[ "last_modified:desc", "title:asc" ] %}
+{% all_collections sort_by=[ "last_modified:desc", "date:desc", "title:asc" ] %}
 ```
 
 
