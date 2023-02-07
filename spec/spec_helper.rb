@@ -1,7 +1,4 @@
-require "jekyll"
-require "fileutils"
-require "key_value_parser"
-require "shellwords"
+require 'jekyll'
 
 require_relative "../lib/jekyll_all_collections"
 
