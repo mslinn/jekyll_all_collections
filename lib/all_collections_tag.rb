@@ -44,9 +44,9 @@ module AllCollectionsTag
       end
       # Examples:
       #   "->(a, b) { [a.last_modified] <=> [b.last_modified] }"
-      #   "->(a, b) { [b.last_modified] <=> [a.last_modified] }"
-      #   "->(a, b) { [a.last_modified, a.date] <=> [b.last_modified, b.date] }"
-      #   "->(a, b) { [a.last_modified, b.date] <=> [b.last_modified, a.date] }"
+      #   "->(a, b) { [b.last_modified] <=> [a.last_modified] }" (descending)
+      #   "->(a, b) { [a.last_modified, a.date] <=> [b.last_modified, b.date] }" (descending last_modified, ascending date)
+      #   "->(a, b) { [a.last_modified, b.date] <=> [b.last_modified, a.date] }" (ascending last_modified, descending date)
       "->(a, b) { [#{criteria_lhs_array.join(', ')}] <=> [#{criteria_rhs_array.join(', ')}] }"
     end
 

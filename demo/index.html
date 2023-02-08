@@ -3,23 +3,26 @@ description: Dump of all collections.
 layout: default
 title: Testing, 1, 2, 3
 ---
-<h2 id="default">Sorted by Date, Descending</h2>
+<h2 id="default">Sorted by Date, Descending (Default)</h2>
 {% all_collections %}
 
-<h2 id="defaultAsc">Sorted by Date, Ascending</h2>
-{% all_collections reverse %}
+<h2 id="default">Sorted by Date, Descending (Explicit)</h2>
+{% all_collections sort_by="-date" %}
 
-<h2 id="titleDesc">Sorted by Title, Descending</h2>
-{% all_collections sort_by="last_modified" %}
+<h2 id="defaultAsc">Sorted by Date, Ascending</h2>
+{% all_collections sort_by="date" %}
+
+<h2 id="titleDesc">Sorted by Last Modified Date, Descending</h2>
+{% all_collections sort_by="-last_modified" %}
 
 <h2 id="titleAsc">Sorted by Title, Ascending</h2>
-{% all_collections reverse sort_by="last_modified" %}
+{% all_collections reverse sort_by="title" %}
+
+<h2 id="dateTitleAsc">Sorted by Date, then Title</h2>
+{% all_collections reverse sort_by=["date", "title"] %}
 
 <h2 id="dateTitleDesc">Sorted by Date, then Title, Descending</h2>
-{% all_collections sort_by=["date", "last_modified"] %}
-
-<h2 id="dateTitleAsc">Sorted by Title, then Title, Ascending</h2>
-{% all_collections reverse sort_by=["date", "last_modified"] %}
+{% all_collections sort_by=["date", "-title"] %}
 
 <h2 id="demo">Demo Plugin</h2>
 {% all_collections_demo %}
