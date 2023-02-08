@@ -16,7 +16,7 @@ module AllCollectionsTag
 
       sort_by = @helper.parameter_specified?('sort_by') || 'date'
       sort_lambda = self.class.create_lambda sort_by
-      generate_output(sort_lambda) # Descending sorts are reversed here
+      generate_output(sort_lambda)
     end
 
     def self.create_lambda(criteria)
@@ -25,11 +25,13 @@ module AllCollectionsTag
         @sign = c.start_with?('-') ? '-' : ''
         c.delete_prefix! '-'
         abort("Error: '#{c}' is not a valid sort field. Valid field names are: #{CRITERIA.join(', ')}") unless CRITERIA.include?(c)
-        criteria_array << "#{@sign}a.#{c}"
+        c = %w[date last_modified].include?(c) ? "#{c}.strftime('%Q')" : c
+        criteria_array << (@sign == '-' ? "-(a.#{c})" : "a.#{c}")
       end
       # Examples:
       #   "->(a) { [a.date] }"
-      #   "->(a) { [-a.date, a.last_modified] }"
+      #   "->(a) { [-a.date] }" => undefined method `-@' for #<Date: 2020-01-01 ((2458850j,0s,0n),+0s,2299161j)>
+      #   "->(a) { [-a.date.strftime('%Q'), a.last_modified] }"
       lambda_string = "->(a) { [#{criteria_array.join(', ')}] }"
       eval lambda_string
     end
