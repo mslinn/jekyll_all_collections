@@ -22,10 +22,10 @@ module AllCollectionsTag
     def self.create_lambda(criteria)
       criteria_array = []
       verify_sort_by_type(criteria).each do |c|
-        @sign = c.start_with?('-') ? '-' : '+' # This cannot work when criteria have different sort directions
+        @sign = c.start_with?('-') ? '-' : ''
         c.delete_prefix! '-'
         abort("Error: '#{c}' is not a valid sort field. Valid field names are: #{CRITERIA.join(', ')}") unless CRITERIA.include?(c)
-        criteria_array << "a.#{c}"
+        criteria_array << "#{@sign}a.#{c}"
       end
       # Examples:
       #   "->(a) { [a.date] }"
@@ -35,9 +35,7 @@ module AllCollectionsTag
     end
 
     def self.sort_me(collection, sort_lambda)
-      result = collection.sort_by(&sort_lambda)
-      result.reverse! if @sign == '-'
-      result
+      collection.sort_by(&sort_lambda)
     end
 
     def self.verify_sort_by_type(sort_by)
@@ -45,6 +43,8 @@ module AllCollectionsTag
         sort_by
       elsif sort_by.is_a? Enumerable
         sort_by.to_a
+      elsif sort_by.is_a? Date
+        [sort_by.to_i]
       elsif sort_by.is_a? String
         [sort_by]
       else

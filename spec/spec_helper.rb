@@ -1,4 +1,5 @@
 require 'jekyll'
+require 'date'
 
 require_relative '../lib/jekyll_all_collections'
 
