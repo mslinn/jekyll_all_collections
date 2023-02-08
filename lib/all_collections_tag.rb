@@ -14,34 +14,33 @@ module AllCollectionsTag
     def render_impl
       AllCollectionsHooks.compute(@site) unless @site.class.method_defined? :all_collections
 
-      sort_by = @helper.parameter_specified?('sort_by') || 'date:asc'
-      sort_lambda = create_lambda(verify_sort_by_type(sort_by))
-      generate_output(sort_lambda)
+      sort_by = @helper.parameter_specified?('sort_by') || 'date'
+      sort_lambda = self.class.create_lambda sort_by
+      generate_output(sort_lambda) # Descending sorts are reversed here
     end
 
-    private
-
-    def create_lambda(criteria)
-      criteria.each do |c|
-        lambda(&:date)
+    def self.create_lambda(criteria)
+      criteria_array = []
+      verify_sort_by_type(criteria).each do |c|
+        @sign = c.start_with?('-') ? '-' : ''
+        c.delete_prefix! '-'
+        abort("Error: '#{c}' is not a valid sort field. Valid field names are: #{CRITERIA.join(', ')}") unless CRITERIA.include?(c)
+        criteria_array << "a.#{c}"
       end
+      # Examples:
+      #   "->(a) { [a.date] }"
+      #   "->(a) { [-a.date, a.last_modified] }"
+      lambda_string = "->(a) { [#{criteria_array.join(', ')}] }"
+      eval lambda_string
     end
 
-    def generate_output(sort_lambda)
-      <<~END_TEXT
-        <h2 id="posts">Posts Sorted By Age</h2>
-        <div class="posts">
-        #{(@site.all_collections.sort(sort_lambda).map do |post|
-             draft = Jekyll::Draft.draft_html post
-             date = post.data['date'].strftime('%Y-%m-%d')
-             href = "<a href='#{post.url}'>#{post.title}</a>"
-             "  <span>#{date}</span><span>#{href}#{draft}</span>"
-           end).join("\n")}
-        </div>
-      END_TEXT
+    def self.sort_me(collection, sort_lambda)
+      result = collection.sort_by(&sort_lambda)
+      result.reverse! if @sign == '-'
+      result
     end
 
-    def verify_sort_by_type(sort_by)
+    def self.verify_sort_by_type(sort_by)
       if @sort_by.is_a? Array
         sort_by
       elsif sort_by.is_a? Enumerable
@@ -51,6 +50,23 @@ module AllCollectionsTag
       else
         abort "Error: sort_by was specified as '#{sort_by}'; it must either be a string or an array of strings"
       end
+    end
+
+    private
+
+    def generate_output(sort_lambda)
+      collection = self.class.sort_me(@site.all_collections, sort_lambda)
+      <<~END_TEXT
+        <h2 id="posts">Posts Sorted By Age</h2>
+        <div class="posts">
+        #{(collection.map do |post|
+             draft = Jekyll::Draft.draft_html post
+             date = post.data['date'].strftime('%Y-%m-%d')
+             href = "<a href='#{post.url}'>#{post.title}</a>"
+             "  <span>#{date}</span><span>#{href}#{draft}</span>"
+           end).join("\n")}
+        </div>
+      END_TEXT
     end
   end
 end

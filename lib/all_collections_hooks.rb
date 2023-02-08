@@ -68,24 +68,31 @@ module AllCollectionsHooks
     attr_reader :content, :data, :date, :description, :destination, :draft, :excerpt, :ext, \
                 :label, :last_modified, :layout, :path, :relative_path, :tags, :title, :type, :url
 
-    def initialize(obj) # rubocop:disable Metrics/AbcSize
-      @content = obj.content
-      @data = obj.data
-      @destination = obj.destination('') # TODO: What _config.yml setting should be passed to destination()?
-      @categories = @data['categories']
-      @date = @data['date']
-      @description = @data['description']
-      @excerpt = @data['excerpt']
-      @ext = @data['ext']
-      @label = obj.collection.label
-      @last_modified = @data['last_modified']
-      @layout = @data['layout']
-      @path = obj.path
-      @relative_path = obj.relative_path
-      @tags = @data['tags']
-      @title = @data['title']
-      @type = obj.type
+    # Verify each property exists before accessing it; this helps write tests
+    def initialize(obj)
+      @content = obj.content if obj.respond_to? :content
+      @data = obj.data if obj.respond_to? :data
+      @destination = obj.destination('') if obj.respond_to? :destination # TODO: What _config.yml setting should be passed to destination()?
+      @categories = @data['categories'] if obj.respond_to? :categories
+      @date = @data['date'] if obj.respond_to? :date
+      @description = @data['description'] if obj.respond_to? :data
+      @excerpt = @data['excerpt'] if obj.respond_to? :excerpt
+      @ext = @data['ext'] if obj.respond_to? :data
+      @label = obj.collection.label if obj.respond_to? :label
+      @last_modified = @data['last_modified'] if obj.respond_to? :last_modified
+      @layout = @data['layout'] if obj.respond_to? :layout
+      @path = obj.path if obj.respond_to? :path
+      @relative_path = obj.relative_path if obj.respond_to? :relative_path
+      @tags = @data['tags'] if obj.respond_to? :tags
+      @title = @data['title'] if obj.respond_to? :title
+      @type = obj.type if obj.respond_to? :type
       @url = obj.url
+    end
+
+    def to_s
+      return @label if @label
+
+      @date.to_s
     end
   end
 

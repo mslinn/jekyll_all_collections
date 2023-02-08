@@ -16,16 +16,22 @@ Layout/LineLength:
   Max: 150
 
 Metrics/AbcSize:
-  Max: 20
+  Max: 42
 
 Metrics/BlockLength:
   Max: 50
+
+Metrics/CyclomaticComplexity:
+  Max: 25
 
 Metrics/MethodLength:
   Max: 40
 
 Metrics/ModuleLength:
   Enabled: false
+
+Metrics/PerceivedComplexity:
+  Max: 20
 
 Style/Documentation:
   Enabled: false
