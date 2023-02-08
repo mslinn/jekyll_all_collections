@@ -22,7 +22,7 @@ module AllCollectionsTag
     def self.create_lambda(criteria)
       criteria_array = []
       verify_sort_by_type(criteria).each do |c|
-        @sign = c.start_with?('-') ? '-' : ''
+        @sign = c.start_with?('-') ? '-' : '+' # This cannot work when criteria have different sort directions
         c.delete_prefix! '-'
         abort("Error: '#{c}' is not a valid sort field. Valid field names are: #{CRITERIA.join(', ')}") unless CRITERIA.include?(c)
         criteria_array << "a.#{c}"
