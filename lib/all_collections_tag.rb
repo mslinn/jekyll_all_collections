@@ -2,6 +2,16 @@ require 'jekyll_draft'
 require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
 
+# See https://stackoverflow.com/a/75389679/553865
+class NullBinding < BasicObject
+  def min_binding
+    ::Kernel
+      .instance_method(:binding)
+      .bind(self)
+      .call
+  end
+end
+
 # @author Copyright 2020 Michael Slinn
 # @license SPDX-License-Identifier: Apache-2.0
 module AllCollectionsTag
@@ -15,27 +25,33 @@ module AllCollectionsTag
       AllCollectionsHooks.compute(@site) unless @site.class.method_defined? :all_collections
 
       sort_by = @helper.parameter_specified?('sort_by') || 'date'
-      sort_lambda = self.class.create_lambda sort_by
-      generate_output(sort_lambda) # Descending sorts are reversed here
+      sort_lambda_string = self.class.create_lambda(sort_by)
+      sort_lambda = self.class.evaluate(sort_lambda_string)
+      generate_output(sort_lambda)
     end
 
-    def self.create_lambda(criteria)
-      criteria_array = []
+    # Descending sort keys reverse the order of comparison
+    def self.create_lambda_string(criteria)
+      criteria_lhs_array = []
+      criteria_rhs_array = []
       verify_sort_by_type(criteria).each do |c|
-        @sign = c.start_with?('-') ? '-' : ''
+        descending_sort = c.start_with?('-')
         c.delete_prefix! '-'
-        abort("Error: '#{c}' is not a valid sort field. Valid field names are: #{CRITERIA.join(', ')}") unless CRITERIA.include?(c)
-        criteria_array << "#{@sign}a.#{c}"
+        abort("Error: '#{c}' is not a valid sort field. Valid field names are: #{CRITERIA.join(', ')}") \
+          unless CRITERIA.include?(c)
+        criteria_lhs_array << (descending_sort ? "b.#{c}" : "a.#{c}")
+        criteria_rhs_array << (descending_sort ? "a.#{c}" : "b.#{c}")
       end
       # Examples:
-      #   "->(a) { [a.date] }"
-      #   "->(a) { [-a.date, a.last_modified] }"
-      lambda_string = "->(a) { [#{criteria_array.join(', ')}] }"
-      eval lambda_string
+      #   "->(a, b) { [a.last_modified] <=> [b.last_modified] }"
+      #   "->(a, b) { [b.last_modified] <=> [a.last_modified] }"
+      #   "->(a, b) { [a.last_modified, a.date] <=> [b.last_modified, b.date] }"
+      #   "->(a, b) { [a.last_modified, b.date] <=> [b.last_modified, a.date] }"
+      "->(a, b) { [#{criteria_lhs_array.join(', ')}] <=> [#{criteria_rhs_array.join(', ')}] }"
     end
 
-    def self.sort_me(collection, sort_lambda)
-      collection.sort_by(&sort_lambda)
+    def self.evaluate(string)
+      eval string, NullBinding.new.min_binding, __FILE__, __LINE__ # rubocop:disable Security/Eval
     end
 
     def self.verify_sort_by_type(sort_by)
@@ -55,7 +71,7 @@ module AllCollectionsTag
     private
 
     def generate_output(sort_lambda)
-      collection = self.class.sort_me(@site.all_collections, sort_lambda)
+      collection = @site.all_collections.sort(&sort_lambda)
       <<~END_TEXT
         <h2 id="posts">Posts Sorted By Age</h2>
         <div class="posts">
