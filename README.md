@@ -48,31 +48,67 @@ Add the following CSS to your stylesheet:
 #### General Form
 The general form of the Jekyll tag is:
 ```
-{% all_collections id='' heading='' sort_by='SORT_KEYS' %}
+{% all_collections id='asdf' heading='All Posts' sort_by='SORT_KEYS' %}
 ```
+
+#### `id` Attribute
+If your Jekyll layout employs [`jekyll-toc`](https://github.com/allejo/jekyll-toc), then `id` attributes are important.
+The `jekyll-toc` include checks for `id` attributes in `h2` ... `h6` tags, and if found, and if the attribute value is enclosed in double quotes (`id="my_id"`, not `id='my_id'`),
+then the heading is included in the table of contents.
+
+To suppress an `id` from being generated,
+and thereby preventing the heading from appearing in the automatically generated table of contents from `jekyll-toc`,
+specify an empty string for the value of `id`, like this:
+```
+{% all_collections id='' %}
+```
+
+#### `heading` Attribute
+If no `heading` attribute is specified, a heading will automatically be generated, which contains the `sort_by` values, for example:
+```
+{% all_collections id='abcdef' sort_by="last_modified" %}
+```
+Generates a heading like:
+```
+<h2 id="abcdef">All Posts Sorted By -last_modified</h2>
+```
+
+To suppress both a `h2` heading (and the enclosed `id`) from being generated,
+specify an empty string for the value of `heading`:
+```
+{% all_collections heading='' %}
+```
+
+#### `SORT_KEYS` Values
 `SORT_KEYS` specifies how to sort the collection.
 Values can include one or more of the following attributes:
 `date`, `destination`, `draft`, `label`, `last_modified`, `path`, `relative_path`, `title`, `type`, and `url`.
 Ascending sorts are the default, however a descending sort can be achieved by prepending `-` before an attribute.
 
+To specify more than one sort key, provide an array of values.
+
 #### Usage Examples
-Default values:
+Here is a short Jekyll page, including front matter,
+demonstrating this plugin being invoked with all default attribute values:
 ```
 ---
-description: Dump of all collections, sorted by date originally written, newest to oldest.
-layout: defaultwritten
+description: "
+  Dump of all collections, sorted by date originally written, newest to oldest.
+  The heading text will be <code>All Posts Sorted By -date</code>
+"
+layout: default
 title: Testing, 1, 2, 3
 ---
 {% all_collections %}
 ```
 
-Here is an example of how to express the default sort
+Explicitly express the default sort
 (sort by the date originally written, newest to oldest):
 ```
 {% all_collections sort_by="-date" %}
 ```
 
-Here is an example of how to sort by date, from oldest to newest:
+Sort by date, from oldest to newest:
 ```
 {% all_collections sort_by="date" %}
 ```
@@ -172,7 +208,7 @@ You can also run `bin/console` for an interactive prompt that will allow you to 
 ### Build and Install Locally
 To build and install this gem onto your local machine, run:
 ```shell
-$ rake install:local
+$ rake install
 ```
 
 The following also does the same thing:
