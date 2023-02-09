@@ -36,6 +36,7 @@ module AllCollectionsTag
       ) || ['-date']
       @heading = @helper.parameter_specified?('heading') || self.class.default_head(sort_by)
       sort_lambda_string = self.class.create_lambda_string(sort_by)
+      p "sort_lambda_string = #{sort_lambda_string}"
       sort_lambda = self.class.evaluate(sort_lambda_string)
       generate_output(sort_lambda)
     end
