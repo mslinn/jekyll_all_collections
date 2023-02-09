@@ -52,12 +52,12 @@ module AllCollectionsHooks
   @sort_by = ->(apages, criteria) { [apages.sort(criteria)] }
 
   # The collection value is just the collection label, not the entire collection object
-  def self.apages_from_objects(objects, sort_criteria = lambda(&:date))
+  def self.apages_from_objects(objects)
     pages = []
     objects.each do |object|
       pages << APage.new(object)
     end
-    @sort_by.call(pages, &sort_criteria)
+    pages
   end
 
   def self.all_collections_defined?(site)

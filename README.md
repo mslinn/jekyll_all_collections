@@ -22,6 +22,7 @@ The collection consists of an array of objects with the following properties:
 No explicit initialization or setup is required.
 Jekyll plugins can access the value of `site.all_collections`, however Liquid code in Jekyll pages and documents cannot.
 
+
 ### `All_collections` Tag
 Add the following CSS to your stylesheet:
 ```css
@@ -44,7 +45,18 @@ Add the following CSS to your stylesheet:
 }
 ```
 
-Use the Jekyll tag like this:
+#### General Form
+The general form of the Jekyll tag is:
+```
+{% all_collections id='' heading='' sort_by='SORT_KEYS' %}
+```
+`SORT_KEYS` specifies how to sort the collection.
+Values can include one or more of the following attributes:
+`date`, `destination`, `draft`, `label`, `last_modified`, `path`, `relative_path`, `title`, `type`, and `url`.
+Ascending sorts are the default, however a descending sort can be achieved by prepending `-` before an attribute.
+
+#### Usage Examples
+Default values:
 ```
 ---
 description: Dump of all collections, sorted by date originally written, newest to oldest.
@@ -54,15 +66,12 @@ title: Testing, 1, 2, 3
 {% all_collections %}
 ```
 
-The collection can be sorted by any of these attributes:
-`date`, `destination`, `draft`, `label`, `last_modified`, `path`, `relative_path`, `title`, `type`, and `url`.
-Ascending sorts are the default, however a descending sort can be achieved by prepending `-` before an attribute.
-
 Here is an example of how to express the default sort
 (sort by the date originally written, newest to oldest):
 ```
 {% all_collections sort_by="-date" %}
 ```
+
 Here is an example of how to sort by date, from oldest to newest:
 ```
 {% all_collections sort_by="date" %}
