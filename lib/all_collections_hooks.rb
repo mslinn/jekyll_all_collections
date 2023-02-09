@@ -69,7 +69,7 @@ module AllCollectionsHooks
                 :label, :last_modified, :layout, :path, :relative_path, :tags, :title, :type, :url
 
     # Verify each property exists before accessing it; this helps write tests
-    def initialize(obj)
+    def initialize(obj) # rubocop:disable Metrics/AbcSize
       @content = obj.content if obj.respond_to? :content
       @data = obj.data if obj.respond_to? :data
       @destination = obj.destination('') if obj.respond_to? :destination # TODO: What _config.yml setting should be passed to destination()?
@@ -79,7 +79,8 @@ module AllCollectionsHooks
       @excerpt = @data['excerpt'] if obj.respond_to? :excerpt
       @ext = @data['ext'] if obj.respond_to? :data
       @label = obj.collection.label if obj.respond_to? :label
-      @last_modified = @data['last_modified'] if obj.respond_to? :last_modified
+      @last_modified = @data['last_modified'] || @data['last_modified_at'] \
+        if obj.respond_to?(:last_modified) || obj.respond_to?(:last_modified_at)
       @layout = @data['layout'] if obj.respond_to? :layout
       @path = obj.path if obj.respond_to? :path
       @relative_path = obj.relative_path if obj.respond_to? :relative_path

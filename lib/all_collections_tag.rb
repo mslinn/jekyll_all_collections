@@ -17,7 +17,7 @@ end
 # @license SPDX-License-Identifier: Apache-2.0
 module AllCollectionsTag
   PLUGIN_NAME = 'all_collections'.freeze
-  CRITERIA = %w[date destination draft label last_modified path relative_path title type url].freeze
+  CRITERIA = %w[date destination draft label last_modified last_modified_at path relative_path title type url].freeze
 
   class AllCollectionsTag < JekyllSupport::JekyllTag
     # Method prescribed by JekyllTag.
@@ -88,8 +88,13 @@ module AllCollectionsTag
         #{heading}
         <div class="posts">
         #{(collection.map do |post|
+             fuss_with_keys = @date_column == 'last_modified' && post.data.key?('last_modified_at')
+             date_column = fuss_with_keys ? 'last_modified_at' : @date_column
+             abort "Error: #{post.relative_path} does not define a value for #{@date_column} in front matter." \
+               unless post.data.key?(date_column) || fuss_with_keys
+
              draft = Jekyll::Draft.draft_html post
-             date = post.data[@date_column].strftime('%Y-%m-%d')
+             date = post.data[date_column].strftime('%Y-%m-%d')
              href = "<a href='#{post.url}'>#{post.title}</a>"
              "  <span>#{date}</span><span>#{href}#{draft}</span>"
            end).join("\n")}

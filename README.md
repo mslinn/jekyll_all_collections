@@ -12,18 +12,26 @@ It also provides a new Jekyll tag called `all_collections`, which creates a form
 
 The collection consists of an array of objects with the following properties:
 `content` (HTML or Markdown), `data` (array), `date` (Ruby Date), `description`, `destination`,
-`draft` (Boolean), `excerpt` (HTML or Markdown), `ext`, `label`, `last_modified` (Ruby Date),
+`draft` (Boolean), `excerpt` (HTML or Markdown), `ext`, `label`, `last_modified` or `last_modified_at` (Ruby Date),
 `layout`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
 
 ## Requirements
 All the pages in the Jekyll website must have:
 
- - A front matter variable called `last_modified`, which contains a valid date, like this:
+ - A front matter variable called `last_modified` or `last_modified_at`, which contains a valid date, like this:
    ```
    ---
    last_modified=2023-01-01
    ---
    ```
+
+   Or:
+   ```
+   ---
+   last_modified_at=2023-01-01
+   ---
+   ```
+
  - An implicit date (for example, all posts are assigned this property by Jekyll), or an explicit `date` set in front matter, like this:
    ```
    ---

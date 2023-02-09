@@ -1,21 +1,22 @@
 ---
+all_collection_exclusion: true
 description: Dump of all collections.
 layout: default
 title: Testing, 1, 2, 3
 ---
 {% all_collections id="i_am_the_id" heading="Sorted by Date, Descending (Default)" %}
 
-{% all_collections sort_by="-date" heading="Sorted by Date, Descending (Explicit)" %}
+{% all_collections heading="Sorted by Date, Descending (Explicit)" sort_by="-date" %}
 
-{% all_collections sort_by="date" heading="Sorted by Date, Ascending" %}
+{% all_collections heading="Sorted by Date, Ascending" sort_by="date" %}
 
-{% all_collections sort_by="-last_modified" heading="Sorted by Last Modified Date, Descending" %}
+{% all_collections date_column="last_modified" heading="Sorted by Last Modified Date, Descending" sort_by="-last_modified" %}
 
-{% all_collections sort_by="title" heading="Sorted by Title, Ascending" %}
+{% all_collections heading="Sorted by Title, Ascending" sort_by="title" %}
 
-{% all_collections sort_by="date, title" heading="Sorted by Date, then Title" %}
+{% all_collections heading="Sorted by Date, then Title" sort_by="date, title" %}
 
-{% all_collections sort_by="date, -title" heading="Sorted by Date, then Title, Descending" %}
+{% all_collections heading="Sorted by Date, then Title, Descending" sort_by="date, -title" %}
 
 
 <h2 id="demo">Demo Plugin</h2>
