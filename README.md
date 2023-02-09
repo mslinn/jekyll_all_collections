@@ -8,12 +8,17 @@
 </style>
 
 `Jekyll_all_collections` is a Jekyll plugin that adds a new property called `all_collections` to `site`.
-It also provides a new Jekyll tag called `all_collections`, which creates a formatted listing of all posts and documents from all collections, sorted by age.
+It also provides a new Jekyll tag called `all_collections`,
+which creates a formatted listing of all posts and documents from all collections,
+sorted by age, newest to oldest.
 
 The collection consists of an array of objects with the following properties:
 `content` (HTML or Markdown), `data` (array), `date` (Ruby Date), `description`, `destination`,
 `draft` (Boolean), `excerpt` (HTML or Markdown), `ext`, `label`, `last_modified` or `last_modified_at` (Ruby Date),
 `layout`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
+
+Pages that are not in any collection are not included.
+
 
 ## Requirements
 All the pages in the Jekyll website must have:
@@ -67,6 +72,14 @@ Add the following CSS to your stylesheet:
 .posts > *:nth-child(even) {
   width: calc(100% - 120px);
 }
+```
+
+#### Excluding Pages
+Adding the following entry to a page's front matter `` causes that page to be excluded from the collection created by this plugin:
+```
+---
+exclude_from_all: true
+---
 ```
 
 #### General Form

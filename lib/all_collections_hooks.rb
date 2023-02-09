@@ -55,7 +55,8 @@ module AllCollectionsHooks
   def self.apages_from_objects(objects)
     pages = []
     objects.each do |object|
-      pages << APage.new(object)
+      page = APage.new(object)
+      pages << page unless page.data['exclude_from_all']
     end
     pages
   end
