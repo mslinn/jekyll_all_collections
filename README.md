@@ -15,6 +15,22 @@ The collection consists of an array of objects with the following properties:
 `draft` (Boolean), `excerpt` (HTML or Markdown), `ext`, `label`, `last_modified` (Ruby Date),
 `layout`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
 
+## Requirements
+All the pages in the Jekyll website must have:
+
+ - A front matter variable called `last_modified`, which contains a valid date, like this:
+   ```
+   ---
+   last_modified=2023-01-01
+   ---
+   ```
+ - An implicit date (for example, all posts are assigned this property by Jekyll), or an explicit `date` set in front matter, like this:
+   ```
+   ---
+   date=2022-01-01
+   ---
+   ```
+
 
 ## Usage
 
@@ -48,8 +64,15 @@ Add the following CSS to your stylesheet:
 #### General Form
 The general form of the Jekyll tag is:
 ```
-{% all_collections id='asdf' heading='All Posts' sort_by='SORT_KEYS' %}
+{% all_collections date_column='date|last_modified' id='asdf' heading='All Posts' sort_by='SORT_KEYS' %}
 ```
+
+#### `date_column` Attribute
+One of two date columns can be displayed in the generated HTML:
+either `date` (when the article was originally written),
+or `last_modified`.
+The default value for the `date_column` attribute is `date`.
+
 
 #### `id` Attribute
 If your Jekyll layout employs [`jekyll-toc`](https://github.com/allejo/jekyll-toc), then `id` attributes are important.
@@ -62,6 +85,7 @@ specify an empty string for the value of `id`, like this:
 ```
 {% all_collections id='' %}
 ```
+
 
 #### `heading` Attribute
 If no `heading` attribute is specified, a heading will automatically be generated, which contains the `sort_by` values, for example:
@@ -79,6 +103,7 @@ specify an empty string for the value of `heading`:
 {% all_collections heading='' %}
 ```
 
+
 #### `SORT_KEYS` Values
 `SORT_KEYS` specifies how to sort the collection.
 Values can include one or more of the following attributes:
@@ -86,6 +111,7 @@ Values can include one or more of the following attributes:
 Ascending sorts are the default, however a descending sort can be achieved by prepending `-` before an attribute.
 
 To specify more than one sort key, provide an array of values.
+
 
 #### Usage Examples
 Here is a short Jekyll page, including front matter,

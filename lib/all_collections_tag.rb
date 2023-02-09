@@ -25,6 +25,10 @@ module AllCollectionsTag
     def render_impl
       AllCollectionsHooks.compute(@site) unless @site.class.method_defined? :all_collections
 
+      @date_column = @helper.parameter_specified?('date_column') || 'date'
+      abort "Error: the date_column attribute must either have value 'date' or 'last_modified', but '#{@date_column}' was specified" \
+        unless %w[date last_modified].include?(@date_column)
+
       @id = @helper.parameter_specified?('id') || SecureRandom.hex(10)
       sort_by = (
         value = @helper.parameter_specified?('sort_by')
@@ -85,7 +89,7 @@ module AllCollectionsTag
         <div class="posts">
         #{(collection.map do |post|
              draft = Jekyll::Draft.draft_html post
-             date = post.data['date'].strftime('%Y-%m-%d')
+             date = post.data[@date_column].strftime('%Y-%m-%d')
              href = "<a href='#{post.url}'>#{post.title}</a>"
              "  <span>#{date}</span><span>#{href}#{draft}</span>"
            end).join("\n")}
