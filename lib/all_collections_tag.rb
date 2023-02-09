@@ -33,11 +33,21 @@ module AllCollectionsTag
       sort_by = (
         value = @helper.parameter_specified?('sort_by')
         value&.gsub(' ', '')&.split(',') if value != false
-      ) || '-date'
-      @heading = @helper.parameter_specified?('heading') || "All Posts Sorted By #{sort_by.capitalize}"
+      ) || ['-date']
+      @heading = @helper.parameter_specified?('heading') || self.class.default_head(sort_by)
       sort_lambda_string = self.class.create_lambda_string(sort_by)
       sort_lambda = self.class.evaluate(sort_lambda_string)
       generate_output(sort_lambda)
+    end
+
+    def self.default_head(sort_by)
+      criteria = (sort_by.map do |x|
+        reverse = x.start_with? '-'
+        criterion = x.delete_prefix('-').capitalize
+        criterion += reverse ? ' (Newest to Oldest)' : ' (Oldest to Newest)'
+        criterion
+      end).join(', ')
+      "All Posts in All Categories Sorted By #{criteria}"
     end
 
     # Descending sort keys reverse the order of comparison
