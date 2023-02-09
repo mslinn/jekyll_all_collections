@@ -26,7 +26,10 @@ module AllCollectionsTag
       AllCollectionsHooks.compute(@site) unless @site.class.method_defined? :all_collections
 
       @id = @helper.parameter_specified?('id') || SecureRandom.hex(10)
-      sort_by = @helper.parameter_specified?('sort_by') || 'date'
+      sort_by = (
+        value = @helper.parameter_specified?('sort_by')
+        value&.gsub(' ', '')&.split(',') if value != false
+      ) || '-date'
       @heading = @helper.parameter_specified?('heading') || "All Posts Sorted By #{sort_by.capitalize}"
       sort_lambda_string = self.class.create_lambda_string(sort_by)
       sort_lambda = self.class.evaluate(sort_lambda_string)
@@ -74,8 +77,8 @@ module AllCollectionsTag
     private
 
     def generate_output(sort_lambda)
-      id = @id.to_s.empty? ? '' : "id='#{@id}'"
-      heading = @head.to_s.empty? ? '' : "<h2#{id}>#{@heading}</h2>"
+      id = @id.to_s.empty? ? '' : " id='#{@id}'"
+      heading = @heading.to_s.empty? ? '' : "<h2#{id}>#{@heading}</h2>"
       collection = @site.all_collections.sort(&sort_lambda)
       <<~END_TEXT
         #{heading}

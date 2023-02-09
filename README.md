@@ -123,11 +123,18 @@ Sort by the date last modified, newest to oldest:
 {% all_collections sort_by="-last_modified" %}
 ```
 
-Several attributes can be specified as sort criteria by passing them as an array:
+Several attributes can be specified as sort criteria by passing them as a comma-delimited string.
+Included spaces are ignored:
 ```
-{% all_collections sort_by=[ "-last_modified", "-date" ] %}
-{% all_collections sort_by=[ "-last_modified", "title" ] %}
-{% all_collections sort_by=[ "-last_modified", "-date", "title" ] %}
+{% all_collections sort_by="-last_modified, -date" %}
+{% all_collections sort_by="-last_modified, title" %}
+{% all_collections sort_by="-last_modified, -date, title" %}
+```
+
+The following two examples produce the same output:
+```
+{% all_collections sort_by="-last_modified,-date" %}
+{% all_collections sort_by="-last_modified, -date" %}
 ```
 
 
