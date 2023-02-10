@@ -82,8 +82,13 @@ module AllCollectionsHooks
       @excerpt = @data['excerpt'] if obj.respond_to? :excerpt
       @ext = @data['ext'] if obj.respond_to? :data
       @label = obj.collection.label if obj.respond_to? :label
-      @last_modified = @data['last_modified'] || @data['last_modified_at'] \
-        if @data.key?(:last_modified) || @data.key?(:last_modified_at)
+      @last_modified = @data['last_modified'] || @data['last_modified_at']
+      @last_modified_field = case @data
+                             when @data.key?('last_modified')
+                               'last_modified'
+                             when @data.key?('last_modified_at')
+                               'last_modified_at'
+                             end
       @layout = @data['layout'] if obj.respond_to? :layout
       @path = obj.path if obj.respond_to? :path
       @relative_path = obj.relative_path if obj.respond_to? :relative_path

@@ -30,13 +30,12 @@ module AllCollectionsTag
         unless %w[date last_modified].include?(@date_column)
 
       @id = @helper.parameter_specified?('id') || SecureRandom.hex(10)
-      sort_by = (
-        value = @helper.parameter_specified?('sort_by')
-        value&.gsub(' ', '')&.split(',') if value != false
-      ) || ['-date']
+      sort_by_param = @helper.parameter_specified?('sort_by')
+      sort_by = (sort_by_param&.gsub(' ', '')&.split(',') if sort_by_param != false) || ['-date']
       @heading = @helper.parameter_specified?('heading') || self.class.default_head(sort_by)
       sort_lambda_string = self.class.create_lambda_string(sort_by)
-      # p "sort_lambda_string = #{sort_lambda_string}"
+      @logger.info "#{@page['path']} sort_by_param=#{sort_by_param}"
+      @logger.info "  sort_lambda_string = #{sort_lambda_string}\n"
       sort_lambda = self.class.evaluate(sort_lambda_string)
       generate_output(sort_lambda)
     end
@@ -99,14 +98,16 @@ module AllCollectionsTag
         #{heading}
         <div class="posts">
         #{(collection.map do |post|
-             fuss_with_keys = @date_column == 'last_modified' && post.data.key?('last_modified_at')
-             date_column = fuss_with_keys ? 'last_modified_at' : @date_column
-             abort "Error: #{post.relative_path} does not define a value for #{@date_column} in front matter." \
-               unless post.data.key?(date_column) || fuss_with_keys
-
+             @logger.info {
+               "  post.last_modified='#{post.last_modified}' " +
+                 "@date_column='#{@date_column}' "
+             }
+             date = (@date_column == 'last_modified' ? post.last_modified : post.date).strftime('%Y-%m-%d')
              draft = post.draft ? "<i class='jekyll_draft'>Draft</i>" : ''
-             date = post.data[date_column].strftime('%Y-%m-%d')
              href = "<a href='#{post.url}'>#{post.title}</a>"
+             @logger.info {
+               "  date='#{date}' #{post.title}\n"
+             }
              "  <span>#{date}</span><span>#{href}#{draft}</span>"
            end).join("\n")}
         </div>
