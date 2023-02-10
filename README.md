@@ -2,11 +2,6 @@
 [![Gem Version](https://badge.fury.io/rb/jekyll_all_collections.svg)](https://badge.fury.io/rb/jekyll_all_collections)
 ===========
 
-<style type="text/css">
-  ol    { list-style-type: decimal;}
-  ol ol {list-style-type: lower-alpha;}
-</style>
-
 `Jekyll_all_collections` is a Jekyll plugin that adds a new property called `all_collections` to `site`.
 It also provides a new Jekyll tag called `all_collections`,
 which creates a formatted listing of all posts and documents from all collections,
