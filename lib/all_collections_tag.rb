@@ -93,25 +93,27 @@ module AllCollectionsTag
     def generate_output(sort_lambda)
       id = @id.to_s.empty? ? '' : " id='#{@id}'"
       heading = @heading.to_s.empty? ? '' : "<h2#{id}>#{@heading}</h2>"
+      @site.all_collections.each do |post|
+        # @logger.info "#{post.relative_path}: last_modified=#{post.last_modified}(#{post.last_modified.class}) date=#{post.date}(#{post.date.class})"
+        @logger.info "Error: #{post.relative_path} has no value for last_modified" if post.last_modified.to_s.empty?
+      end
       collection = @site.all_collections.sort(&sort_lambda)
       <<~END_TEXT
         #{heading}
         <div class="posts">
         #{(collection.map do |post|
-             @logger.info {
-               "  post.last_modified='#{post.last_modified}' " +
-                 "@date_column='#{@date_column}' "
-             }
+             @logger.info { "  post.last_modified='#{post.last_modified}' @date_column='#{@date_column}'" }
              date = (@date_column == 'last_modified' ? post.last_modified : post.date).strftime('%Y-%m-%d')
              draft = post.draft ? "<i class='jekyll_draft'>Draft</i>" : ''
              href = "<a href='#{post.url}'>#{post.title}</a>"
-             @logger.info {
-               "  date='#{date}' #{post.title}\n"
-             }
+             @logger.info { "  date='#{date}' #{post.title}\n" }
              "  <span>#{date}</span><span>#{href}#{draft}</span>"
            end).join("\n")}
         </div>
       END_TEXT
+    rescue ArgumentError => e
+      puts e.message
+      puts e.backtrace.join("\n")
     end
   end
 end

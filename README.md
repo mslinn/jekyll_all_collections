@@ -16,9 +16,14 @@ Pages that are not in any collection are not included.
 
 
 ## Requirements
-All the pages in the Jekyll website must have:
-
- - A front matter variable called `last_modified` or `last_modified_at`, which contains a valid date, like this:
+All the pages in the Jekyll website must have an implicit date (for example, all posts are assigned this property by Jekyll),
+or an explicit `date` set in front matter, like this:
+   ```
+   ---
+   date=2022-01-01
+   ---
+   ```
+If a front matter variable called `last_modified` or `last_modified_at` exists, its value will be converted to a Ruby `Date`:
    ```
    ---
    last_modified=2023-01-01
@@ -32,13 +37,7 @@ All the pages in the Jekyll website must have:
    ---
    ```
 
- - An implicit date (for example, all posts are assigned this property by Jekyll), or an explicit `date` set in front matter, like this:
-   ```
-   ---
-   date=2022-01-01
-   ---
-   ```
-
+Otherwise, if `last_modified` or `last_modified_at` is not present in the front matter for a page, the `date` value will be used last modified date value.
 
 ## Usage
 
