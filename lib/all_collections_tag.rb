@@ -36,7 +36,7 @@ module AllCollectionsTag
       ) || ['-date']
       @heading = @helper.parameter_specified?('heading') || self.class.default_head(sort_by)
       sort_lambda_string = self.class.create_lambda_string(sort_by)
-      p "sort_lambda_string = #{sort_lambda_string}"
+      # p "sort_lambda_string = #{sort_lambda_string}"
       sort_lambda = self.class.evaluate(sort_lambda_string)
       generate_output(sort_lambda)
     end
@@ -104,7 +104,7 @@ module AllCollectionsTag
              abort "Error: #{post.relative_path} does not define a value for #{@date_column} in front matter." \
                unless post.data.key?(date_column) || fuss_with_keys
 
-             draft = Jekyll::Draft.draft_html post
+             draft = post.draft ? "<i class='jekyll_draft'>Draft</i>" : ''
              date = post.data[date_column].strftime('%Y-%m-%d')
              href = "<a href='#{post.url}'>#{post.title}</a>"
              "  <span>#{date}</span><span>#{href}#{draft}</span>"

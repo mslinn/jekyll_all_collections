@@ -71,12 +71,14 @@ module AllCollectionsHooks
 
     # Verify each property exists before accessing it; this helps write tests
     def initialize(obj) # rubocop:disable Metrics/AbcSize
-      @content = obj.content if obj.respond_to? :content
       @data = obj.data if obj.respond_to? :data
-      @destination = obj.destination('') if obj.respond_to? :destination # TODO: What _config.yml setting should be passed to destination()?
+
       @categories = @data['categories'] if obj.respond_to? :categories
+      @content = obj.content if obj.respond_to? :content
       @date = @data['date'] if obj.respond_to? :date
       @description = @data['description'] if obj.respond_to? :data
+      @destination = obj.destination('') if obj.respond_to? :destination # TODO: What _config.yml setting should be passed to destination()?
+      @draft = Jekyll::Draft.draft?(obj)
       @excerpt = @data['excerpt'] if obj.respond_to? :excerpt
       @ext = @data['ext'] if obj.respond_to? :data
       @label = obj.collection.label if obj.respond_to? :label

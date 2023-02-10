@@ -133,6 +133,14 @@ pre {
   width: 940px;
 }
 
+.jekyll_draft {
+  background-color: #fefeab;
+  padding-bottom: 2px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 2px;
+}
+
 .maxOneScreenHigh {
   max-height: 500px;
 }
