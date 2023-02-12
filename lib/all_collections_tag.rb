@@ -34,8 +34,8 @@ module AllCollectionsTag
       sort_by = (sort_by_param&.gsub(' ', '')&.split(',') if sort_by_param != false) || ['-date']
       @heading = @helper.parameter_specified?('heading') || self.class.default_head(sort_by)
       sort_lambda_string = self.class.create_lambda_string(sort_by)
-      @logger.info "#{@page['path']} sort_by_param=#{sort_by_param}"
-      @logger.info "  sort_lambda_string = #{sort_lambda_string}\n"
+      @logger.debug "#{@page['path']} sort_by_param=#{sort_by_param}"
+      @logger.debug "  sort_lambda_string = #{sort_lambda_string}\n"
       sort_lambda = self.class.evaluate(sort_lambda_string)
       generate_output(sort_lambda)
     end
@@ -94,19 +94,19 @@ module AllCollectionsTag
       id = @id.to_s.empty? ? '' : " id='#{@id}'"
       heading = @heading.to_s.empty? ? '' : "<h2#{id}>#{@heading}</h2>"
       @site.all_collections.each do |post|
-        # @logger.info "#{post.relative_path}: last_modified=#{post.last_modified}(#{post.last_modified.class}) date=#{post.date}(#{post.date.class})"
-        @logger.info "Error: #{post.relative_path} has no value for last_modified" if post.last_modified.to_s.empty?
+        # @logger.debug "#{post.relative_path}: last_modified=#{post.last_modified}(#{post.last_modified.class}) date=#{post.date}(#{post.date.class})"
+        @logger.debug "Error: #{post.relative_path} has no value for last_modified" if post.last_modified.to_s.empty?
       end
       collection = @site.all_collections.sort(&sort_lambda)
       <<~END_TEXT
         #{heading}
         <div class="posts">
         #{(collection.map do |post|
-             @logger.info { "  post.last_modified='#{post.last_modified}' @date_column='#{@date_column}'" }
+             @logger.debug { "  post.last_modified='#{post.last_modified}' @date_column='#{@date_column}'" }
              date = (@date_column == 'last_modified' ? post.last_modified : post.date).strftime('%Y-%m-%d')
              draft = post.draft ? "<i class='jekyll_draft'>Draft</i>" : ''
              href = "<a href='#{post.url}'>#{post.title}</a>"
-             @logger.info { "  date='#{date}' #{post.title}\n" }
+             @logger.debug { "  date='#{date}' #{post.title}\n" }
              "  <span>#{date}</span><span>#{href}#{draft}</span>"
            end).join("\n")}
         </div>

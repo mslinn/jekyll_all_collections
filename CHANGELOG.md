@@ -1,3 +1,6 @@
+## 0.2.1 / 2023-02-12
+  * Reduced the verbosity of log output from `info` to `debug`
+
 ## 0.2.0 / 2023-02-04
   * Returns Array[APage] instead of a collection of different types of objects.
   * Converted the plugin to a `:site, :post_read` hook instead of a tag,
