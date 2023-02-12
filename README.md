@@ -189,6 +189,13 @@ Now point your web browser to http://localhost:4444
 
 
 ## Debugging
+You can control the verbosity of log output by adding the following to `_config.yml` in your Jekyll project:
+```yaml
+plugin_loggers:
+  AllCollectionsTag::AllCollectionsTag: warn
+```
+
+
 1. You have two options for initiating a debug session:
 
    1. Run `demo/_bin/debug`, without the `-r` options shown above.
