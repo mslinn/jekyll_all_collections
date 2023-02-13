@@ -1,3 +1,6 @@
+## 0.2.2 / 2023-02-12
+  * Updated dependency `'jekyll_plugin_support', '~> 0.4.0'`
+
 ## 0.2.1 / 2023-02-12
   * Reduced the verbosity of log output from `info` to `debug`
 
