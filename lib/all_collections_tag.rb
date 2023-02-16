@@ -20,6 +20,8 @@ module AllCollectionsTag
   CRITERIA = %w[date destination draft label last_modified last_modified_at path relative_path title type url].freeze
 
   class AllCollectionsTag < JekyllSupport::JekyllTag
+    include JekyllAllCollectionsVersion
+
     # Method prescribed by JekyllTag.
     # @return [String]
     def render_impl
@@ -115,8 +117,7 @@ module AllCollectionsTag
       puts e.message
       puts e.backtrace.join("\n")
     end
+
+    JekyllPluginHelper.register(self, PLUGIN_NAME)
   end
 end
-
-Liquid::Template.register_tag(AllCollectionsTag::PLUGIN_NAME, AllCollectionsTag::AllCollectionsTag)
-PluginMetaLogger.instance.info { "Loaded #{AllCollectionsTag::PLUGIN_NAME} v#{JekyllAllCollectionsVersion::VERSION} tag plugin." }
