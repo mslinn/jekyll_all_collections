@@ -16,7 +16,7 @@ module AllCollectionsHooks
   # Each `APage` entry is one document or page.
   Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
     defined = AllCollectionsHooks.all_collections_defined?(site)
-    @logger.info { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
+    @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
     AllCollectionsHooks.compute(site) unless site.class.method_defined? :all_collections
   end
 

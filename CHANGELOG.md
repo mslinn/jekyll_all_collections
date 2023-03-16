@@ -1,3 +1,6 @@
+## 0.3.1 / 2023-03-16
+  * Reduced the verbosity of the `@logger` message
+
 ## 0.3.0 / 2023-02-16
   * Updated dependency `'jekyll_plugin_support', '~> 0.5.0'`
 
