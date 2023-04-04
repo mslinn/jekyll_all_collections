@@ -14,14 +14,14 @@ Gem::Specification.new do |spec|
   # Specify which files should be added to the gem when it is released.
   spec.files = Dir['.rubocop.yml', 'LICENSE.*', 'Rakefile', "{lib,spec}/**/*", "*.gemspec", "*.md"]
 
-  spec.homepage = 'https://www.mslinn.com/blog/2020/12/30/jekyll-plugin-template-collection.html'
+  spec.homepage = github
   spec.license = 'MIT'
   spec.metadata = {
     'allowed_push_host' => 'https://rubygems.org',
     'bug_tracker_uri'   => "#{github}/issues",
     'changelog_uri'     => "#{github}/CHANGELOG.md",
     'homepage_uri'      => spec.homepage,
-    'source_code_uri'   => github,
+    'source_code_uri'   => github
   }
   spec.name = 'jekyll_all_collections'
   spec.require_paths = ['lib']
