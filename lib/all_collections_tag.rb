@@ -96,8 +96,8 @@ module AllCollectionsTag
       id = @id.to_s.empty? ? '' : " id='#{@id}'"
       heading = @heading.to_s.empty? ? '' : "<h2#{id}>#{@heading}</h2>"
       @site.all_collections.each do |post|
-        # @logger.debug "#{post.relative_path}: last_modified=#{post.last_modified}(#{post.last_modified.class}) date=#{post.date}(#{post.date.class})"
-        @logger.debug "Error: #{post.relative_path} has no value for last_modified" if post.last_modified.to_s.empty?
+        # @logger.debug { "#{post.relative_path}: last_modified=#{post.last_modified}(#{post.last_modified.class}) date=#{post.date}(#{post.date.class})" }
+        @logger.debug { "Error: #{post.relative_path} has no value for last_modified" if post.last_modified.to_s.empty? }
       end
       collection = @site.all_collections.sort(&sort_lambda)
       <<~END_TEXT
@@ -114,8 +114,8 @@ module AllCollectionsTag
         </div>
       END_TEXT
     rescue ArgumentError => e
-      puts e.message
-      puts e.backtrace.join("\n")
+      @logger.warn { e.message }
+      @logger.warn { e.backtrace.join("\n") }
     end
 
     JekyllPluginHelper.register(self, PLUGIN_NAME)
