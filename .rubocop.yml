@@ -20,7 +20,8 @@ Gemspec/RequireMFA:
   Enabled: false
 
 Layout/HashAlignment:
-  Enabled: false
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
 
 Layout/LineLength:
   Max: 150
@@ -34,13 +35,13 @@ Metrics/BlockLength:
   Max: 30
 
 Metrics/CyclomaticComplexity:
-  Max: 15
+  Max: 25
 
 Metrics/MethodLength:
   Max: 30
 
 Metrics/PerceivedComplexity:
-  Max: 15
+  Max: 25
 
 Naming/FileName:
   Exclude:

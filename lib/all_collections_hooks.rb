@@ -66,7 +66,7 @@ module AllCollectionsHooks
   end
 
   class APage
-    attr_reader :content, :data, :date, :description, :destination, :draft, :excerpt, :ext, \
+    attr_reader :content, :data, :date, :description, :destination, :draft, :excerpt, :ext,
                 :label, :last_modified, :layout, :path, :relative_path, :tags, :title, :type, :url
 
     # Verify each property exists before accessing it; this helps write tests
@@ -105,9 +105,9 @@ module AllCollectionsHooks
     end
   end
 
-  PluginMetaLogger.instance.logger.info {
+  PluginMetaLogger.instance.logger.info do
     "Loaded AllCollectionsHooks v#{JekyllAllCollectionsVersion::VERSION} :site, :pre_render, :normal hook plugin."
-  }
+  end
 end
 
 Liquid::Template.register_filter(AllCollectionsHooks)

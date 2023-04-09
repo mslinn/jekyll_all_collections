@@ -27,41 +27,41 @@ RSpec.describe(AllCollectionsTag) do
   let(:o4) { APageStub.new('2022-01-01', '2023-01-01', 'c_B') }
   let(:objs) { [o1, o2, o3, o4] }
 
-  it "defines sort_by lambda with last_modified" do
+  it 'defines sort_by lambda with last_modified' do
     sort_lambda = ->(a, b) { [a.last_modified] <=> [b.last_modified] }
     result = objs.sort(&sort_lambda)
     expect(result).to eq([o1, o2, o3, o4])
   end
 
-  it "makes sort_by lambdas from stringified date" do
-    sort_lambda = eval "->(a, b) { a.last_modified <=> b.last_modified }",
+  it 'makes sort_by lambdas from stringified date' do
+    sort_lambda = eval '->(a, b) { a.last_modified <=> b.last_modified }',
                        NullBinding.new.min_binding, __FILE__, __LINE__ - 1
     result = objs.sort(&sort_lambda)
     expect(result).to eq([o1, o2, o3, o4])
   end
 
-  it "defines sort_by lambda with array of last_modified" do
+  it 'defines sort_by lambda with array of last_modified' do
     sort_lambda = ->(a, b) { [a.last_modified] <=> [b.last_modified] }
     result = objs.sort(&sort_lambda)
     expect(result).to eq([o1, o2, o3, o4])
   end
 
-  it "makes sort_by lambdas from stringified array of last_modified" do
-    sort_lambda = eval "->(a, b) { [a.last_modified] <=> [b.last_modified] }",
+  it 'makes sort_by lambdas from stringified array of last_modified' do
+    sort_lambda = eval '->(a, b) { [a.last_modified] <=> [b.last_modified] }',
                        NullBinding.new.min_binding, __FILE__, __LINE__ - 1
     result = objs.sort(&sort_lambda)
     expect(result).to eq([o1, o2, o3, o4])
   end
 
-  it "makes sort_by lambdas with descending keys from stringified array of last_modified" do
-    sort_lambda = eval "->(a, b) { [b.last_modified] <=> [a.last_modified] }",
+  it 'makes sort_by lambdas with descending keys from stringified array of last_modified' do
+    sort_lambda = eval '->(a, b) { [b.last_modified] <=> [a.last_modified] }',
                        NullBinding.new.min_binding, __FILE__, __LINE__ - 1
     result = objs.sort(&sort_lambda)
     expected = [o3, o4, o1, o2]
     expect(result).to eq(expected)
   end
 
-  it "create_lambda with 1 date key, descending" do
+  it 'create_lambda with 1 date key, descending' do
     lambda_string = AllCollectionsTag::AllCollectionsTag.create_lambda_string('-last_modified')
     sort_lambda = AllCollectionsTag::AllCollectionsTag.evaluate(lambda_string)
     result = objs.sort(&sort_lambda)
@@ -70,7 +70,7 @@ RSpec.describe(AllCollectionsTag) do
     expect(result).to eq(expected)
   end
 
-  it "create_lambda with 1 date key, ascending" do
+  it 'create_lambda with 1 date key, ascending' do
     lambda_string = AllCollectionsTag::AllCollectionsTag.create_lambda_string('date')
     sort_lambda = AllCollectionsTag::AllCollectionsTag.evaluate(lambda_string)
     result = objs.sort(&sort_lambda)
@@ -79,7 +79,7 @@ RSpec.describe(AllCollectionsTag) do
     expect(result).to eq(expected)
   end
 
-  it "create_lambda with 2 date keys, both ascending" do
+  it 'create_lambda with 2 date keys, both ascending' do
     lambda_string = AllCollectionsTag::AllCollectionsTag.create_lambda_string(%w[date last_modified])
     sort_lambda = AllCollectionsTag::AllCollectionsTag.evaluate(lambda_string)
     result = objs.sort(&sort_lambda)
@@ -88,7 +88,7 @@ RSpec.describe(AllCollectionsTag) do
     expect(result).to eq(expected)
   end
 
-  it "create_lambda with 2 date keys, both descending" do
+  it 'create_lambda with 2 date keys, both descending' do
     lambda_string = AllCollectionsTag::AllCollectionsTag.create_lambda_string(['-date', '-last_modified'])
     sort_lambda = AllCollectionsTag::AllCollectionsTag.evaluate(lambda_string)
     result = objs.sort(&sort_lambda)
@@ -97,7 +97,7 @@ RSpec.describe(AllCollectionsTag) do
     expect(result).to eq(expected)
   end
 
-  it "create_lambda with 2 date keys, first descending and second ascending" do
+  it 'create_lambda with 2 date keys, first descending and second ascending' do
     lambda_string = AllCollectionsTag::AllCollectionsTag.create_lambda_string(['-date', 'last_modified'])
     sort_lambda = AllCollectionsTag::AllCollectionsTag.evaluate(lambda_string)
     result = objs.sort(&sort_lambda)
@@ -106,7 +106,7 @@ RSpec.describe(AllCollectionsTag) do
     expect(result).to eq(expected)
   end
 
-  it "create_lambda with 2 date keys, first ascending and second descending" do
+  it 'create_lambda with 2 date keys, first ascending and second descending' do
     lambda_string = AllCollectionsTag::AllCollectionsTag.create_lambda_string(['date', '-last_modified'])
     sort_lambda = AllCollectionsTag::AllCollectionsTag.evaluate(lambda_string)
     result = objs.sort(&sort_lambda)
