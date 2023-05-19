@@ -15,6 +15,20 @@ The collection consists of an array of objects with the following properties:
 Pages that are not in any collection are not included.
 
 
+## Installation
+Add this line to your application's Gemfile:
+
+```ruby
+group :jekyll_plugins do
+  gem 'jekyll_all_collections'
+end
+```
+
+And then execute:
+
+    $ bundle
+
+
 ## Requirements
 All the pages in the Jekyll website must have an implicit date (for example, all posts are assigned this property by Jekyll),
 or an explicit `date` set in front matter, like this:
@@ -253,22 +267,6 @@ plugin_loggers:
 ## Additional Information
 More information is available on Mike Slinn's website about
 [Jekyll plugins](https://www.mslinn.com/blog/index.html#Jekyll).
-
-
-## Installation
-This has already been done for the demo;
-these instructions are for incorporating the plugin(s) into other Jekyll websites.
-Add this line to your application's Gemfile:
-
-```ruby
-group :jekyll_plugins do
-  gem 'jekyll_all_collections'
-end
-```
-
-And then execute:
-
-    $ bundle
 
 
 ## Development
