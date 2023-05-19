@@ -20,20 +20,20 @@ All the pages in the Jekyll website must have an implicit date (for example, all
 or an explicit `date` set in front matter, like this:
    ```
    ---
-   date=2022-01-01
+   date: 2022-01-01
    ---
    ```
 If a front matter variable called `last_modified` or `last_modified_at` exists, its value will be converted to a Ruby `Date`:
    ```
    ---
-   last_modified=2023-01-01
+   last_modified: 2023-01-01
    ---
    ```
 
    Or:
    ```
    ---
-   last_modified_at=2023-01-01
+   last_modified_at: 2023-01-01
    ---
    ```
 
@@ -79,7 +79,12 @@ exclude_from_all: true
 #### General Form
 The general form of the Jekyll tag is:
 ```
-{% all_collections date_column='date|last_modified' id='asdf' heading='All Posts' sort_by='SORT_KEYS' %}
+{% all_collections
+  date_column='date|last_modified'
+  heading='All Posts'
+  id='asdf'
+  sort_by='SORT_KEYS'
+%}
 ```
 
 #### `date_column` Attribute
@@ -87,6 +92,23 @@ One of two date columns can be displayed in the generated HTML:
 either `date` (when the article was originally written),
 or `last_modified`.
 The default value for the `date_column` attribute is `date`.
+
+
+#### `heading` Attribute
+If no `heading` attribute is specified, a heading will automatically be generated, which contains the `sort_by` values, for example:
+```
+{% all_collections id='abcdef' sort_by="last_modified" %}
+```
+Generates a heading like:
+```
+<h2 id="abcdef">All Posts Sorted By last_modified</h2>
+```
+
+To suppress both a `h2` heading (and the enclosed `id`) from being generated,
+specify an empty string for the value of `heading`:
+```
+{% all_collections heading='' %}
+```
 
 
 #### `id` Attribute
@@ -102,30 +124,26 @@ specify an empty string for the value of `id`, like this:
 ```
 
 
-#### `heading` Attribute
-If no `heading` attribute is specified, a heading will automatically be generated, which contains the `sort_by` values, for example:
-```
-{% all_collections id='abcdef' sort_by="last_modified" %}
-```
-Generates a heading like:
-```
-<h2 id="abcdef">All Posts Sorted By -last_modified</h2>
-```
-
-To suppress both a `h2` heading (and the enclosed `id`) from being generated,
-specify an empty string for the value of `heading`:
-```
-{% all_collections heading='' %}
-```
-
-
 #### `SORT_KEYS` Values
 `SORT_KEYS` specifies how to sort the collection.
 Values can include one or more of the following attributes:
-`date`, `destination`, `draft`, `label`, `last_modified`, `path`, `relative_path`, `title`, `type`, and `url`.
+`date`, `destination`, `draft`, `label`, `last_modified`, `last_modified_at`, `path`, `relative_path`, `title`, `type`, and `url`.
 Ascending sorts are the default, however a descending sort can be achieved by prepending `-` before an attribute.
 
-To specify more than one sort key, provide an array of values.
+To specify more than one sort key, provide a comma-delimited string of values.
+Included spaces are ignored.
+For example, specify the primary sort key as <code>draft</code>,
+the secondary sort key as <code>last_modified</code>,
+and the tertiary key as <code>label</code>:
+
+```
+{% all_collections
+  date_column='last_modified'
+  heading='All Posts'
+  id='asdf'
+  sort_by='draft, last_modified, label'
+%}
+```
 
 
 #### Usage Examples
@@ -250,7 +268,7 @@ end
 
 And then execute:
 
-    $ bundle install
+    $ bundle
 
 
 ## Development
