@@ -1,6 +1,6 @@
 ## 0.3.3 / 2023-05-22
-  * Corrected tests for keys in APage.initialize
-  * Using `warn_short_trace` for non-fatal errors.
+  * Corrected key presence checks in APage.initialize
+  * Using `warn_short_trace` from `jekyll_plugin_support` for non-fatal errors.
 
 ## 0.3.2 / 2023-04-05
   * Modified dependency `'jekyll_plugin_support', '>= 0.5.0'`
