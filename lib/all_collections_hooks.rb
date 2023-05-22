@@ -75,7 +75,7 @@ module AllCollectionsHooks
 
       @categories = @data['categories'] if @data.key? 'categories'
       @content = obj.content if obj.respond_to? :content
-      @date = @data['date']&.to_date if @data.key? 'date' && !@data.nil? || Date.today
+      @date = (@data['date'].to_date if @data&.key?('date')) || Date.today
       @description = @data['description'] if @data.key? 'description'
       @destination = obj.destination('') if obj.respond_to? :destination # TODO: What _config.yml setting should be passed to destination()?
       @draft = Jekyll::Draft.draft?(obj)
