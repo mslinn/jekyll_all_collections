@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   # Specify which files should be added to the gem when it is released.
   spec.files = Dir['.rubocop.yml', 'LICENSE.*', 'Rakefile', '{lib,spec}/**/*', '*.gemspec', '*.md']
 
-  spec.homepage = github
+  spec.homepage = 'https://www.mslinn.com/jekyll_plugins/jekyll_all_collections.html'
   spec.license = 'MIT'
   spec.metadata = {
     'allowed_push_host' => 'https://rubygems.org',
