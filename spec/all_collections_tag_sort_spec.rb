@@ -19,14 +19,14 @@ def show(lambda_string, result, expected)
   p "  result: #{result.map(&:label).join(', ')}  <==>  expected: #{expected.map(&:label).join(', ')}"
 end
 
-let(:o1) { APageStub.new('2020-01-01', '2020-01-01', 'a_A') }
-let(:o2) { APageStub.new('2021-01-01', '2020-01-01', 'b_A') }
-let(:o3) { APageStub.new('2021-01-01', '2023-01-01', 'b_B') }
-let(:o4) { APageStub.new('2022-01-01', '2023-01-01', 'c_B') }
-let(:objs) { [o1, o2, o3, o4] }
-
 # See https://stackoverflow.com/a/75388137/553865
 RSpec.describe(AllCollectionsTag::AllCollectionsTag) do
+  let(:o1) { APageStub.new('2020-01-01', '2020-01-01', 'a_A') }
+  let(:o2) { APageStub.new('2021-01-01', '2020-01-01', 'b_A') }
+  let(:o3) { APageStub.new('2021-01-01', '2023-01-01', 'b_B') }
+  let(:o4) { APageStub.new('2022-01-01', '2023-01-01', 'c_B') }
+  let(:objs) { [o1, o2, o3, o4] }
+
   it 'defines sort_by lambda with last_modified' do
     sort_lambda = ->(a, b) { [a.last_modified] <=> [b.last_modified] }
     result = objs.sort(&sort_lambda)

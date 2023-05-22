@@ -55,6 +55,9 @@ RSpec/FilePath:
   IgnoreMethods: true
   SpecSuffixOnly: true
 
+RSpec/IndexedLet:
+  Enabled: false
+
 RSpec/MultipleExpectations:
   Max: 15
 
