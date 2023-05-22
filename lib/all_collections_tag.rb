@@ -128,7 +128,7 @@ module AllCollectionsTag
         </div>
       END_TEXT
     rescue ArgumentError => e
-      error_short_trace(e)
+      warn_short_trace e e
     end
 
     JekyllPluginHelper.register(self, PLUGIN_NAME)
