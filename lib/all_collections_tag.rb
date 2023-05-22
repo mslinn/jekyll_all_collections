@@ -18,7 +18,6 @@ end
 module AllCollectionsTag
   PLUGIN_NAME = 'all_collections'.freeze
   CRITERIA = %w[date destination draft label last_modified last_modified_at path relative_path title type url].freeze
-  DISPLAYED_CALLS = 8
   DRAFT_HTML = '<i class="jekyll_draft">Draft</i>'.freeze
 
   class AllCollectionsTag < JekyllSupport::JekyllTag
@@ -129,12 +128,7 @@ module AllCollectionsTag
         </div>
       END_TEXT
     rescue ArgumentError => e
-      remaining = e.backtrace.length - DISPLAYED_CALLS
-      @logger.warn do
-        e.message + "\n" + # rubocop:disable Style/StringConcatenation
-          e.backtrace.take(DISPLAYED_CALLS).join("\n") +
-          "\n...Remaining #{remaining} call sites elided.\n"
-      end
+      error_short_trace(e)
     end
 
     JekyllPluginHelper.register(self, PLUGIN_NAME)

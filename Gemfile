@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 gemspec
 
 group :test, :development do
-  gem 'bundler', require: false
   gem 'debase', '0.2.5.beta2', require: false
   gem 'rake', require: false
   gem 'rspec', require: false
@@ -14,4 +13,8 @@ group :test, :development do
   gem 'rubocop-rake', require: false
   gem 'rubocop-rspec', require: false
   gem 'ruby-debug-ide', require: false
+end
+
+group :test do
+  gem 'rspec-match_ignoring_whitespace'
 end
