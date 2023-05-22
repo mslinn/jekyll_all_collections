@@ -73,15 +73,15 @@ module AllCollectionsHooks
     def initialize(obj) # rubocop:disable Metrics/AbcSize
       @data = obj.data if obj.respond_to? :data
 
-      @categories = @data['categories'] if obj.respond_to? :categories
+      @categories = @data['categories'] if @data.key? 'categories'
       @content = obj.content if obj.respond_to? :content
-      @date = @data['date'].to_date if obj.respond_to? :date
-      @description = @data['description'] if obj.respond_to? :data
+      @date = @data['date']&.to_date if @data.key? 'date' && !@data.nil? || Date.today
+      @description = @data['description'] if @data.key? 'description'
       @destination = obj.destination('') if obj.respond_to? :destination # TODO: What _config.yml setting should be passed to destination()?
       @draft = Jekyll::Draft.draft?(obj)
-      @excerpt = @data['excerpt'] if obj.respond_to? :excerpt
-      @ext = @data['ext'] if obj.respond_to? :data
-      @label = obj.collection.label if obj.respond_to? :label
+      @excerpt = @data['excerpt'] if @data.key? 'excerpt'
+      @ext = @data['ext'] if @data.key? 'ext'
+      @label = obj.collection.label if obj&.collection.respond_to? :label
       @last_modified = @data['last_modified'] || @data['last_modified_at'] || @date
       @last_modified_field = case @data
                              when @data.key?('last_modified')
@@ -89,11 +89,11 @@ module AllCollectionsHooks
                              when @data.key?('last_modified_at')
                                'last_modified_at'
                              end
-      @layout = @data['layout'] if obj.respond_to? :layout
+      @layout = @data['layout'] if @data.key? 'layout'
       @path = obj.path if obj.respond_to? :path
       @relative_path = obj.relative_path if obj.respond_to? :relative_path
-      @tags = @data['tags'] if obj.respond_to? :tags
-      @title = @data['title'] if obj.respond_to? :title
+      @tags = @data['tags'] if @data.key? 'tags'
+      @title = @data['title'] if @data.key? 'title'
       @type = obj.type if obj.respond_to? :type
       @url = obj.url
     end

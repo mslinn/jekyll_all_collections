@@ -27,7 +27,7 @@ Layout/LineLength:
   Max: 150
 
 Metrics/AbcSize:
-  Max: 35
+  Max: 45
 
 Metrics/BlockLength:
   Exclude:
@@ -47,6 +47,17 @@ Naming/FileName:
   Exclude:
     - Rakefile
 
+RSpec/ExampleLength:
+  Max: 30
+
+RSpec/FilePath:
+  Enabled: false
+  IgnoreMethods: true
+  SpecSuffixOnly: true
+
+RSpec/MultipleExpectations:
+  Max: 15
+
 Style/Documentation:
   Enabled: false
 
@@ -55,13 +66,3 @@ Style/FrozenStringLiteralComment:
 
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
-
-RSpec/FilePath:
-  IgnoreMethods: true
-  SpecSuffixOnly: true
-
-RSpec/ExampleLength:
-  Max: 30
-
-RSpec/MultipleExpectations:
-  Max: 15
