@@ -5,13 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "debugPort": "0",
       "name": "Listen for rdebug-ide",
       "type": "rdbg",
       "request": "attach",
     },
     {
+      "cwd": "${workspaceFolder}/demo",
+      "debugPort": "0",
       "name": "Debug Demo",
-      "request": "attach",
+      "request": "launch",
+      "script": "${workspaceRoot}/exe/jekyll",
       "type": "rdbg",
     },
     {
@@ -19,6 +23,7 @@
         "-I",
         "${workspaceRoot}"
       ],
+      "debugPort": "0",
       "name": "RSpec - all",
       "request": "launch",
       "script": "${workspaceRoot}/exe/rspec",
@@ -30,7 +35,7 @@
         "${workspaceRoot}",
         "${file}"
       ],
-      "cwd": "${workspaceRoot}",
+      "debugPort": "0",
       "name": "RSpec - active spec file only",
       "request": "launch",
       "script": "${workspaceRoot}/exe/rspec",
