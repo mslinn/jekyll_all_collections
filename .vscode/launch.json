@@ -5,36 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "cwd": "${workspaceRoot}",
       "name": "Listen for rdebug-ide",
-      "type": "Ruby",
-      "remoteHost": "127.0.0.1",
-      "remotePort": "1234",
-      "remoteWorkspaceRoot": "${workspaceRoot}",
+      "type": "rdbg",
       "request": "attach",
     },
     {
-      "cwd": "${workspaceRoot}",
       "name": "Debug Demo",
       "request": "attach",
-      "remoteHost": "localhost",
-      "remotePort": "1234",
-      "remoteWorkspaceRoot": "/",
-      "showDebuggerOutput": true,
-      "type": "Ruby",
+      "type": "rdbg",
     },
     {
       "args": [
         "-I",
         "${workspaceRoot}"
       ],
-      "cwd": "${workspaceRoot}",
       "name": "RSpec - all",
-      "program": "${workspaceRoot}/exe/rspec",
       "request": "launch",
-      "showDebuggerOutput": true,
-      "type": "Ruby",
-      "useBundler": true,
+      "script": "${workspaceRoot}/exe/rspec",
+      "type": "rdbg",
     },
     {
       "args": [
@@ -44,11 +32,9 @@
       ],
       "cwd": "${workspaceRoot}",
       "name": "RSpec - active spec file only",
-      "program": "${workspaceRoot}/exe/rspec",
       "request": "launch",
-      "showDebuggerOutput": false,
-      "type": "Ruby",
-      "useBundler": false,
+      "script": "${workspaceRoot}/exe/rspec",
+      "type": "rdbg",
     }
   ]
 }

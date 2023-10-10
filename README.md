@@ -1,6 +1,5 @@
-`jekyll_all_collections`
-[![Gem Version](https://badge.fury.io/rb/jekyll_all_collections.svg)](https://badge.fury.io/rb/jekyll_all_collections)
-===========
+# `jekyll_all_collections` [![Gem Version](https://badge.fury.io/rb/jekyll_all_collections.svg)](https://badge.fury.io/rb/jekyll_all_collections)
+
 
 `Jekyll_all_collections` is a Jekyll plugin that adds a new property called `all_collections` to `site`.
 It also provides a new Jekyll tag called `all_collections`,
@@ -16,6 +15,7 @@ Pages that are not in any collection are not included.
 
 
 ## Installation
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -26,42 +26,53 @@ end
 
 And then execute:
 
-    $ bundle
+```shell
+$ bundle
+```
 
 
 ## Requirements
+
 All the pages in the Jekyll website must have an implicit date (for example, all posts are assigned this property by Jekyll),
 or an explicit `date` set in front matter, like this:
-   ```
-   ---
-   date: 2022-01-01
-   ---
-   ```
-If a front matter variable called `last_modified` or `last_modified_at` exists, its value will be converted to a Ruby `Date`:
-   ```
-   ---
-   last_modified: 2023-01-01
-   ---
-   ```
 
-   Or:
-   ```
-   ---
-   last_modified_at: 2023-01-01
-   ---
-   ```
+```html
+---
+date: 2022-01-01
+---
+```
+
+If a front matter variable called `last_modified` or `last_modified_at` exists, its value will be converted to a Ruby `Date`:
+
+```html
+---
+last_modified: 2023-01-01
+---
+```
+
+Or:
+
+```html
+---
+last_modified_at: 2023-01-01
+---
+```
 
 Otherwise, if `last_modified` or `last_modified_at` is not present in the front matter for a page, the `date` value will be used last modified date value.
+
 
 ## Usage
 
 ### `Site.all_collections`
+
 No explicit initialization or setup is required.
 Jekyll plugins can access the value of `site.all_collections`, however Liquid code in Jekyll pages and documents cannot.
 
 
 ### `All_collections` Tag
+
 Add the following CSS to your stylesheet:
+
 ```css
 .posts {
   display: flex;
@@ -82,16 +93,22 @@ Add the following CSS to your stylesheet:
 }
 ```
 
+
 #### Excluding Pages
+
 Adding the following entry to a page's front matter `` causes that page to be excluded from the collection created by this plugin:
+
 ```
 ---
 exclude_from_all: true
 ---
 ```
 
+
 #### General Form
+
 The general form of the Jekyll tag is:
+
 ```
 {% all_collections
   date_column='date|last_modified'
@@ -101,7 +118,9 @@ The general form of the Jekyll tag is:
 %}
 ```
 
+
 #### `date_column` Attribute
+
 One of two date columns can be displayed in the generated HTML:
 either `date` (when the article was originally written),
 or `last_modified`.
@@ -109,23 +128,29 @@ The default value for the `date_column` attribute is `date`.
 
 
 #### `heading` Attribute
+
 If no `heading` attribute is specified, a heading will automatically be generated, which contains the `sort_by` values, for example:
-```
+
+```html
 {% all_collections id='abcdef' sort_by="last_modified" %}
 ```
+
 Generates a heading like:
-```
+
+```html
 <h2 id="abcdef">All Posts Sorted By last_modified</h2>
 ```
 
 To suppress both a `h2` heading (and the enclosed `id`) from being generated,
 specify an empty string for the value of `heading`:
+
 ```
 {% all_collections heading='' %}
 ```
 
 
 #### `id` Attribute
+
 If your Jekyll layout employs [`jekyll-toc`](https://github.com/allejo/jekyll-toc), then `id` attributes are important.
 The `jekyll-toc` include checks for `id` attributes in `h2` ... `h6` tags, and if found, and if the attribute value is enclosed in double quotes (`id="my_id"`, not `id='my_id'`),
 then the heading is included in the table of contents.
@@ -133,12 +158,14 @@ then the heading is included in the table of contents.
 To suppress an `id` from being generated,
 and thereby preventing the heading from appearing in the automatically generated table of contents from `jekyll-toc`,
 specify an empty string for the value of `id`, like this:
+
 ```
 {% all_collections id='' %}
 ```
 
 
 #### `SORT_KEYS` Values
+
 `SORT_KEYS` specifies how to sort the collection.
 Values can include one or more of the following attributes:
 `date`, `destination`, `draft`, `label`, `last_modified`, `last_modified_at`, `path`, `relative_path`, `title`, `type`, and `url`.
@@ -146,11 +173,11 @@ Ascending sorts are the default, however a descending sort can be achieved by pr
 
 To specify more than one sort key, provide a comma-delimited string of values.
 Included spaces are ignored.
-For example, specify the primary sort key as <code>draft</code>,
-the secondary sort key as <code>last_modified</code>,
-and the tertiary key as <code>label</code>:
+For example, specify the primary sort key as `draft`,
+the secondary sort key as `last_modified`,
+and the tertiary key as `label`:
 
-```
+```html
 {% all_collections
   date_column='last_modified'
   heading='All Posts'
@@ -161,9 +188,11 @@ and the tertiary key as <code>label</code>:
 
 
 #### Usage Examples
+
 Here is a short Jekyll page, including front matter,
 demonstrating this plugin being invoked with all default attribute values:
-```
+
+```html
 ---
 description: "
   Dump of all collections, sorted by date originally written, newest to oldest.
@@ -177,27 +206,32 @@ title: Testing, 1, 2, 3
 
 Explicitly express the default sort
 (sort by the date originally written, newest to oldest):
-```
+
+```html
 {% all_collections sort_by="-date" %}
 ```
 
 Sort by date, from oldest to newest:
-```
+
+```html
 {% all_collections sort_by="date" %}
 ```
 
 Sort by the date last modified, oldest to newest:
+
 ```
 {% all_collections sort_by="last_modified" %}
 ```
 
 Sort by the date last modified, newest to oldest:
+
 ```
 {% all_collections sort_by="-last_modified" %}
 ```
 
 Several attributes can be specified as sort criteria by passing them as a comma-delimited string.
 Included spaces are ignored:
+
 ```
 {% all_collections sort_by="-last_modified, -date" %}
 {% all_collections sort_by="-last_modified, title" %}
@@ -205,6 +239,7 @@ Included spaces are ignored:
 ```
 
 The following two examples produce the same output:
+
 ```
 {% all_collections sort_by="-last_modified,-date" %}
 {% all_collections sort_by="-last_modified, -date" %}
@@ -212,16 +247,21 @@ The following two examples produce the same output:
 
 
 ## Demo
+
 The [`demo`](./demo) directory contains a demonstration website, which uses the plugin.
 To run, type:
+
 ```console
 $ demo/_bin/debug -r
 ```
+
 Now point your web browser to http://localhost:4444
 
 
 ## Debugging
+
 You can control the verbosity of log output by adding the following to `_config.yml` in your Jekyll project:
+
 ```yaml
 plugin_loggers:
   AllCollectionsTag::AllCollectionsTag: warn
@@ -231,7 +271,8 @@ plugin_loggers:
 1. You have two options for initiating a debug session:
 
    1. Run `demo/_bin/debug`, without the `-r` options shown above.
-      ```
+
+      ```console
       ... lots of output as bundle update runs...
       Bundle updated!
 
@@ -248,6 +289,7 @@ plugin_loggers:
 
    2. Run `bin/attach` and pass the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
       The `demo` subdirectory fits this description.
+
       ```console
       $ bin/attach demo
       Successfully uninstalled jekyll_all_collections-0.1.2
@@ -265,6 +307,7 @@ plugin_loggers:
 
 
 ## Additional Information
+
 More information is available on Mike Slinn's website about
 [Jekyll plugins](https://www.mslinn.com/blog/index.html#Jekyll).
 
@@ -277,12 +320,15 @@ You can also run `bin/console` for an interactive prompt that will allow you to 
 
 
 ### Build and Install Locally
+
 To build and install this gem onto your local machine, run:
+
 ```shell
 $ rake install
 ```
 
 The following also does the same thing:
+
 ```shell
 $ bundle exec rake install
 jekyll_all_collections 0.1.0 built to pkg/jekyll_all_collections-0.1.0.gem.
@@ -290,6 +336,7 @@ jekyll_all_collections (0.1.0) installed.
 ```
 
 Examine the newly built gem:
+
 ```shell
 $ gem info jekyll_all_collections
 
@@ -306,15 +353,19 @@ jekyll_all_collections (0.1.0)
 
 
 ### Build and Push to RubyGems
+
 To release a new version,
-  1. Update the version number in `version.rb`.
-  2. Commit all changes to git; if you don't the next step might fail with an unexplainable error message.
-  3. Run the following:
-     ```shell
-     $ bundle exec rake release
-     ```
-     The above creates a git tag for the version, commits the created tag,
-     and pushes the new `.gem` file to [RubyGems.org](https://rubygems.org).
+
+1. Update the version number in `version.rb`.
+2. Commit all changes to git; if you don't the next step might fail with an unexplainable error message.
+3. Run the following:
+
+    ```shell
+    $ bundle exec rake release
+    ```
+
+    The above creates a git tag for the version, commits the created tag,
+    and pushes the new `.gem` file to [RubyGems.org](https://rubygems.org).
 
 
 ## Contributing

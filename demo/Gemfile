@@ -1,9 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'jekyll', "~> 4.3.2"
-# gem 'nokogumbo', '=2.0.3'
-# gem 'sprockets', '~> 3.7'
-# gem 'webrick'
+gem 'jekyll', '~> 4.3.2'
 
 group :jekyll_plugins do
   gem 'classifier-reborn'
@@ -19,7 +16,7 @@ group :jekyll_plugins do
 end
 
 group :test, :development do
-  gem 'debase', '0.2.5.beta2', require: false
+  gem 'debug', '>= 1.0.0', require: false
   gem 'rake', require: false
   gem 'rspec', require: false
   gem 'rubocop', require: false

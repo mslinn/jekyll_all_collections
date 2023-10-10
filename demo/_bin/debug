@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# shellcheck disable=SC2086
-
 # dispatcher-port and dispatcher-port are arbitrarily chosen to prevent conflicts with other instances.
 
 run="serve \
@@ -18,7 +16,7 @@ run="serve \
 GIT_ROOT="$( git rev-parse --show-toplevel )"
 cd "${GIT_ROOT}/demo" || exit
 
-bundle install
+bundle
 bundle update
 
 bundle exec jekyll clean # Ensure all hooks get called
