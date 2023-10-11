@@ -17,7 +17,7 @@
         "--drafts",
         "--unpublished"
       ],
-      "cwd": "./demo",
+      "cwd": "${workspaceRoot}/demo",
       "debugPort": "0",
       "name": "Debug Demo",
       "request": "launch",
