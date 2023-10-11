@@ -96,9 +96,9 @@ Add the following CSS to your stylesheet:
 
 #### Excluding Pages
 
-Adding the following entry to a page's front matter `` causes that page to be excluded from the collection created by this plugin:
+Adding the following entry to a page&rsquo;s front matter causes that page to be excluded from the collection created by this plugin:
 
-```
+```html
 ---
 exclude_from_all: true
 ---
@@ -109,7 +109,7 @@ exclude_from_all: true
 
 The general form of the Jekyll tag is:
 
-```
+```html
 {% all_collections
   date_column='date|last_modified'
   heading='All Posts'
@@ -129,7 +129,8 @@ The default value for the `date_column` attribute is `date`.
 
 #### `heading` Attribute
 
-If no `heading` attribute is specified, a heading will automatically be generated, which contains the `sort_by` values, for example:
+If no `heading` attribute is specified, a heading will automatically be generated, which contains the `sort_by` values,
+for example:
 
 ```html
 {% all_collections id='abcdef' sort_by="last_modified" %}
@@ -144,7 +145,7 @@ Generates a heading like:
 To suppress both a `h2` heading (and the enclosed `id`) from being generated,
 specify an empty string for the value of `heading`:
 
-```
+```html
 {% all_collections heading='' %}
 ```
 
@@ -152,14 +153,15 @@ specify an empty string for the value of `heading`:
 #### `id` Attribute
 
 If your Jekyll layout employs [`jekyll-toc`](https://github.com/allejo/jekyll-toc), then `id` attributes are important.
-The `jekyll-toc` include checks for `id` attributes in `h2` ... `h6` tags, and if found, and if the attribute value is enclosed in double quotes (`id="my_id"`, not `id='my_id'`),
+The `jekyll-toc` include checks for `id` attributes in `h2` ... `h6` tags, and if found,
+and if the attribute value is enclosed in double quotes (`id="my_id"`, not `id='my_id'`),
 then the heading is included in the table of contents.
 
 To suppress an `id` from being generated,
 and thereby preventing the heading from appearing in the automatically generated table of contents from `jekyll-toc`,
 specify an empty string for the value of `id`, like this:
 
-```
+```html
 {% all_collections id='' %}
 ```
 
@@ -219,20 +221,20 @@ Sort by date, from oldest to newest:
 
 Sort by the date last modified, oldest to newest:
 
-```
+```html
 {% all_collections sort_by="last_modified" %}
 ```
 
 Sort by the date last modified, newest to oldest:
 
-```
+```html
 {% all_collections sort_by="-last_modified" %}
 ```
 
 Several attributes can be specified as sort criteria by passing them as a comma-delimited string.
 Included spaces are ignored:
 
-```
+```html
 {% all_collections sort_by="-last_modified, -date" %}
 {% all_collections sort_by="-last_modified, title" %}
 {% all_collections sort_by="-last_modified, -date, title" %}
@@ -240,7 +242,7 @@ Included spaces are ignored:
 
 The following two examples produce the same output:
 
-```
+```html
 {% all_collections sort_by="-last_modified,-date" %}
 {% all_collections sort_by="-last_modified, -date" %}
 ```
@@ -322,12 +324,6 @@ You can also run `bin/console` for an interactive prompt that will allow you to 
 ### Build and Install Locally
 
 To build and install this gem onto your local machine, run:
-
-```shell
-$ rake install
-```
-
-The following also does the same thing:
 
 ```shell
 $ bundle exec rake install
