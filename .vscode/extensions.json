@@ -4,7 +4,6 @@
 
 	// List of extensions which should be recommended for users of this workspace.
 	"recommendations": [
-		"bung87.vscode-gemfile",
 		"DavidAnson.vscode-markdownlint",
 		"devonray.snippet",
 		"groksrc.ruby",
@@ -15,6 +14,7 @@
 		"neilding.language-liquid",
 		"redhat.vscode-yaml",
 	  "shd101wyy.markdown-preview-enhanced",
+		"Shopify.ruby-extensions-pack",
 		"Shopify.ruby-lsp",
 		"sissel.shopify-liquid",
 		"timonwong.shellcheck",

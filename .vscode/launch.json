@@ -6,16 +6,28 @@
   "configurations": [
     {
       "debugPort": "0",
-      "name": "Listen for rdebug-ide",
+      "name": "Attach rdbg",
       "type": "rdbg",
       "request": "attach",
     },
     {
+      "args": [
+        "serve",
+        "--livereload_port", "35721",
+        "--force_polling",
+        "--host", "0.0.0.0",
+        "--port", "4001",
+        "--future",
+        "--incremental",
+        "--livereload",
+        "--drafts",
+        "--unpublished"
+      ],
       "cwd": "${workspaceFolder}/demo",
       "debugPort": "0",
       "name": "Debug Demo",
       "request": "launch",
-      "script": "${workspaceRoot}/exe/jekyll",
+      "script": "$./exe/jekyll",
       "type": "rdbg",
     },
     {
