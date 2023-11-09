@@ -33,7 +33,8 @@ $ bundle
 
 ## Requirements
 
-All the pages in the Jekyll website must have an implicit date (for example, all posts are assigned this property by Jekyll),
+All the pages in the Jekyll website must have an implicit date
+(for example, all posts are assigned this property by Jekyll),
 or an explicit `date` set in front matter, like this:
 
 ```html
@@ -42,7 +43,8 @@ date: 2022-01-01
 ---
 ```
 
-If a front matter variable called `last_modified` or `last_modified_at` exists, its value will be converted to a Ruby `Date`:
+If a front matter variable called `last_modified` or `last_modified_at` exists,
+its value will be converted to a Ruby `Date`:
 
 ```html
 ---
@@ -58,7 +60,8 @@ last_modified_at: 2023-01-01
 ---
 ```
 
-Otherwise, if `last_modified` or `last_modified_at` is not present in the front matter for a page, the `date` value will be used last modified date value.
+Otherwise, if `last_modified` or `last_modified_at` is not present in the front matter for a page,
+the `date` value will be used last modified date value.
 
 
 ## Usage
@@ -96,7 +99,8 @@ Add the following CSS to your stylesheet:
 
 #### Excluding Pages
 
-Adding the following entry to a page&rsquo;s front matter causes that page to be excluded from the collection created by this plugin:
+Adding the following entry to a page&rsquo;s front matter causes that page to be excluded
+from the collection created by this plugin:
 
 ```html
 ---
@@ -170,7 +174,8 @@ specify an empty string for the value of `id`, like this:
 
 `SORT_KEYS` specifies how to sort the collection.
 Values can include one or more of the following attributes:
-`date`, `destination`, `draft`, `label`, `last_modified`, `last_modified_at`, `path`, `relative_path`, `title`, `type`, and `url`.
+`date`, `destination`, `draft`, `label`, `last_modified`, `last_modified_at`, `path`, `relative_path`,
+`title`, `type`, and `url`.
 Ascending sorts are the default, however a descending sort can be achieved by prepending `-` before an attribute.
 
 To specify more than one sort key, provide a comma-delimited string of values.

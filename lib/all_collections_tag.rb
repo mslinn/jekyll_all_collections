@@ -8,8 +8,7 @@ class NullBinding < BasicObject
   def min_binding
     ::Kernel
       .instance_method(:binding)
-      .bind(self)
-      .call
+      .bind_call(self)
   end
 end
 
@@ -36,7 +35,7 @@ module AllCollectionsTag
       end
       @id = @helper.parameter_specified?('id') || SecureRandom.hex(10)
       sort_by_param = @helper.parameter_specified? 'sort_by'
-      sort_by = (sort_by_param&.gsub(' ', '')&.split(',') if sort_by_param != false) || ['-date']
+      sort_by = (sort_by_param&.delete(' ')&.split(',') if sort_by_param != false) || ['-date']
       @heading = @helper.parameter_specified?('heading') || self.class.default_head(sort_by)
       sort_lambda_string = self.class.create_lambda_string(sort_by)
       @logger.debug do
@@ -98,7 +97,11 @@ module AllCollectionsTag
     private
 
     def last_modified_value(post)
-      @logger.debug { "  post.last_modified='#{post.last_modified}'; post.last_modified_at='#{post.last_modified_at}'; @date_column='#{@date_column}'" }
+      @logger.debug do
+        "  post.last_modified='#{post.last_modified}'; " \
+          "post.last_modified_at='#{post.last_modified_at}'; " \
+          "@date_column='#{@date_column}'"
+      end
       last_modified = if @date_column == 'last_modified' && post.respond_to?(:last_modified)
                         post.last_modified
                       elsif post.respond_to? :last_modified_at
