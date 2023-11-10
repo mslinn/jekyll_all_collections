@@ -57,7 +57,7 @@ bundle update
 bundle exec jekyll clean # Ensure all hooks get called
 
 if [ "$RUN_FREE" ]; then
-  bundle exec ../exe/jekyll $run
+  bundle exec ../binstub/jekyll $run
 else
-  bundle exec rdbg -O --port=0 -- ../exe/jekyll $run
+  bundle exec rdbg -O --port=0 -- ../binstub/jekyll $run
 fi
