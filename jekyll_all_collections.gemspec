@@ -4,11 +4,11 @@ Gem::Specification.new do |spec|
   github = 'https://github.com/mslinn/jekyll_all_collections'
 
   spec.authors = ['Mike Slinn']
-  spec.bindir = 'bin'
+  spec.bindir = 'exe'
   spec.description = <<~END_OF_DESC
     Provides a collection of all collections in site.all_collections.
   END_OF_DESC
-  spec.email = ['email@email.com']
+  spec.email = ['mslinn@mslinn.com']
   spec.executables = []
 
   # Specify which files should be added to the gem when it is released.

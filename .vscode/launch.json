@@ -23,12 +23,13 @@
       "request": "launch",
       "script": "${workspaceRoot}/binstub/jekyll",
       "type": "rdbg",
+      "useBundler": true,
     },
     {
       "debugPort": "0",
       "name": "Attach rdbg",
-      "type": "rdbg",
       "request": "attach",
+      "type": "rdbg",
     },
     {
       "args": [
@@ -40,6 +41,7 @@
       "request": "launch",
       "script": "${workspaceRoot}/binstub/rspec",
       "type": "rdbg",
+      "useBundler": true,
     },
     {
       "args": [
@@ -52,6 +54,7 @@
       "request": "launch",
       "script": "${workspaceRoot}/binstub/rspec",
       "type": "rdbg",
+      "useBundler": true,
     }
   ]
 }
