@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.4 / 2023-12-24
+
+* Changed dependency to Jekyll >= 4.3.2
+
+
 ## 0.3.3 / 2023-05-22
 
 * Corrected key presence checks in APage.initialize
