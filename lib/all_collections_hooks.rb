@@ -67,7 +67,7 @@ module AllCollectionsHooks
   end
 
   class APage
-    attr_reader :content, :data, :date, :description, :destination, :draft, :excerpt, :ext,
+    attr_reader :content, :data, :date, :description, :destination, :draft, :excerpt, :ext, :extname,
                 :label, :last_modified, :layout, :path, :relative_path, :tags, :title, :type, :url
 
     # Verify each property exists before accessing it; this helps write tests
