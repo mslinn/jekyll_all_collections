@@ -72,6 +72,23 @@ No explicit initialization or setup is required.
 Jekyll plugins can access the value of `site.all_collections`, however Liquid code in Jekyll pages and documents cannot.
 
 
+### Plugin Usage
+
+Jekyll generators and tags receive an enhanced version of the `site` Jekyll variable.
+A new array of `APage` instance called `all_collections` is added, one for each Jekyll document and page.
+Examine [`APage.rb`](https://github.com/mslinn/jekyll_all_collections/blob/v0.3.4/lib/all_collections_hooks.rb#L68-L102)
+to see the available properties.
+One particularly useful property is `url`, which is difficult to obtain from Jekyll.
+
+All `Jekyll::Page`s and `Jekyll:Document`s can be processed with the following sample code:
+
+```ruby
+(@site.all_collections + @site.pages).each do |page_or_apage|
+  do_something_with page_or_apage
+end
+```
+
+
 ### `All_collections` Tag
 
 Add the following CSS to your stylesheet:
@@ -194,7 +211,7 @@ and the tertiary key as `label`:
 ```
 
 
-#### Usage Examples
+#### Liquid Usage Examples
 
 Here is a short Jekyll page, including front matter,
 demonstrating this plugin being invoked with all default attribute values:

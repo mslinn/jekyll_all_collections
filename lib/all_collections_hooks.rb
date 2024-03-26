@@ -1,5 +1,6 @@
 require 'jekyll'
 require 'jekyll_plugin_logger'
+require 'uri'
 require_relative 'jekyll_all_collections/version'
 
 # Creates an array of `APage` called site.all_collections, which will be available from :site, :pre_render onwards
@@ -12,7 +13,7 @@ module AllCollectionsHooks
   #   @logger.debug { "Jekyll::Hooks.register(:site, :after_init: #{defined}" }
   # end
 
-  # Creates a `Array[String]` property called site.all_collections if it does not already exist
+  # Creates a `Array[APage]` property called site.all_collections if it does not already exist
   # Each `APage` entry is one document or page.
   Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
     defined = AllCollectionsHooks.all_collections_defined?(site)
@@ -83,7 +84,9 @@ module AllCollectionsHooks
 
       @draft = Jekyll::Draft.draft?(obj)
       @excerpt = @data['excerpt'] if @data.key? 'excerpt'
-      @ext = @data['ext'] if @data.key? 'ext'
+      @ext = obj.extname
+      @ext ||= @data['ext'] if @data.key? 'ext'
+      @extname = @ext # For compatibility with previous versions of all_collections
       @label = obj.collection.label if obj&.collection.respond_to? :label
       @last_modified = @data['last_modified'] || @data['last_modified_at'] || @date
       @last_modified_field = case @data
@@ -98,7 +101,7 @@ module AllCollectionsHooks
       @tags = @data['tags'] if @data.key? 'tags'
       @title = @data['title'] if @data.key? 'title'
       @type = obj.type if obj.respond_to? :type
-      @url = obj.url
+      @url = URI obj.url
     end
 
     def to_s
