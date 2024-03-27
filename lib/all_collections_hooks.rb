@@ -1,6 +1,5 @@
 require 'jekyll'
 require 'jekyll_plugin_logger'
-require 'uri'
 require_relative 'jekyll_all_collections/version'
 
 # Creates an array of `APage` called site.all_collections, which will be available from :site, :pre_render onwards
@@ -101,7 +100,7 @@ module AllCollectionsHooks
       @tags = @data['tags'] if @data.key? 'tags'
       @title = @data['title'] if @data.key? 'title'
       @type = obj.type if obj.respond_to? :type
-      @url = URI obj.url
+      @url = obj.url
     end
 
     def to_s

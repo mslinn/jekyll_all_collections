@@ -6,7 +6,6 @@
 * Added `APage.extname` for compatibility with Jekyll
   [`Document`](https://github.com/jekyll/jekyll/blob/master/lib/jekyll/document.rb);
   previously, the filetype of the uri was provided only as `APage.ext`.
-* `APage.url` is now a [`URI`](https://ruby-doc.org/core-3.1.2/URI.html), no longer a `String`.
 
 
 ## 0.3.4 / 2023-12-24
