@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 0.4.0 / 2024-03-26
+## 0.3.5 / 2024-03-26
 
 * Added `APage.extname` for compatibility with Jekyll
   [`Document`](https://github.com/jekyll/jekyll/blob/master/lib/jekyll/document.rb);
