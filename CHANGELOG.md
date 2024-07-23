@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.6 / 2024-07-23
+
+* Made compatible with module renaming in JekyllPluginSupport v0.8.8
+
 
 ## 0.3.5 / 2024-03-26
 
