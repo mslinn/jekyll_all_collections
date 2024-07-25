@@ -134,6 +134,6 @@ module AllCollectionsTag
       warn_short_trace e
     end
 
-    ::JekyllSupport::JekyllPluginHelper.register(self, PLUGIN_NAME)
+    JekyllSupport::JekyllPluginHelper.register(self, PLUGIN_NAME)
   end
 end
