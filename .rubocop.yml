@@ -30,18 +30,18 @@ Layout/LineLength:
   Max: 150
 
 Metrics/AbcSize:
-  Max: 45
+  Max: 55
 
 Metrics/BlockLength:
   Exclude:
-    - jekyll_all_collections.gemspec
+    - jekyll_plugin_support.gemspec
   Max: 30
 
 Metrics/CyclomaticComplexity:
   Max: 25
 
 Metrics/MethodLength:
-  Max: 30
+  Max: 50
 
 Metrics/PerceivedComplexity:
   Max: 25
@@ -49,14 +49,17 @@ Metrics/PerceivedComplexity:
 Naming/FileName:
   Exclude:
     - Rakefile
+    - "*.md"
 
 RSpec/ExampleLength:
   Max: 30
 
-RSpec/FilePath:
+RSpec/SpecFilePathFormat:
   Enabled: false
   IgnoreMethods: true
-  SpecSuffixOnly: true
+
+RSpec/SpecFilePathSuffix:
+  Enabled: false
 
 RSpec/IndexedLet:
   Enabled: false
@@ -64,10 +67,16 @@ RSpec/IndexedLet:
 RSpec/MultipleExpectations:
   Max: 15
 
+Style/ClassVars:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/StringConcatenation:
   Enabled: false
 
 Style/TrailingCommaInHashLiteral:
