@@ -14,7 +14,7 @@ module AllCollectionsDemoModule
     # @param tokens [Liquid::ParseContext] tokenized command line
     # @return [void]
     def initialize(tag_name, command_line, tokens)
-      super(tag_name, command_line, tokens)
+      super
       @command_line = command_line.strip
       @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
     end
