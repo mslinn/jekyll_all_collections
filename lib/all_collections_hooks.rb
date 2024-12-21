@@ -70,7 +70,7 @@ module AllCollectionsHooks
                 :label, :last_modified, :layout, :path, :relative_path, :tags, :title, :type, :url
 
     # Verify each property exists before accessing it; this helps write tests
-    def initialize(obj) # rubocop:disable Metrics/AbcSize
+    def initialize(obj)
       @data = obj.data if obj.respond_to? :data
 
       @categories = @data['categories'] if @data.key? 'categories'

@@ -18,10 +18,17 @@ body {
   margin: 0;
 }
 
-
-code, pre, tt, .codeLabel {
-  font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+code, pre, tt,
+.code, .codeLabel,
+.show_index_tabs_error,
+.standard_error {
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-stretch: semi-condensed;
+}
+
+code, .code,
+.standard_error {
+  font-size: smaller;
 }
 
 h1, .h1 {
@@ -125,6 +132,12 @@ pre {
   position: absolute;
   top: 7px;
   left: 0;
+}
+
+.error,
+.show_index_tabs_error,
+.standard_error {
+  color: red;
 }
 
 .inner {

@@ -77,7 +77,9 @@ module AllCollectionsTag
     end
 
     def self.evaluate(string)
-      eval string, NullBinding.new.min_binding, __FILE__, __LINE__ # rubocop:disable Security/Eval
+      self.eval string, binding, __FILE__, __LINE__
+    rescue StandardError => e
+      warn_short_trace e.red
     end
 
     def self.verify_sort_by_type(sort_by)
