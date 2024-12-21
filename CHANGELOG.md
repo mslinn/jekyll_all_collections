@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.7 / 2024-12-21
+
+* `AllCollectionsTag.class.evaluate` made compatible with Ruby 3.2.2
+
+
 ## 0.3.6 / 2024-07-23
 
 * Made compatible with module renaming in JekyllPluginSupport v1.0.0
