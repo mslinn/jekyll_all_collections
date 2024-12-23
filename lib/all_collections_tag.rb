@@ -3,15 +3,6 @@ require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
 require 'securerandom'
 
-# See https://stackoverflow.com/a/75389679/553865
-class NullBinding < BasicObject
-  def min_binding
-    ::Kernel
-      .instance_method(:binding)
-      .bind_call(self)
-  end
-end
-
 # @author Copyright 2020 Michael Slinn
 # @license SPDX-License-Identifier: Apache-2.0
 module AllCollectionsTag
@@ -44,6 +35,9 @@ module AllCollectionsTag
       end
       sort_lambda = self.class.evaluate sort_lambda_string
       generate_output sort_lambda
+    rescue StandardError => e
+      JekyllSupport.error_short_trace(@logger, e)
+      # JekyllSupport.warn_short_trace(@logger, e)
     end
 
     def self.default_head(sort_by)

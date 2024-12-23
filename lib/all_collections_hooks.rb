@@ -1,5 +1,6 @@
 require 'jekyll'
 require 'jekyll_plugin_logger'
+require 'jekyll_plugin_support'
 require_relative 'jekyll_all_collections/version'
 
 # Creates an array of `APage` called site.all_collections, which will be available from :site, :pre_render onwards
@@ -18,24 +19,36 @@ module AllCollectionsHooks
     defined = AllCollectionsHooks.all_collections_defined?(site)
     @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
     AllCollectionsHooks.compute(site) unless site.class.method_defined? :all_collections
+  rescue StandardError => e
+    JekyllSupport.error_short_trace(@logger, e)
+    # JekyllSupport.warn_short_trace(@logger, e)
   end
 
   # Yes, all_collections is defined for this hook
   # Jekyll::Hooks.register(:site, :post_read, priority: :low) do |site|
   #   defined = AllCollectionsHooks.all_collections_defined?(site)
   #   @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :low: #{defined}" }
+  # rescue StandardError => e
+  #   JekyllSupport.error_short_trace(@logger, e)
+  #   # JekyllSupport.warn_short_trace(@logger, e)
   # end
 
   # Yes, all_collections is defined for this hook
   # Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
   #   defined = AllCollectionsHooks.all_collections_defined?(site)
   #   @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
+  # rescue StandardError => e
+  #   JekyllSupport.error_short_trace(@logger, e)
+  #   # JekyllSupport.warn_short_trace(@logger, e)
   # end
 
   # Yes, all_collections is defined for this hook
   # Jekyll::Hooks.register(:site, :pre_render, priority: :normal) do |site, _payload|
   #   defined = AllCollectionsHooks.all_collections_defined?(site)
   #   @logger.debug { "Jekyll::Hooks.register(:site, :pre_render: #{defined}" }
+  # rescue StandardError => e
+  #   JekyllSupport.error_short_trace(@logger, e)
+  #   # JekyllSupport.warn_short_trace(@logger, e)
   # end
 
   def self.compute(site)
@@ -47,6 +60,9 @@ module AllCollectionsHooks
     site.class.module_eval { attr_accessor :all_collections }
     apages = AllCollectionsHooks.apages_from_objects(objects)
     site.all_collections = apages
+  rescue StandardError => e
+    JekyllSupport.error_short_trace(@logger, e)
+    # JekyllSupport.warn_short_trace(@logger, e)
   end
 
   @sort_by = ->(apages, criteria) { [apages.sort(criteria)] }
@@ -101,6 +117,9 @@ module AllCollectionsHooks
       @title = @data['title'] if @data.key? 'title'
       @type = obj.type if obj.respond_to? :type
       @url = obj.url
+    rescue StandardError => e
+      JekyllSupport.error_short_trace(@logger, e)
+      # JekyllSupport.warn_short_trace(@logger, e)
     end
 
     def to_s
