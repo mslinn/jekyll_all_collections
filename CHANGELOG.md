@@ -1,13 +1,18 @@
 # Changelog
 
+## 0.3.8 / 2024-12-30
+
+* Added `AllCollectionsHooks.all_collections` property, accessible from every other module.
+
+
 ## 0.3.7 / 2024-12-21
 
-* `AllCollectionsTag.class.evaluate` made compatible with Ruby 3.2.2
+* `AllCollectionsTag.class.evaluate` made compatible with Ruby 3.2.2.
 
 
 ## 0.3.6 / 2024-07-23
 
-* Made compatible with module renaming in JekyllPluginSupport v1.0.0
+* Made compatible with module renaming in JekyllPluginSupport v1.0.0.
 
 
 ## 0.3.5 / 2024-03-26
@@ -19,7 +24,7 @@
 
 ## 0.3.4 / 2023-12-24
 
-* Changed dependency to Jekyll >= 4.3.2
+* Changed dependency to Jekyll >= 4.3.2.
 
 
 ## 0.3.3 / 2023-05-22
@@ -30,25 +35,25 @@
 
 ## 0.3.2 / 2023-04-05
 
-* Modified dependency `'jekyll_plugin_support', '>= 0.5.0'`
+* Modified dependency `'jekyll_plugin_support', '>= 0.5.0'`.
 
 
 ## 0.3.1 / 2023-03-16
 
-* Reduced the verbosity of the `@logger` message
+* Reduced the verbosity of the `@logger` message.
 
 ## 0.3.0 / 2023-02-16
 
-* Updated dependency `'jekyll_plugin_support', '~> 0.5.0'`
+* Updated dependency `'jekyll_plugin_support', '~> 0.5.0'`.
 
 ## 0.2.2 / 2023-02-12
 
-* Updated dependency `'jekyll_plugin_support', '~> 0.4.0'`
+* Updated dependency `'jekyll_plugin_support', '~> 0.4.0'`.
 
 
 ## 0.2.1 / 2023-02-12
 
-* Reduced the verbosity of log output from `info` to `debug`
+* Reduced the verbosity of log output from `info` to `debug`.
 
 
 ## 0.2.0 / 2023-02-04
@@ -65,4 +70,4 @@
 
 ## 0.1.0 / 2022-04-26
 
-* Initial version published
+* Initial version published.

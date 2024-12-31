@@ -5,6 +5,10 @@ require_relative 'jekyll_all_collections/version'
 
 # Creates an array of `APage` called site.all_collections, which will be available from :site, :pre_render onwards
 module AllCollectionsHooks
+  class << self
+    attr_accessor :all_collections
+  end
+
   @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
   # No, all_collections is not defined for this hook
@@ -58,8 +62,8 @@ module AllCollectionsHooks
                   .flatten
 
     site.class.module_eval { attr_accessor :all_collections }
-    apages = AllCollectionsHooks.apages_from_objects(objects)
-    site.all_collections = apages
+    @all_collections = AllCollectionsHooks.apages_from_objects(objects)
+    site.all_collections = @all_collections
   rescue StandardError => e
     JekyllSupport.error_short_trace(@logger, e)
     # JekyllSupport.warn_short_trace(@logger, e)

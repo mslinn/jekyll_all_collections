@@ -12,6 +12,15 @@ The collection consists of an array of objects with the following properties:
 `layout`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
 
 Pages that are not in any collection are not included.
+If you want to look at them, examine [`site.pages`](https://jekyllrb.com/docs/pages/).
+ITo make an array that combines them both:
+
+```ruby
+site.all_collections + site.pages
+```
+
+All other files can be found in [`site.static_files`](https://jekyllrb.com/docs/static-files/).
+
 
 
 ## Installation
