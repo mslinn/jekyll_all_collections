@@ -2,7 +2,8 @@
 
 ## 0.3.8 / 2024-12-30
 
-* Added `AllCollectionsHooks.all_collections` property, accessible from every other module.
+* Added `AllCollectionsHooks.all_collections` and `AllCollectionsHooks.site` properties,
+  accessible from every other module.
 
 
 ## 0.3.7 / 2024-12-21

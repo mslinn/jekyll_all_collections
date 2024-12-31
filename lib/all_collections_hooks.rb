@@ -6,7 +6,7 @@ require_relative 'jekyll_all_collections/version'
 # Creates an array of `APage` called site.all_collections, which will be available from :site, :pre_render onwards
 module AllCollectionsHooks
   class << self
-    attr_accessor :all_collections
+    attr_accessor :all_collections, :site
   end
 
   @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
@@ -20,6 +20,7 @@ module AllCollectionsHooks
   # Creates a `Array[APage]` property called site.all_collections if it does not already exist
   # Each `APage` entry is one document or page.
   Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
+    @site = site
     defined = AllCollectionsHooks.all_collections_defined?(site)
     @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
     AllCollectionsHooks.compute(site) unless site.class.method_defined? :all_collections
