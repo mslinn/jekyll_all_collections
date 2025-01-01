@@ -16,6 +16,9 @@ module AllCollectionsTag
     # Method prescribed by JekyllTag.
     # @return [String]
     def render_impl
+      @data_selector = @helper.parameter_specified?('data_selector') || 'all_collections'
+      abort "Invalid data_selector #{@data_selector}" unless %w[all_collections everything].include? @data_selector
+
       AllCollectionsHooks.compute(@site) unless @site.class.method_defined? :all_collections
 
       @date_column = @helper.parameter_specified?('date_column') || 'date'
@@ -92,36 +95,37 @@ module AllCollectionsTag
 
     private
 
-    def last_modified_value(post)
+    def last_modified_value(x)
       @logger.debug do
-        "  post.last_modified='#{post.last_modified}'; " \
-          "post.last_modified_at='#{post.last_modified_at}'; " \
+        "  x.last_modified='#{x.last_modified}'; " \
+          "x.last_modified_at='#{x.last_modified_at}'; " \
           "@date_column='#{@date_column}'"
       end
-      last_modified = if @date_column == 'last_modified' && post.respond_to?(:last_modified)
-                        post.last_modified
-                      elsif post.respond_to? :last_modified_at
-                        post.last_modified_at
+      last_modified = if @date_column == 'last_modified' && x.respond_to?(:last_modified)
+                        x.last_modified
+                      elsif x.respond_to? :last_modified_at
+                        x.last_modified_at
                       else
-                        post.date
+                        x.date
                       end
-      last_modified ||= post.date || Date.today
+      last_modified ||= x.date || Date.today
       last_modified
     end
 
     def generate_output(sort_lambda)
       id = @id.to_s.strip.empty? ? '' : " id='#{@id}'"
       heading = @heading.strip.to_s.empty? ? '' : "<h2#{id}>#{@heading}</h2>"
-      collection = @site.all_collections.sort(&sort_lambda)
+      data = @data_selector == 'all_collections' ? @site.all_collections : @site.everything
+      collection = data.sort(&sort_lambda)
       <<~END_TEXT
         #{heading}
         <div class="posts">
-          #{(collection.map do |post|
-               last_modified = last_modified_value post
+          #{(collection.map do |x|
+               last_modified = last_modified_value x
                date = last_modified.strftime '%Y-%m-%d'
-               draft = post.draft ? DRAFT_HTML : ''
-               href = "<a href='#{post.url}'>#{post.title}</a>"
-               @logger.debug { "  date='#{date}' #{post.title}\n" }
+               draft = x.draft ? DRAFT_HTML : ''
+               href = "<a href='#{x.url}'>#{x.title}</a>"
+               @logger.debug { "  date='#{date}' #{x.title}\n" }
                "  <span>#{date}</span><span>#{href}#{draft}</span>"
              end).join "\n"}
         </div>
