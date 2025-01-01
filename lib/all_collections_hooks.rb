@@ -64,7 +64,7 @@ module AllCollectionsHooks
   # end
 
   def self.compute(site)
-    site.class.module_eval { attr_accessor :all_collections, :everything }
+    site.class.module_eval { attr_accessor :all_collections, :all_documents, :everything }
 
     objects = site.collections
                   .values
@@ -73,9 +73,9 @@ module AllCollectionsHooks
     @all_collections = AllCollectionsHooks.apages_from_objects(objects, 'collection')
     site.all_collections = @all_collections
 
-    @everything = site.all_collections +
-                  AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page') +
-                  AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
+    @all_documents = site.all_collections +
+                     AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
+    @everything = @all_documents + AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
     site.everything = @everything
   rescue StandardError => e
     JekyllSupport.error_short_trace(@logger, e)

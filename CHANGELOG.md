@@ -2,8 +2,14 @@
 
 ## 0.3.8 / 2024-12-30
 
-* Added `AllCollectionsHooks.all_collections` and `AllCollectionsHooks.site` properties,
+* Added `AllCollectionsHooks.all_documents`, `AllCollectionsHooks.everything`,
+  and `AllCollectionsHooks.site` properties,
   accessible from every other module.
+* Added `site.all_documents` and `site.everything` properties.
+
+`all_documents` contains all pages in collections plus standalone pages.
+
+`everything` includes all other files.
 
 
 ## 0.3.7 / 2024-12-21

@@ -1,26 +1,20 @@
 # `jekyll_all_collections` [![Gem Version](https://badge.fury.io/rb/jekyll_all_collections.svg)](https://badge.fury.io/rb/jekyll_all_collections)
 
 
-`Jekyll_all_collections` is a Jekyll plugin that adds new properties called `all_collections` and `everything` to `site`.
+`Jekyll_all_collections` is a Jekyll plugin that adds new properties called `all_collections`,
+`all_documents` and `everything` to `site`.
 
 It also provides a new Jekyll tag called `all_collections`,
 which creates a formatted listing of all posts and documents from all collections,
 sorted by age, newest to oldest.
+The Jekyll tag can do the same for `everything`.
 
 The `all_collections` collection consists of an array of objects with the following properties:
 `content` (HTML or Markdown), `data` (array), `date` (Ruby Date), `description`, `destination`,
 `draft` (Boolean), `excerpt` (HTML or Markdown), `ext`, `label`, `last_modified` or `last_modified_at` (Ruby Date),
 `layout`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
 
-Pages that are not in any collection are not included.
-If you want to look at them, examine [`site.pages`](https://jekyllrb.com/docs/pages/).
-To make an array that combines them both:
-
-```ruby
-site.all_collections + site.pages
-```
-
-All other files can be found in [`site.static_files`](https://jekyllrb.com/docs/static-files/).
+See [`site.pages`](https://jekyllrb.com/docs/pages/) and [`site.posts`](https://jekyllrb.com/docs/posts/) and [`site.static_files`](https://jekyllrb.com/docs/static-files/).
 
 You *could* combine all three collections like this:
 
@@ -42,11 +36,6 @@ with a few attributes added to each item:
 
 * `href` always starts with a slash.
   This value is consistent with `a href` values in website HTML.
-  This value is constructed by concatenating the `dir` and `name` attributes:
-
-  ```ruby
-  "#{dir}/#{name}"
-  ```
 
 * `origin` indicates the original source of the item.
   Possible values are `collection`, `individual_page` and `static_file`.
