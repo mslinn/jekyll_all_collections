@@ -13,7 +13,7 @@ end
 # Creates an array of `APage` called site.all_collections, which will be available from :site, :pre_render onwards
 module AllCollectionsHooks
   class << self
-    attr_accessor :all_collections, :site
+    attr_accessor :all_collections, :everything, :site
   end
 
   @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
