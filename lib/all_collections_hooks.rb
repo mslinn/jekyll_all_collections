@@ -13,7 +13,7 @@ end
 # Creates an array of `APage` called site.all_collections, which will be available from :site, :pre_render onwards
 module AllCollectionsHooks
   class << self
-    attr_accessor :all_collections, :everything, :site
+    attr_accessor :all_collections, :all_documents, :everything, :site
   end
 
   @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
@@ -71,12 +71,14 @@ module AllCollectionsHooks
                   .map { |x| x.class.method_defined?(:docs) ? x.docs : x }
                   .flatten
     @all_collections = AllCollectionsHooks.apages_from_objects(objects, 'collection')
-    site.all_collections = @all_collections
+    @all_documents   = @all_collections +
+                       AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
+    @everything      = @all_documents +
+                       AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
 
-    @all_documents = site.all_collections +
-                     AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
-    @everything = @all_documents + AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
-    site.everything = @everything
+    site.all_collections = @all_collections
+    site.all_documents   = @all_documents
+    site.everything      = @everything
   rescue StandardError => e
     JekyllSupport.error_short_trace(@logger, e)
     # JekyllSupport.warn_short_trace(@logger, e)

@@ -19,7 +19,7 @@ module AllCollectionsTag
       @data_selector = @helper.parameter_specified?('data_selector') || 'all_collections'
       abort "Invalid data_selector #{@data_selector}" unless %w[all_collections everything].include? @data_selector
 
-      AllCollectionsHooks.compute(@site) unless @site.class.method_defined? :all_collections
+      AllCollectionsHooks.compute(@site) if !@site.class.method_defined?(:all_documents) || @site.all_documents.nil?
 
       @date_column = @helper.parameter_specified?('date_column') || 'date'
       unless %w[date last_modified].include?(@date_column)
