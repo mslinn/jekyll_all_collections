@@ -1,5 +1,5 @@
 # Insert the reversed url of a Jekyll::Page into each LruPage instance
-struct LruPage(reversed_url, page)
+LruPage = Struct.new(:reversed_url, :page)
 
 class SortedFiles
   @sorted_lru_pages = []
