@@ -49,8 +49,8 @@ module AllCollectionsTag
       "->(a, b) { [#{criteria_lhs_array.join(', ')}] <=> [#{criteria_rhs_array.join(', ')}] }"
     end
 
-    def default_head
-      criteria = (@sort_by.map do |x|
+    def default_head(sort_by)
+      criteria = (sort_by.map do |x|
         reverse = x.start_with? '-'
         criterion = x.delete_prefix('-').capitalize
         criterion += reverse ? ' (Newest to Oldest)' : ' (Oldest to Newest)'
@@ -114,6 +114,17 @@ module AllCollectionsTag
       warn_short_trace e
     end
 
+    def init_sort_by
+      sort_lambda_string = create_lambda_string @sort_by
+
+      @logger.debug do
+        "#{@page['path']} sort_by_param=#{@sort_by_param}  " \
+          "sort_lambda_string = #{sort_lambda_string}\n"
+      end
+
+      evaluate sort_lambda_string
+    end
+
     def parse_arguments
       @data_selector = @helper.parameter_specified?('data_selector') || 'all_collections'
       abort "Invalid data_selector #{@data_selector}" unless %w[all_collections all_documents everything].include? @data_selector
@@ -129,29 +140,18 @@ module AllCollectionsTag
       @sort_by = (@sort_by_param&.delete(' ')&.split(',') if @sort_by_param != false) || ['-date']
     end
 
-    def init_sort_by
-      sort_lambda_string = create_lambda_string @sort_by
-
-      @logger.debug do
-        "#{@page['path']} sort_by_param=#{@sort_by_param}  " \
-          "sort_lambda_string = #{sort_lambda_string}\n"
-      end
-
-      evaluate sort_lambda_string
-    end
-
-    def verify_sort_by_type
-      case @sort_by
+    def verify_sort_by_type(sort_by)
+      case sort_by
       when Array
-        @sort_by
+        sort_by
       when Enumerable
-        @sort_by.to_a
+        sort_by.to_a
       when Date
-        [@sort_by.to_i]
+        [sort_by.to_i]
       when String
-        [@sort_by]
+        [sort_by]
       else
-        abort "Error: @sort_by was specified as '#{@sort_by}'; it must either be a string or an array of strings"
+        abort "Error: @sort_by was specified as '#{sort_by}'; it must either be a string or an array of strings"
       end
     end
 
