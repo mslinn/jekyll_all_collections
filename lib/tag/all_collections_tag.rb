@@ -114,6 +114,7 @@ module AllCollectionsTag
       warn_short_trace e
     end
 
+    # See https://stackoverflow.com/a/75377832/553865
     def init_sort_by
       sort_lambda_string = create_lambda_string @sort_by
 

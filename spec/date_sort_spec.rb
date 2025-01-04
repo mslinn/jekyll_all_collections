@@ -1,6 +1,6 @@
 require 'spec_helper'
+require_relative '../lib/jekyll_all_collections'
 
-# See https://stackoverflow.com/a/75377832/553865
 class Obj
   # `last_modified` is primary sort key
   # `date` (when specified) is secondary sort key
@@ -12,7 +12,7 @@ class Obj
   end
 end
 
-RSpec.describe(Obj) do # rubocop:disable Metrics/BlockLength
+RSpec.describe(Obj) do
   let(:o1) { Obj.new('2000-01-01', '2001-01-01') }
   let(:o2) { Obj.new('2010-01-01', '2001-01-01') }
   let(:o3) { Obj.new('2010-01-01', '2011-01-01') }

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../../lib/jekyll_all_collections'
 
 class APageStub
   attr_reader :date, :last_modified, :label

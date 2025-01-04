@@ -1,8 +1,6 @@
 require 'jekyll'
 require 'date'
 
-require_relative '../lib/jekyll_all_collections'
-
 Jekyll.logger.log_level = :info
 
 RSpec.configure do |config|
