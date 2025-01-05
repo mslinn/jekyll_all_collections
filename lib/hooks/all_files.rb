@@ -2,12 +2,16 @@
 LruPage = Struct.new(:reversed_url, :page)
 
 class SortedFiles
-  @sorted_lru_pages = []
+  attr_reader :sorted_lru_pages
+
+  def initialize
+    @sorted_lru_pages = []
+  end
 
   # Example usage:
   # prefix_binary_search('bb').map(&:url).map(&:reverse)
   # Yields: ["bbb", "bbbba", "bbc", "bbd", "bbdefg"]
-  # todo: Cache thi method
+  # todo Cache this method
   def prefix_binary_search(prefix)
     low = 0
     high = @sorted_lru_pages.length - 1
