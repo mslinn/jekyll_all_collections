@@ -1,9 +1,5 @@
 module AllCollectionsHooks
-  class << self
-    attr_accessor :all_collections, :all_documents, :everything, :site
-  end
-
-  @sort_by = ->(apages, criteria) { [apages.sort(criteria)] }
+  # @sort_by = ->(apages, criteria) { [apages.sort(criteria)] }
 
   def self.all_collections_defined?(site)
     "site.all_collections #{site.class.method_defined?(:all_collections) ? 'IS' : 'IS NOT'} defined"
@@ -36,7 +32,7 @@ module AllCollectionsHooks
     site.all_documents   = @all_documents
     site.everything      = @everything
   rescue StandardError => e
-    JekyllSupport.error_short_trace(@logger, e)
-    # JekyllSupport.warn_short_trace(@logger, e)
+    JekyllSupport.error_short_trace(AllCollectionsHooks.logger, e)
+    # JekyllSupport.warn_short_trace(AllCollectionsHooks.logger, e)
   end
 end

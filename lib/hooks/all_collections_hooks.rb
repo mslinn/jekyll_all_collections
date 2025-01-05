@@ -1,4 +1,7 @@
 module AllCollectionsHooks
+  class << self
+    attr_accessor :logger
+  end
   @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
   # No, all_collections is not defined for this hook

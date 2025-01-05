@@ -16,8 +16,8 @@ module AllCollectionsTag
     # Method prescribed by JekyllTag.
     # @return [String]
     def render_impl
-      parse_arguments
-      sort_lambda = init_sort_by
+      parse_arguments # Defines instance variables like @sort_by
+      sort_lambda = init_sort_by @sort_by, @sort_by_param
       @heading = @helper.parameter_specified?('heading') || default_head(@sort_by)
 
       AllCollectionsHooks.compute(@site) if !@site.class.method_defined?(:all_documents) || @site.all_documents.nil?
@@ -115,11 +115,11 @@ module AllCollectionsTag
     end
 
     # See https://stackoverflow.com/a/75377832/553865
-    def init_sort_by
-      sort_lambda_string = create_lambda_string @sort_by
+    def init_sort_by(sort_by, sort_by_param)
+      sort_lambda_string = create_lambda_string sort_by
 
       @logger.debug do
-        "#{@page['path']} sort_by_param=#{@sort_by_param}  " \
+        "#{@page['path']} sort_by_param=#{sort_by_param}  " \
           "sort_lambda_string = #{sort_lambda_string}\n"
       end
 
