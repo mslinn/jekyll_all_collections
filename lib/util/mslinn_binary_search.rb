@@ -5,11 +5,10 @@ class MSlinnBinarySearch
     @sorted_lru_files = []
   end
 
-  # Example usage:
-  # prefix_binary_search('bb').map(&:url).map(&:reverse)
-  # Yields: ["bbb", "bbbba", "bbc", "bbd", "bbdefg"]
+  # Matches from the end of an array of strings
   # todo Cache this method
   def prefix_binary_search(prefix)
+    prefix = prefix.reverse
     low = 0
     high = @sorted_lru_files.length - 1
     result = []

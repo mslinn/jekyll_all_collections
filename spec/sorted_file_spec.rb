@@ -13,12 +13,14 @@ RSpec.describe(SortedFiles) do
 
     result = sorted_files.select expected
     expect(result).not_to be_empty
-    expect(result.first.reversed_url.reverse).to eq(expected)
+    result2 = result.first&.reversed_url&.reverse
+    expect(result2&.end_with?(expected)).to be true
 
-    result = sorted_files.select 'test'
-    expect(result.first.reversed_url.reverse).to eq(expected)
+    result = sorted_files.select 'ability.html'
+    result2 = result.first&.reversed_url&.reverse
+    expect(result2&.end_with?('ability.html')).to be true
 
     result = sorted_files.select 'should_not_match'
-    expect(result.first.reversed_url.reverse).to be_nil
+    expect(result).to be_empty
   end
 end

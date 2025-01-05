@@ -1,11 +1,10 @@
 require_relative '../util/mslinn_binary_search'
 
-# Insert the reversed url of a Jekyll::Page into each LruFile instance, along with the Page reference
+# Insert the reversed url of a Jekyll::Page into each LruFile instance,
+# along with the Page reference
 LruFile = Struct.new(:reversed_url, :page)
 
 class SortedFiles
-  # attr_reader :sorted_lru_files
-
   def initialize
     @sorted_lru_files = MSlinnBinarySearch.new
   end
