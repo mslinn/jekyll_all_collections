@@ -1,42 +1,44 @@
 class MSlinnBinarySearch
-  attr_reader :sorted_lru_files
+  attr_reader :array
 
   def initialize(accessor_method)
-    @sorted_lru_files = []
+    @array = []
     @accessor_method = accessor_method
   end
 
   # Matches from the end of an array of strings
   # todo Cache this method
-  def prefix_binary_search(prefix)
-    prefix = prefix.reverse
+  def suffix_binary_search(suffix)
     low = 0
-    high = @sorted_lru_files.length - 1
+    high = @array.length - 1
     result = []
 
-    # Binary search to find the first position where the prefix might match
+    # Binary search to find the first position where the suffix might match
     while low < high
       mid = low + ((high - low) / 2)
-      # Compare the prefix to the substring of the @sorted_lru_files element
-      element = @sorted_lru_files[mid]
-      if element.send(@accessor_method) < prefix
-        low = mid + 1
-      elsif element.send(@accessor_method) > prefix
+      # Compare the suffix to the substring of the @array element
+      element = @array[mid]
+      if element.send(@accessor_method) > suffix
         high = mid - 1
+      elsif element.send(@accessor_method) <= suffix
+        low = mid + 1
       end
     end
 
     # Collect all matching elements from 'low' onward
-    while low < @sorted_lru_files.length && @sorted_lru_files[low].send(@accessor_method).start_with?(prefix)
-      result << @sorted_lru_files[low]
+    while low < @array.length &&
+          @array[low].send(@accessor_method).end_with?(suffix)
+      result << @array[low]
       low += 1
     end
 
     result
   end
 
-  def binary_insert(item)
-    insert_at = @sorted_lru_files.bsearch_index { |x| x.send(@accessor_method) >= item.send(@accessor_method) } || 0
-    @sorted_lru_files.insert(insert_at, item)
+  def binary_insert(new_item)
+    new_value = new_item.send(@accessor_method)
+    insert_at = @array.bsearch_index { |x| x.send(@accessor_method) >= new_value }
+    insert_at ||= @array.length
+    @array.insert(insert_at, new_item)
   end
 end
