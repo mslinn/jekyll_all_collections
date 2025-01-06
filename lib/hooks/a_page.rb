@@ -45,7 +45,7 @@ module AllCollectionsHooks
                elsif obj.respond_to?(:title)
                  obj.title
                else
-                 "<code>#{@name}</code>"
+                 ''
                end
     end
 

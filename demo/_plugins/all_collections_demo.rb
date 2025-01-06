@@ -23,9 +23,12 @@ module AllCollectionsDemoModule
     # @return [String]
     def render(liquid_context)
       site = liquid_context.registers[:site]
-      result = site.all_collections.map do |entry|
+      result = site.everything.map do |entry|
         lines = []
-        entry.instance_variables.each do |name|
+        entry.instance_variables
+             .reject { |name| name == :@excerpt }
+             .sort
+             .each do |name|
           value = entry.instance_variable_get(name).to_s.strip
           lines << "<b>#{name.to_s.delete_prefix '@'}</b>=#{CGI.escapeHTML(value)}\n"
         end

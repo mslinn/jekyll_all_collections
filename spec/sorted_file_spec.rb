@@ -1,7 +1,7 @@
 require 'spec_helper'
 require_relative '../lib/hooks/all_files'
 
-RSpec.describe(SortedFiles) do
+RSpec.describe(SortedLruFiles) do
   it 'can read back an inserted item' do
     sorted_files = described_class.new
     # expect(sorted_files.sorted_lru_files).to eq([])

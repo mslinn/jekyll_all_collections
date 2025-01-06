@@ -16,21 +16,23 @@ module AllCollectionsHooks
   end
 
   def self.compute(site)
-    site.class.module_eval { attr_accessor :all_collections, :all_documents, :everything }
+    site.class.module_eval { attr_accessor :all_collections, :all_documents, :everything, :sorted_lru_files }
 
     objects = site.collections
                   .values
                   .map { |x| x.class.method_defined?(:docs) ? x.docs : x }
                   .flatten
-    @all_collections = AllCollectionsHooks.apages_from_objects(objects, 'collection')
-    @all_documents   = @all_collections +
-                       AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
-    @everything      = @all_documents +
-                       AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
+    @all_collections  = AllCollectionsHooks.apages_from_objects(objects, 'collection')
+    @all_documents    = @all_collections +
+                        AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
+    @everything       = @all_documents +
+                        AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
+    @sorted_lru_files = SortedLruFiles.new.add_pages @everything
 
-    site.all_collections = @all_collections
-    site.all_documents   = @all_documents
-    site.everything      = @everything
+    site.all_collections  = @all_collections
+    site.all_documents    = @all_documents
+    site.everything       = @everything
+    site.sorted_lru_files = @sorted_lru_files
   rescue StandardError => e
     JekyllSupport.error_short_trace(AllCollectionsHooks.logger, e)
     # JekyllSupport.warn_short_trace(AllCollectionsHooks.logger, e)

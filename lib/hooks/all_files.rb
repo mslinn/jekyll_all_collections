@@ -4,9 +4,13 @@ require_relative '../util/mslinn_binary_search'
 # along with the Page reference
 LruFile = Struct.new(:reversed_url, :page)
 
-class SortedFiles
+class SortedLruFiles
   def initialize
     @sorted_lru_files = MSlinnBinarySearch.new
+  end
+
+  def add_pages(pages)
+    pages.each { |page| insert page.url, page }
   end
 
   def insert(url, file)

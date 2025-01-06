@@ -36,6 +36,7 @@ exclude:  # Wildcards are not supported yet https://github.com/jekyll/jekyll-wat
   - .jekyll-metadata
   - .ruby-version
   - .vscode
+  - binstub
   - BingSiteAuth.xml
   - Gemfile
   - Gemfile.lock
