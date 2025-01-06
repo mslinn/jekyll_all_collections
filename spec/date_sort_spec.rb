@@ -13,10 +13,10 @@ class Obj
 end
 
 RSpec.describe(Obj) do
-  let(:o1) { Obj.new('2000-01-01', '2001-01-01') }
-  let(:o2) { Obj.new('2010-01-01', '2001-01-01') }
-  let(:o3) { Obj.new('2010-01-01', '2011-01-01') }
-  let(:o4) { Obj.new('2020-01-01', '2011-01-01') }
+  let(:o1) { described_class.new('2000-01-01', '2001-01-01') }
+  let(:o2) { described_class.new('2010-01-01', '2001-01-01') }
+  let(:o3) { described_class.new('2010-01-01', '2011-01-01') }
+  let(:o4) { described_class.new('2020-01-01', '2011-01-01') }
   let(:objs) { [o1, o2, o3, o4] }
 
   # See https://ruby-doc.org/3.2.0/Comparable.html

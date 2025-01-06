@@ -1,8 +1,9 @@
 class MSlinnBinarySearch
   attr_reader :sorted_lru_files
 
-  def initialize
+  def initialize(accessor_method)
     @sorted_lru_files = []
+    @accessor_method = accessor_method
   end
 
   # Matches from the end of an array of strings
@@ -17,15 +18,16 @@ class MSlinnBinarySearch
     while low < high
       mid = low + ((high - low) / 2)
       # Compare the prefix to the substring of the @sorted_lru_files element
-      if @sorted_lru_files[mid].reversed_url < prefix
+      element = @sorted_lru_files[mid]
+      if element.send(@accessor_method) < prefix
         low = mid + 1
-      elsif @sorted_lru_files[mid].reversed_url > prefix
+      elsif element.send(@accessor_method) > prefix
         high = mid - 1
       end
     end
 
     # Collect all matching elements from 'low' onward
-    while low < @sorted_lru_files.length && @sorted_lru_files[low].reversed_url.start_with?(prefix)
+    while low < @sorted_lru_files.length && @sorted_lru_files[low].send(@accessor_method).start_with?(prefix)
       result << @sorted_lru_files[low]
       low += 1
     end
@@ -34,7 +36,7 @@ class MSlinnBinarySearch
   end
 
   def binary_insert(item)
-    insert_at = @sorted_lru_files.bsearch_index { |x| x.reversed_url >= item.reversed_url } || 0
+    insert_at = @sorted_lru_files.bsearch_index { |x| x.send(@accessor_method) >= item.send(@accessor_method) } || 0
     @sorted_lru_files.insert(insert_at, item)
   end
 end

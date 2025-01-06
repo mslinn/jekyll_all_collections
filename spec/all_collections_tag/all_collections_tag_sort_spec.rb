@@ -56,7 +56,6 @@ RSpec.describe(AllCollectionsTag::AllCollectionsTag) do
     expect(result).to eq(expected)
   end
 
-  # TODO: create_lambda_string is no longer a class method of AllCollectionsTag, it now needs an instance
   it 'create_lambda with 1 date key, descending' do
     lambda_string = described_class.create_lambda_string('-last_modified')
     sort_lambda = described_class.evaluate(lambda_string)

@@ -27,15 +27,13 @@ module AllCollectionsTag
       # JekyllSupport.warn_short_trace @logger, e
     end
 
-    private
-
     # Descending sort keys reverse the order of comparison
     # Example return values:
     #   "->(a, b) { [a.last_modified] <=> [b.last_modified] }"
     #   "->(a, b) { [b.last_modified] <=> [a.last_modified] }" (descending)
     #   "->(a, b) { [a.last_modified, a.date] <=> [b.last_modified, b.date] }" (descending last_modified, ascending date)
     #   "->(a, b) { [a.last_modified, b.date] <=> [b.last_modified, a.date] }" (ascending last_modified, descending date)
-    def create_lambda_string(criteria)
+    def self.create_lambda_string(criteria)
       criteria_lhs_array = []
       criteria_rhs_array = []
       verify_sort_by_type(criteria).each do |c|
@@ -48,6 +46,8 @@ module AllCollectionsTag
       end
       "->(a, b) { [#{criteria_lhs_array.join(', ')}] <=> [#{criteria_rhs_array.join(', ')}] }"
     end
+
+    private
 
     def default_head(sort_by)
       criteria = (sort_by.map do |x|

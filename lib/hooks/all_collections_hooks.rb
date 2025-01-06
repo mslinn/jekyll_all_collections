@@ -6,8 +6,8 @@ module AllCollectionsHooks
 
   # No, all_collections is not defined for this hook
   # Jekyll::Hooks.register(:site, :after_init, priority: :normal) do |site|
-  #   defined = AllCollectionsHooks.all_collections_defined?(site)
-  #   @logger.debug { "Jekyll::Hooks.register(:site, :after_init: #{defined}" }
+  #   defined_msg = AllCollectionsHooks.all_collections_defined?(site)
+  #   @logger.debug { "Jekyll::Hooks.register(:site, :after_init: #{defined_msg}" }
   # end
 
   # Creates a `Array[APage]` property called site.all_collections if it does not already exist.
@@ -15,9 +15,11 @@ module AllCollectionsHooks
   # Each `APage` entry is one document or page.
   Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
     @site = site
-    defined = AllCollectionsHooks.all_collections_defined? site
-    @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
-    AllCollectionsHooks.compute(site) unless site.class.method_defined? :all_collections
+    unless site.class.method_defined? :all_collections
+      defined_msg = AllCollectionsHooks.all_collections_defined? site
+      @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined_msg}" }
+      AllCollectionsHooks.compute(site)
+    end
   rescue StandardError => e
     JekyllSupport.error_short_trace(@logger, e)
     # JekyllSupport.warn_short_trace(@logger, e)
@@ -25,8 +27,8 @@ module AllCollectionsHooks
 
   # Yes, all_collections is defined for this hook
   # Jekyll::Hooks.register(:site, :post_read, priority: :low) do |site|
-  #   defined = AllCollectionsHooks.all_collections_defined?(site)
-  #   @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :low: #{defined}" }
+  #   defined_msg = AllCollectionsHooks.all_collections_defined?(site)
+  #   @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :low: #{defined_msg}" }
   # rescue StandardError => e
   #   JekyllSupport.error_short_trace(@logger, e)
   #   # JekyllSupport.warn_short_trace(@logger, e)
@@ -34,8 +36,8 @@ module AllCollectionsHooks
 
   # Yes, all_collections is defined for this hook
   # Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
-  #   defined = AllCollectionsHooks.all_collections_defined?(site)
-  #   @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined}" }
+  #   defined_msg = AllCollectionsHooks.all_collections_defined?(site)
+  #   @logger.debug { "Jekyll::Hooks.register(:site, :post_read, :normal: #{defined_msg}" }
   # rescue StandardError => e
   #   JekyllSupport.error_short_trace(@logger, e)
   #   # JekyllSupport.warn_short_trace(@logger, e)
@@ -43,8 +45,8 @@ module AllCollectionsHooks
 
   # Yes, all_collections is defined for this hook
   # Jekyll::Hooks.register(:site, :pre_render, priority: :normal) do |site, _payload|
-  #   defined = AllCollectionsHooks.all_collections_defined?(site)
-  #   @logger.debug { "Jekyll::Hooks.register(:site, :pre_render: #{defined}" }
+  #   defined_msg = AllCollectionsHooks.all_collections_defined?(site)
+  #   @logger.debug { "Jekyll::Hooks.register(:site, :pre_render: #{defined_msg}" }
   # rescue StandardError => e
   #   JekyllSupport.error_short_trace(@logger, e)
   #   # JekyllSupport.warn_short_trace(@logger, e)

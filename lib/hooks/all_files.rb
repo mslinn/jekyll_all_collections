@@ -6,7 +6,7 @@ LruFile = Struct.new(:reversed_url, :page)
 
 class SortedLruFiles
   def initialize
-    @sorted_lru_files = MSlinnBinarySearch.new
+    @sorted_lru_files = MSlinnBinarySearch.new :reversed_url
   end
 
   def add_pages(pages)
@@ -19,5 +19,11 @@ class SortedLruFiles
 
   def select(prefix)
     @sorted_lru_files.prefix_binary_search prefix
+  end
+
+  def select_mormalized(prefix)
+    @sorted_lru_files
+      .prefix_binary_search(prefix)
+      .map { |lf| LruFile.new lf.reversed_url.reverse, lf.page }
   end
 end
