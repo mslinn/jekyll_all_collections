@@ -7,9 +7,9 @@
   accessible from every other module.
 * Added `site.all_documents` and `site.everything` properties.
 
-`all_documents` contains all pages in collections plus standalone pages.
+  * `all_documents` includes `all_collections` plus all standalone pages.
 
-`everything` includes all other files.
+  * `everything` includes `all_documents` plus all static files.
 
 
 ## 0.3.7 / 2024-12-21
