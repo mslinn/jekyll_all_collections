@@ -1,11 +1,17 @@
 module SendChain
+  # See https://stackoverflow.com/a/35754367/553865
+  # This method can be called directly if no methods in the chain require arguments
+  def send_chain(chain)
+    Array(chain).inject(self) { |o, a| o.send(*a) }
+  end
+
+  # Define chain structure with :placeholders for arguments to be supplied later
   def new_chain(chain)
     abort "new_chain error: chain must be an array ('#{chain}' was an #{chain.class.name})" unless chain.instance_of?(Array)
     @chain = chain
   end
 
-  # Call this method if one or more methods in the chain require arguments
-  # Provide a :placeholder inside an inner array for every argument
+  # Call after new_chain, to provide arguments
   def send_chain_with_values(values)
     @values = values.instance_of?(Array) ? values : [values]
 
@@ -18,11 +24,7 @@ module SendChain
     send_chain substituted_chain
   end
 
-  # See https://stackoverflow.com/a/35754367/553865
-  # This method can be called directly if no methods in the chain require arguments
-  def send_chain(chain)
-    Array(chain).inject(self) { |o, a| o.send(*a) }
-  end
+  private
 
   def eval_chain(chain)
     chain.map do |c|
