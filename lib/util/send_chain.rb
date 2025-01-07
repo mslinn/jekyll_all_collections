@@ -20,6 +20,8 @@ module SendChain
     send_chain substitute_chain_with values
   end
 
+  alias evaluate_with substitute_and_send_chain_with
+
   # Call this method after calling new_chain to perform error checking and replace :placeholders with values.
   # @chain is not modified.
   # @return [Array] Modified chain

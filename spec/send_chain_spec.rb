@@ -8,7 +8,7 @@ end
 RSpec.describe(LruFile) do
   lru_file = described_class.new 'abc', 'def'
 
-  it 'performs simple call if no arguments are required' do
+  it 'can perform a simple call if no arguments are required' do
     # Equivalent to: lru_file.url.reverse
     actual = lru_file.send_chain %i[url reverse]
     expect(actual).to eq('cba')
@@ -41,6 +41,13 @@ RSpec.describe(LruFile) do
     lru_file.new_chain [:url, %i[end_with? placeholder]]
     # Equivalent to: lru_file.url.end_with?('bc')
     actual = lru_file.substitute_and_send_chain_with ['bc']
+    expect(actual).to be true
+  end
+
+  it 'can use the evaluate_with alias' do
+    lru_file.new_chain [:url, %i[end_with? placeholder]]
+    # Equivalent to: lru_file.url.end_with?('bc')
+    actual = lru_file.evaluate_with ['bc']
     expect(actual).to be true
   end
 

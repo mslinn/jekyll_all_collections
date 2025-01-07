@@ -1,7 +1,5 @@
 # Ruby's binary search is unsuitable because the value to be searched for changes the required ordering for String compares
 class MSlinnBinarySearch
-  include SendChain
-
   attr_reader :array
 
   def initialize(accessor_chain)
@@ -11,7 +9,7 @@ class MSlinnBinarySearch
 
   # TODO: Cache this method
   def suffix_binary_search(suffix)
-    chain = @accessor_chain + [suffix
+    chain = @accessor_chain + [suffix]
     low = @array.bsearch_index { |x| x.send_chain_with_values suffix }
     return [] if low.nil?
 
