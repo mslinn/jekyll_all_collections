@@ -12,7 +12,7 @@ RSpec.describe(MSlinnBinarySearch) do
   msbs = described_class.new [:url, %i[start_with? placeholder]]
 
   it 'handles empty msbs.array' do
-    index = msbs.binary_search_index 'a' # { |x| x.url.start_with? 'a' }
+    index = msbs.find_index 'a' # { |x| x.url.start_with? 'a' }
     expect(index).to be_nil
   end
 
@@ -28,7 +28,7 @@ RSpec.describe(MSlinnBinarySearch) do
   end
 
   it 'handles an empty search string by returning the index of the first item (0)' do
-    index = msbs.binary_search_index '' # { |x| x.url.start_with? '' }
+    index = msbs.find_index '' # { |x| x.url.start_with? '' }
     expect(index).to be(0)
 
     lru_file = msbs.item_at(index)
