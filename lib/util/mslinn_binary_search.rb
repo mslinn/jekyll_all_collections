@@ -33,10 +33,10 @@ class MSlinnBinarySearch
   # @return item from array that matches value, or nil if no match
   def find(value)
     raise MSlinnBinarySearchError, 'Invalid find because value to search for is nil.' if value.nil?
-
     return nil if @array.empty?
+    return @array[0] if value.nil? || value.empty?
 
-    index = _find_index(value, 0, @array.length)
+    index = _find_index(value, 0, @array.length - 1)
     return nil if index.nil?
 
     @array[index]
@@ -90,9 +90,10 @@ class MSlinnBinarySearch
     raise MSlinnBinarySearchError, 'max_index>=@array.length' if max_index >= @array.length
 
     return nil if @array.empty?
+    return 0 if @array[0].url >= target # TODO: use chain eval for item
 
     if min_index == max_index
-      case @array[min_index].url <=> target
+      case @array[min_index].url <=> target # TODO: use chain eval for item
       when -1
         return [min_index + 1, 0].max
       when 0
@@ -107,14 +108,14 @@ class MSlinnBinarySearch
     len = [mid_item.url.length, target.length].min # TODO: use chain eval for item
     case mid_item.url[0..len - 1] <=> target[0..len - 1] # TODO: use chain eval for item
     when 0 # mid_item.url[0..len-1] == target[0..len-1]
-      puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) == target[0..#{len - 1}] (#{target[0..len - 1]})"
+      # puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) == target[0..#{len - 1}] (#{target[0..len - 1]})"
       mid_index
-    when -1  # mid_item.url[len-1] < target[len-1]
-      puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) < target[0..#{len - 1}] (#{target[0..len - 1]})"
+    when -1 # mid_item.url[len-1] < target[len-1]
+      # puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) < target[0..#{len - 1}] (#{target[0..len - 1]})"
       min_index = mid_index + 1
       _find_index(target, min_index, max_index)
-    when  1  # mid_item.url[len-1] > target[len-1]
-      puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) > target[0..#{len - 1}] (#{target[0..len - 1]})"
+    when  1 # mid_item.url[len-1] > target[len-1]
+      # puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) > target[0..#{len - 1}] (#{target[0..len - 1]})"
       max_index = mid_index - 1
       _find_index(target, min_index, max_index)
     end
