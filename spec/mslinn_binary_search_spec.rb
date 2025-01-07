@@ -20,8 +20,16 @@ RSpec.describe(MSlinnBinarySearch) do
     expect($msbs.array.length).to be(1)
   end
 
-  it 'inserts remaining items into $msbs.array' do
-    insert_from_sorted_strings until $sorted_strings.empty?
+  it 'inserts remaining items into $msbs.array in order' do
+    until $sorted_strings.empty?
+      insert_from_sorted_strings
+      (0..($msbs.array.length - 2)).each do |i|
+        if $msbs.array[i].url > $msbs.array[i + 1].url
+          failure_msg = "Oops: array[#{i}].url (#{$msbs.array[i].url}) > array[#{i + 1}].url (#{$msbs.array[i + 1].url})"
+          RSpec::Expectations.fail_with failure_msg
+        end
+      end
+    end
     expect($msbs.array.length).to be(9)
     expect($sorted_strings.length).to be_zero
   end
@@ -31,7 +39,7 @@ RSpec.describe(MSlinnBinarySearch) do
     expect(index).to be(0)
   end
 
-  it 'returns the item at a specified index' do
+  it 'returns the item with a full match' do
     lru_file = $msbs.item_at(0)
     expect(lru_file.url).to eq('aab')
 
@@ -42,7 +50,7 @@ RSpec.describe(MSlinnBinarySearch) do
     expect(lru_file.url).to eq('cce')
   end
 
-  it 'returns the index of the first match' do
+  it 'returns the index of the first partial match' do
     index = $msbs.find_index 'a' # { |x| x.url.start_with? 'a' }
     expect(index).to eq(0)
 
