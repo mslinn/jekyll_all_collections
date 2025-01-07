@@ -18,7 +18,7 @@ RSpec.describe(LruFile) do
     lru_file.new_chain [:url, %i[end_with? placeholder]]
     # Equivalent to: lru_file.url.end_with?('bc')
     substituted_chain = lru_file.substitute_chain_with 'bc'
-    actual = lru_file.send_substituted_chain substituted_chain
+    actual = lru_file.send_chain substituted_chain
     expect(actual).to be true
   end
 
@@ -26,7 +26,7 @@ RSpec.describe(LruFile) do
     lru_file.new_chain [:url, %i[end_with? placeholder]]
     # Next 2 lines are equivalent to: lru_file.url.end_with?('bc')
     substituted_chain = lru_file.substitute_chain_with ['bc']
-    actual = lru_file.send_substituted_chain substituted_chain
+    actual = lru_file.send_chain substituted_chain
     expect(actual).to be true
   end
 
@@ -53,7 +53,7 @@ RSpec.describe(LruFile) do
 
     # Equivalent to: lru_file.url.end_with?('abc')
     substituted_chain = lru_file.substitute_chain_with ['abc']
-    actual = lru_file.send_substituted_chain substituted_chain
+    actual = lru_file.send_chain substituted_chain
     expect(actual).to be true
 
     # Equivalent to: lru_file.url.end_with?('de')

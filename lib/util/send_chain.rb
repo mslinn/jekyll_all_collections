@@ -20,12 +20,6 @@ module SendChain
     send_chain substitute_chain_with values
   end
 
-  # Evaluates substituted chain
-  # @return result of evaluating chain
-  def send_substituted_chain(substituted_chain)
-    send_chain substituted_chain
-  end
-
   # Call this method after calling new_chain to perform error checking and replace :placeholders with values.
   # @chain is not modified.
   # @return [Array] Modified chain
