@@ -13,6 +13,7 @@ class MSlinnBinarySearch
   end
 
   # TODO: Cache this method
+  # @param suffix [String] to use stem search on
   # @return nil if @array is empty
   # @return the first item in @array if suffix is nil or an empty string
   def prefix_search(suffix)
@@ -28,6 +29,7 @@ class MSlinnBinarySearch
     @array[low..high]
   end
 
+  # @param value [String]
   # @return item from array that matches value, or nil if no match
   def find(value)
     raise MSlinnBinarySearchError, 'Invalid find because value to search for is nil.' if value.nil?
@@ -40,31 +42,35 @@ class MSlinnBinarySearch
     @array[index]
   end
 
+  # @param value [String]
   # @return index of matching value, or nil if @array is empty
   def find_index(value)
     raise MSlinnBinarySearchError, 'Invalid find_index because value to search for is nil.' if value.nil?
     return nil if @array.empty?
+    return 0 if value.nil? || value.empty?
 
     _find_index(value, 0, @array.length)
   end
 
+  # @param lru_file [LruFile]
   def insert(lru_file)
     raise MSlinnBinarySearchError, 'Invalid insert because new item is nil.' if lru_file.nil?
     raise MSlinnBinarySearchError, "Invalid insert because new item has no chain (#{lru_file})" if lru_file.chain.nil?
 
-    insert_at = find_index(lru_file) { |x| x.evaluate_with lru_file.url }
+    insert_at = find_index(lru_file.url) # TODO: replace .url with chain eval
     insert_at ||= 0
-    @array.insert(insert_at, new_item)
+    @array.insert(insert_at, lru_file)
   end
 
-  # @return index of matching item in @array, or nil if not found
+  # @param item [String]
+  # @return [int] index of matching item in @array, or nil if not found
   def index_of(item)
     raise MSlinnBinarySearchError, 'Invalid index_of item (nil).' if item.nil?
 
     find_index item.url
   end
 
-  # @return item at given index in @array
+  # @return [LruFile] item at given index in @array
   def item_at(index)
     if index >= @array.length - 1
       raise MSlinnBinarySearchError,
@@ -77,11 +83,13 @@ class MSlinnBinarySearch
 
   private
 
+  # @param target [String]
+  # @return [int] index of matching item in @array
   def _find_index(target, min_index, max_index)
     mid_index = (min_index + max_index) / 2
     item = @array[mid_index]
-    len = [item.length, target.length].min
-    case item[len] <=> target[len]
+    len = [item.url.length, target.length].min # TODO: use chain eval for item
+    case item.url[len] <=> target[len] # TODO: use chain eval for item
     when 0 # array[mid_index] == target
       mid_index
     when -1  # array[mid_index] < target

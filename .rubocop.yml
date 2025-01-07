@@ -30,6 +30,9 @@ Layout/HashAlignment:
 Layout/LineLength:
   Max: 150
 
+Lint/MissingCopEnableDirective:
+  Enabled: false
+
 Metrics/AbcSize:
   Max: 55
 
@@ -83,6 +86,7 @@ Style/FrozenStringLiteralComment:
 Style/GlobalVars:
   Exclude:
     - "**/*_spec.rb"
+    - "*_spec.rb"
 
 Style/StringConcatenation:
   Enabled: false

@@ -1,3 +1,5 @@
+require_relative '../util/mslinn_binary_search'
+
 # Supports one chain at a time
 module SendChain
   # See https://stackoverflow.com/a/79333706/553865

@@ -1,4 +1,4 @@
-require_relative '../util/mslinn_binary_search'
+require_relative '../util/send_chain'
 
 # Insert the url of a Jekyll::Page into each LruFile instance,
 # along with the Page reference
