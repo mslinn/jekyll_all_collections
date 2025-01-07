@@ -14,14 +14,51 @@ RSpec.describe(LruFile) do
     expect(actual).to eq('cba')
   end
 
-  it 'can provide arguments to a method' do
+  it 'can accept a scalar argument in stages' do
+    lru_file.new_chain [:url, %i[end_with? placeholder]]
+    substituted_chain = lru_file.substitute_chain 'bc'
+    actual = lru_file.send_substituted_chain substituted_chain
+    expect(actual).to be true
+  end
+
+  it 'can accept a vector argument in stages' do
     lru_file.new_chain [:url, %i[end_with? placeholder]]
 
-    # argument will be converted to an array if required
-    actual = lru_file.send_chain_with_values 'bc'
+    substituted_chain = lru_file.substitute_chain ['bc']
+    actual = lru_file.send_substituted_chain substituted_chain
+    expect(actual).to be true
+  end
+
+  it 'can accept a scalar argument in one stage' do
+    lru_file.new_chain [:url, %i[end_with? placeholder]]
+
+    actual = lru_file.substitute_and_send_chain_with 'bc'
     expect(actual).to be true
 
-    actual = lru_file.send_chain_with_values ['bc']
+    actual = lru_file.substitute_and_send_chain_with 'abc'
     expect(actual).to be true
+
+    actual = lru_file.substitute_and_send_chain_with 'de'
+    expect(actual).to be false
+  end
+
+  it 'can accept an array argument in one stage' do
+    lru_file.new_chain [:url, %i[end_with? placeholder]]
+    actual = lru_file.substitute_and_send_chain_with ['bc']
+    expect(actual).to be true
+  end
+
+  it 'can reuse the chain with placeholders' do
+    lru_file.new_chain [:url, %i[end_with? placeholder]]
+
+    actual = lru_file.substitute_and_send_chain_with 'bc'
+    expect(actual).to be true
+
+    substituted_chain = lru_file.substitute_chain ['abc']
+    actual = lru_file.send_substituted_chain substituted_chain
+    expect(actual).to be true
+
+    actual = lru_file.substitute_and_send_chain_with 'de'
+    expect(actual).to be false
   end
 end

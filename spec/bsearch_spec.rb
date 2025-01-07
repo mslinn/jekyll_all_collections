@@ -1,8 +1,10 @@
 require 'spec_helper'
 
+# Ruby's binary search is unsuitable because the value to be searched for changes the required ordering
+
 RSpec.describe(Array) do
   sorted_ints = [0, 4, 7, 10, 12]
-  sorted_strings = %w[aaa aab aac bbb bbc bbd ccc ccd cce]
+  sorted_strings = %w[aaa aab aac bbb bbc bbd ccc ccd cce].sort.reverse
 
   it 'returns index of first int match' do
     actual = sorted_ints.bsearch_index { |x| x >= 4 }
@@ -18,28 +20,28 @@ RSpec.describe(Array) do
     expect(actual).to be_nil
   end
 
-  # start_with? gives crazy results, so use >=
   # See https://stackoverflow.com/q/79333097/553865
   it 'returns index of first string match' do
-    actual = sorted_strings.bsearch_index { |x| x >= 'a' }
-    expect(actual).to eq(0)
+    puts(sorted_strings.map { |x| x.start_with? 'a' })
+    index = sorted_strings.bsearch_index { |x| x.start_with? 'a' }
+    expect(sorted_strings[index]).to eq('aac')
 
-    actual = sorted_strings.bsearch_index { |x| x >= 'aa' }
-    expect(actual).to eq(0)
+    index = sorted_strings.bsearch_index { |x| x.start_with? 'aa' }
+    expect(sorted_strings[index]).to eq('aac')
 
-    actual = sorted_strings.bsearch_index { |x| x >= 'aaa' }
-    expect(actual).to eq(0)
+    index = sorted_strings.bsearch_index { |x| x.start_with? 'aaa' }
+    expect(sorted_strings[index]).to eq('aaa')
 
-    actual = sorted_strings.bsearch_index { |x| x >= 'b' }
-    expect(actual).to eq(3)
+    index = sorted_strings.bsearch_index { |x| x.start_with? 'b' }
+    expect(sorted_strings[index]).to eq('bbd')
 
-    actual = sorted_strings.bsearch_index { |x| x >= 'bb' }
-    expect(actual).to eq(3)
+    index = sorted_strings.bsearch_index { |x| x.start_with? 'bb' }
+    expect(sorted_strings[index]).to eq('bbd')
 
-    actual = sorted_strings.bsearch_index { |x| x >= 'bbc' }
-    expect(actual).to eq(4)
+    index = sorted_strings.bsearch_index { |x| x.start_with? 'bbc' }
+    expect(sorted_strings[index]).to eq('bbc')
 
-    actual = sorted_strings.bsearch_index { |x| x >= 'cce' }
-    expect(actual).to eq(8)
+    index = sorted_strings.bsearch_index { |x| x.start_with? 'cc' }
+    expect(sorted_strings[index]).to eq('cce')
   end
 end
