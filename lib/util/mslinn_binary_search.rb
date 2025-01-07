@@ -49,7 +49,7 @@ class MSlinnBinarySearch
     return nil if @array.empty?
     return 0 if value.nil? || value.empty?
 
-    _find_index(value, 0, @array.length)
+    _find_index(value, 0, @array.length - 1)
   end
 
   # @param lru_file [LruFile]
@@ -58,7 +58,7 @@ class MSlinnBinarySearch
     raise MSlinnBinarySearchError, "Invalid insert because new item has no chain (#{lru_file})" if lru_file.chain.nil?
 
     insert_at = find_index(lru_file.url) # TODO: replace .url with chain eval
-    insert_at ||= 0
+    insert_at = insert_at.nil? ? 0 : insert_at + 1
     @array.insert(insert_at, lru_file)
   end
 
@@ -87,15 +87,15 @@ class MSlinnBinarySearch
   # @return [int] index of matching item in @array
   def _find_index(target, min_index, max_index)
     mid_index = (min_index + max_index) / 2
-    item = @array[mid_index]
-    len = [item.url.length, target.length].min # TODO: use chain eval for item
-    case item.url[len] <=> target[len] # TODO: use chain eval for item
-    when 0 # array[mid_index] == target
+    mid_item = @array[mid_index]
+    len = [mid_item.url.length, target.length].min # TODO: use chain eval for item
+    case mid_item.url[len] <=> target[len] # TODO: use chain eval for item
+    when 0 # mid_item.url[len] == target[len]
       mid_index
-    when -1  # array[mid_index] < target
+    when -1  # mid_item.url[len] > target[len]
       min_index = mid_index + 1
       _find(target, min_index, max_index)
-    when  1  # array[mid_index] > target
+    when  1  # mid_item.url[len] > target[len]
       max_index = mid_index - 1
       _find(target, min_index, max_index)
     end

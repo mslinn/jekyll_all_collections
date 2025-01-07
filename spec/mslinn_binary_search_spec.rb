@@ -6,7 +6,7 @@ RSpec.describe(MSlinnBinarySearch) do
   $sorted_strings = %w[aaa aab aac bbb bbc bbd ccc ccd cce]
 
   def insert_from_sorted_strings
-    string = $sorted_strings.pop
+    string = $sorted_strings.shift
     $msbs.insert LruFile.new(string, "Page #{string}") # { |x| x.url.start_with? string }
   end
 

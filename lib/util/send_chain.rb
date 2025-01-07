@@ -47,7 +47,7 @@ module SendChain
     chain.map do |c|
       case c
       when :placeholder
-        values.pop
+        values.shift
       when Array
         eval_chain c, values
       else
