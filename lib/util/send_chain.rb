@@ -17,7 +17,7 @@ module SendChain
 
   # Call after new_chain, to evaluate @chain with values
   def substitute_and_send_chain_with(values)
-    send_chain substitute_chain values
+    send_chain substitute_chain_with values
   end
 
   # Evaluates substituted chain
@@ -29,7 +29,7 @@ module SendChain
   # Call this method after calling new_chain to perform error checking and replace :placeholders with values.
   # @chain is not modified.
   # @return [Array] Modified chain
-  def substitute_chain(values)
+  def substitute_chain_with(values)
     values = [values] unless values.instance_of?(Array)
 
     placeholder_count = @chain.flatten.count { |x| x == :placeholder }

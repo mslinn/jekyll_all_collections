@@ -16,30 +16,30 @@ RSpec.describe(LruFile) do
 
   it 'can accept a scalar argument in stages' do
     lru_file.new_chain [:url, %i[end_with? placeholder]]
-    # Equivalent to: lru_file.url.end_with?('bc').reverse
-    substituted_chain = lru_file.substitute_chain 'bc'
+    # Equivalent to: lru_file.url.end_with?('bc')
+    substituted_chain = lru_file.substitute_chain_with 'bc'
     actual = lru_file.send_substituted_chain substituted_chain
     expect(actual).to be true
   end
 
   it 'can accept a vector argument in stages' do
     lru_file.new_chain [:url, %i[end_with? placeholder]]
-    # Next 2 lines are equivalent to: lru_file.url.end_with?('bc').reverse
-    substituted_chain = lru_file.substitute_chain ['bc']
+    # Next 2 lines are equivalent to: lru_file.url.end_with?('bc')
+    substituted_chain = lru_file.substitute_chain_with ['bc']
     actual = lru_file.send_substituted_chain substituted_chain
     expect(actual).to be true
   end
 
   it 'can accept a scalar argument in one stage' do
     lru_file.new_chain [:url, %i[end_with? placeholder]]
-    # Equivalent to: lru_file.url.end_with?('bc').reverse
+    # Equivalent to: lru_file.url.end_with?('bc')
     actual = lru_file.substitute_and_send_chain_with 'bc'
     expect(actual).to be true
   end
 
   it 'can accept an array argument in one stage' do
     lru_file.new_chain [:url, %i[end_with? placeholder]]
-    # Equivalent to: lru_file.url.end_with?('bc').reverse
+    # Equivalent to: lru_file.url.end_with?('bc')
     actual = lru_file.substitute_and_send_chain_with ['bc']
     expect(actual).to be true
   end
@@ -47,16 +47,16 @@ RSpec.describe(LruFile) do
   it 'can reuse the chain with different values' do
     lru_file.new_chain [:url, %i[end_with? placeholder]]
 
-    # Equivalent to: lru_file.url.end_with?('bc').reverse
+    # Equivalent to: lru_file.url.end_with?('bc')
     actual = lru_file.substitute_and_send_chain_with 'bc'
     expect(actual).to be true
 
-    # Equivalent to: lru_file.url.end_with?('abc').reverse
-    substituted_chain = lru_file.substitute_chain ['abc']
+    # Equivalent to: lru_file.url.end_with?('abc')
+    substituted_chain = lru_file.substitute_chain_with ['abc']
     actual = lru_file.send_substituted_chain substituted_chain
     expect(actual).to be true
 
-    # Equivalent to: lru_file.url.end_with?('de').reverse
+    # Equivalent to: lru_file.url.end_with?('de')
     actual = lru_file.substitute_and_send_chain_with 'de'
     expect(actual).to be false
   end
