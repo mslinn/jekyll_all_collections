@@ -72,7 +72,7 @@ class MSlinnBinarySearch
 
   # @return [LruFile] item at given index in @array
   def item_at(index)
-    if index >= @array.length - 1
+    if index > @array.length - 1
       raise MSlinnBinarySearchError,
             "Invalid item_at index (#{index}) is greater than maximum value (#{@array.length - 1})."
     end

@@ -41,10 +41,10 @@ RSpec.describe(MSlinnBinarySearch) do
 
   it 'returns the item with a full match' do
     lru_file = $msbs.item_at(0)
-    expect(lru_file.url).to eq('aab')
+    expect(lru_file.url).to eq('aaa')
 
     lru_file = $msbs.item_at(1)
-    expect(lru_file.url).to eq('aaa')
+    expect(lru_file.url).to eq('aab')
 
     lru_file = $msbs.item_at(8)
     expect(lru_file.url).to eq('cce')
