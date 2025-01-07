@@ -9,6 +9,7 @@ AllCops:
   Exclude:
     - binstub/**/*
     - demo/_site/*
+    - demo/binstub/*
     - vendor/**/*
     - Gemfile*
   NewCops: enable
@@ -78,6 +79,10 @@ Style/Documentation:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Style/GlobalVars:
+  Exclude:
+    - "**/*_spec.rb"
 
 Style/StringConcatenation:
   Enabled: false

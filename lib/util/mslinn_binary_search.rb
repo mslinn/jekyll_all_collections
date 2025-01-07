@@ -32,15 +32,18 @@ class MSlinnBinarySearch
   def find(value)
     raise MSlinnBinarySearchError, 'Invalid find because value to search for is nil.' if value.nil?
 
+    return nil if @array.empty?
+
     index = _find_index(value, 0, @array.length)
     return nil if index.nil?
 
     @array[index]
   end
 
-  # @return index of matching value
+  # @return index of matching value, or nil if @array is empty
   def find_index(value)
     raise MSlinnBinarySearchError, 'Invalid find_index because value to search for is nil.' if value.nil?
+    return nil if @array.empty?
 
     _find_index(value, 0, @array.length)
   end

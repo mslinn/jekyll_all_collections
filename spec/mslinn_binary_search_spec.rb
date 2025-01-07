@@ -1,10 +1,10 @@
 require 'spec_helper'
 require_relative '../lib/util/mslinn_binary_search'
 
-sorted_strings = %w[aaa aab aac bbb bbc bbd ccc ccd cce]
+$sorted_strings = %w[aaa aab aac bbb bbc bbd ccc ccd cce]
 
 def insert_from_sorted_strings
-  string = sorted_strings.pop
+  string = $sorted_strings.pop
   msbs.insert LruFile.new(string, "Page #{string}") # { |x| x.url.start_with? string }
 end
 
@@ -22,9 +22,9 @@ RSpec.describe(MSlinnBinarySearch) do
   end
 
   it 'inserts remaining items into msbs.array' do
-    insert_from_sorted_strings until sorted_strings.empty?
+    insert_from_sorted_strings until $sorted_strings.empty?
     expect(msbs.array.length).to be(9)
-    expect(sorted_strings.length).to be_zero
+    expect($sorted_strings.length).to be_zero
   end
 
   it 'handles an empty search string by returning the index of the first item (0)' do
