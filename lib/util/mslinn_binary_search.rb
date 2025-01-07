@@ -86,18 +86,35 @@ class MSlinnBinarySearch
   # @param target [String]
   # @return [int] index of matching item in @array
   def _find_index(target, min_index, max_index)
+    raise MSlinnBinarySearchError, 'min_index<0' if min_index.negative?
+    raise MSlinnBinarySearchError, 'max_index>=@array.length' if max_index >= @array.length
+
+    return nil if @array.empty?
+
+    if min_index == max_index
+      case @array[min_index].url <=> target
+      when -1
+        return [min_index - 1, 0].max
+      else
+        return min_index + 1
+      end
+    end
+
     mid_index = (min_index + max_index) / 2
     mid_item = @array[mid_index]
     len = [mid_item.url.length, target.length].min # TODO: use chain eval for item
-    case mid_item.url[len] <=> target[len] # TODO: use chain eval for item
-    when 0 # mid_item.url[len] == target[len]
+    case mid_item.url[0..len - 1] <=> target[0..len - 1] # TODO: use chain eval for item
+    when 0 # mid_item.url[0..len-1] == target[0..len-1]
+      puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) == target[0..#{len - 1}] (#{target[0..len - 1]})"
       mid_index
-    when -1  # mid_item.url[len] > target[len]
+    when -1  # mid_item.url[len-1] < target[len-1]
+      puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) < target[0..#{len - 1}] (#{target[0..len - 1]})"
       min_index = mid_index + 1
-      _find(target, min_index, max_index)
-    when  1  # mid_item.url[len] > target[len]
+      _find_index(target, min_index, max_index)
+    when  1  # mid_item.url[len-1] > target[len-1]
+      puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) > target[0..#{len - 1}] (#{target[0..len - 1]})"
       max_index = mid_index - 1
-      _find(target, min_index, max_index)
+      _find_index(target, min_index, max_index)
     end
   end
 end
