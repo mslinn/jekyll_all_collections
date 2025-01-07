@@ -58,7 +58,7 @@ class MSlinnBinarySearch
     raise MSlinnBinarySearchError, "Invalid insert because new item has no chain (#{lru_file})" if lru_file.chain.nil?
 
     insert_at = find_index(lru_file.url) # TODO: replace .url with chain eval
-    insert_at = insert_at.nil? ? 0 : insert_at + 1
+    insert_at ||= 0
     @array.insert(insert_at, lru_file)
   end
 
@@ -94,9 +94,11 @@ class MSlinnBinarySearch
     if min_index == max_index
       case @array[min_index].url <=> target
       when -1
-        return [min_index - 1, 0].max
+        return [min_index + 1, 0].max
+      when 0
+        return min_index
       else
-        return min_index + 1
+        return min_index - 1
       end
     end
 
