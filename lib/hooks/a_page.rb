@@ -8,8 +8,17 @@ module AllCollectionsHooks
       data_field_init obj
       obj_field_init obj
       @draft = Jekyll::Draft.draft? obj
-      @href = @url # "#{@dir}/#{@name}"
-      @name = obj.respond_to?(:name) ? obj.name : File.basename(@url)
+      @href = @url if @href.nil?
+      # @href = "/#{@href}" if @origin == 'individual_page'
+      @href = "#{@href}index.html" if @href.end_with? '/'
+      @title = if @data&.key?('title')
+                 @data['title']
+               elsif obj.respond_to?(:title)
+                 obj.title
+               else
+                 "<code>#{@href}</code>"
+               end
+      @name = File.basename(@url)
     rescue StandardError => e
       JekyllSupport.error_short_trace(@logger, e)
       # JekyllSupport.warn_short_trace(@logger, e)
@@ -40,13 +49,6 @@ module AllCollectionsHooks
                              end
       @layout = @data['layout'] if @data.key? 'layout'
       @tags = @data['tags'] if @data.key? 'tags'
-      @title = if @data&.key?('title')
-                 @data['title']
-               elsif obj.respond_to?(:title)
-                 obj.title
-               else
-                 "<code>#{obj.relative_path}</code>"
-               end
     end
 
     def obj_field_init(obj)

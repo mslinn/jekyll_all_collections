@@ -115,7 +115,7 @@ module AllCollectionsTag
         last_modified = last_modified_value x
         date = last_modified.strftime '%Y-%m-%d'
         draft = x.draft ? DRAFT_HTML : ''
-        href = "<a href='#{x.url}'>#{x.title}</a>"
+        href = "<a href='#{x.href}'>#{x.title}</a>"
         @logger.debug { "  date='#{date}' #{x.title}\n" }
         "  <span>#{date}</span><span>#{href}#{draft}</span>"
       end

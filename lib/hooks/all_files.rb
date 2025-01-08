@@ -15,7 +15,7 @@ class SortedLruFiles
   end
 
   def add_pages(pages)
-    pages.each { |page| insert page.url, page }
+    pages.each { |page| insert page.href, page }
   end
 
   def insert(url, file)
