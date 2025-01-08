@@ -422,11 +422,12 @@ plugin_loggers:
 
 
 3. Attach to the debugger process if required.
-  This git repo includes a [Visual Studio Code launcher](./.vscode/launch.json) for this purpose labeled `Listen for rdebug-ide`.
+  This git repo includes two [Visual Studio Code launch configurations](./.vscode/launch.json) for this purpose labeled
+  **Attach rdbg** and **Attach with ruby_lsp**.
 
 4. Point your web browser to http://localhost:4444
 
-If a debugging session terminates and leaves ports tied up,
+If a debugging session terminates abruptly and leaves ports tied up,
 run the `demo/_bin/release_port` script.
 
 
