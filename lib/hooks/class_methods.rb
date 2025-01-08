@@ -14,7 +14,7 @@ module AllCollectionsHooks
     pages = []
     objects.each do |object|
       page = APage.new(object, origin)
-      pages << page unless page.data['exclude_from_all']
+      pages << page unless page.data['exclude_from_all'] || page.path == 'redirect.html'
     end
     pages
   end
@@ -30,6 +30,7 @@ module AllCollectionsHooks
     @all_collections  = AllCollectionsHooks.apages_from_objects(objects, 'collection')
     @all_documents    = @all_collections +
                         AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
+
     @everything       = @all_documents +
                         AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
     # @sorted_lru_files = SortedLruFiles.new.add_pages @everything # Not working yet
