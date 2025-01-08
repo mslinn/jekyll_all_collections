@@ -7,22 +7,22 @@ triggered by a high-priority hook, and a block tag called `all_collections`.
 
 ## Generator
 
-The generator adds the following new attributes to
+The generator adds three new attributes to
 [`site`](https://jekyllrb.com/docs/variables/#site-variables):
 `all_collections`, `all_documents` and `everything`.
 Taken together, the three new attributes of `site` include all the files that make up a Jekyll website.
 
-However, Jekyll is inconsistent in the attributes for
+These three attributes can be referenced as `site.everything`, `site.all_collections`
+and `site.all_documents`.
+
+
+### Why Do This?
+
+Because Jekyll provides inconsistent attributes for
 [`site.pages`](https://jekyllrb.com/docs/pages/),
-[`site.posts`](https://jekyllrb.com/docs/posts/) and [`site.static_files`](https://jekyllrb.com/docs/static-files/).
+[`site.posts`](https://jekyllrb.com/docs/posts/) and
+[`site.static_files`](https://jekyllrb.com/docs/static-files/).
 
-All three collections *could* be combined like this:
-
-```ruby
-site.all_collections + site.pages + site.static_files
-```
-
-However:
 
 * While the `url` attributes of items in `site.posts` and `site.pages` start with a slash (/),
   `site.static_files` items do not have a `url` attribute.
@@ -33,8 +33,26 @@ However:
   [`jekyll-redirect-from`](https://github.com/jekyll/jekyll-redirect-from),
   which are included in `site.static_files`, should be ignored.
 
+These inconsistencies mean that combining the above three collections
+creates a new collection that is difficult to process in a consistent manner:
+
+```ruby
+all_files = site.all_collections + site.pages + site.static_files
+```
+
+`all_files`, above, is difficult to process because of inconsistencies in the provided attributes,
+and how the attributes are constructed.
+
+
+### Solving The Problem
+
 The generator normalizes these inconsistencies by utilizing the `APage` class,
 and filtering out HTML redirect files.
+
+The `all_collections` collection contains `APage` representations of `site.collections`.
+
+The `all_documents` collection contains `APage` representations of `site.pages`.
+
 The `everything` collection contains `APage` representations of:
 
 ```text
@@ -44,8 +62,8 @@ site.collections + site.pages + site.static_files - HTML_redirect_files
 
 ## The APage Class
 
-The `site.all_collections`, `site.all_documents` and `site.everything`
-attributes consist arrays of [`APage`](lib/hooks/a_page.rb) instances.
+The `site.all_collections`, `site.all_documents` and `site.everything` attributes
+consist of arrays of [`APage`](lib/hooks/a_page.rb) instances.
 
 The `APage` class has the following attributes:
 `content` (HTML or Markdown), `data` (array), `date` (Ruby Date), `description`, `destination`,
@@ -154,7 +172,7 @@ the `date` value will be used last modified date value.
 
 ## Usage
 
-### `Site.all_collections`
+### New `Site` Attributes
 
 No explicit initialization or setup is required.
 Jekyll plugins can access the value of
@@ -162,7 +180,9 @@ Jekyll plugins can access the value of
 however Liquid code in Jekyll pages and documents cannot.
 
 
-### Excluding Pages
+### Excluding Files
+
+There are two ways to exclude files from the new `site` attributes.
 
 1) The [`exclude` entry in `_config.yml`](https://jekyllrb.com/docs/configuration/options#global-configuration)
    can be used as it normally would.
@@ -429,17 +449,18 @@ jekyll_all_collections (0.3.8)
     License: MIT
     Installed at (0.3.8): /home/mslinn/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0
 
-    Provides a collection of all collections in site.all_collections.
+    Provides normalized collections and extra functionality for Jekyll websites.
 ```
 
 
 ### Build and Push to RubyGems
 
-To release a new version,
+To release a new version:
 
 1. Update the version number in `version.rb`.
-2. Commit all changes to git; if you don't the next step might fail with an unexplainable error message.
-3. Run the following:
+2. Add an entry in `CHANGELOG.md` describing the changes since the last release.
+3. Commit all changes to git; if you don't the next step might fail with a confusing error message.
+4. Run the following:
 
     ```shell
     $ bundle exec rake release
@@ -451,10 +472,10 @@ To release a new version,
 
 ## Contributing
 
-1. Fork the project
-2. Create a descriptively named feature branch
-3. Add your feature
-4. Submit a pull request
+1. Fork the project.
+2. Create a descriptively named feature branch.
+3. Add your feature.
+4. Submit a pull request.
 
 
 ## License
