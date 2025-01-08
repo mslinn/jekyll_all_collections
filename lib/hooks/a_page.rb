@@ -11,6 +11,7 @@ module AllCollectionsHooks
       @href = @url if @href.nil?
       # @href = "/#{@href}" if @origin == 'individual_page'
       @href = "#{@href}index.html" if @href.end_with? '/'
+      @name = File.basename(@href)
       @title = if @data&.key?('title')
                  @data['title']
                elsif obj.respond_to?(:title)
@@ -18,7 +19,6 @@ module AllCollectionsHooks
                else
                  "<code>#{@href}</code>"
                end
-      @name = File.basename(@url)
     rescue StandardError => e
       JekyllSupport.error_short_trace(@logger, e)
       # JekyllSupport.warn_short_trace(@logger, e)
