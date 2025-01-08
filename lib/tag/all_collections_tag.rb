@@ -47,6 +47,21 @@ module AllCollectionsTag
       "->(a, b) { [#{criteria_lhs_array.join(', ')}] <=> [#{criteria_rhs_array.join(', ')}] }"
     end
 
+    def self.verify_sort_by_type(sort_by)
+      case sort_by
+      when Array
+        sort_by
+      when Enumerable
+        sort_by.to_a
+      when Date
+        [sort_by.to_i]
+      when String
+        [sort_by]
+      else
+        abort "Error: @sort_by was specified as '#{sort_by}'; it must either be a string or an array of strings"
+      end
+    end
+
     private
 
     def default_head(sort_by)
@@ -116,7 +131,7 @@ module AllCollectionsTag
 
     # See https://stackoverflow.com/a/75377832/553865
     def init_sort_by(sort_by, sort_by_param)
-      sort_lambda_string = create_lambda_string sort_by
+      sort_lambda_string = AllCollectionsTag.create_lambda_string sort_by
 
       @logger.debug do
         "#{@page['path']} sort_by_param=#{sort_by_param}  " \
@@ -139,21 +154,6 @@ module AllCollectionsTag
       @id = @helper.parameter_specified?('id') || SecureRandom.hex(10)
       @sort_by_param = @helper.parameter_specified? 'sort_by'
       @sort_by = (@sort_by_param&.delete(' ')&.split(',') if @sort_by_param != false) || ['-date']
-    end
-
-    def verify_sort_by_type(sort_by)
-      case sort_by
-      when Array
-        sort_by
-      when Enumerable
-        sort_by.to_a
-      when Date
-        [sort_by.to_i]
-      when String
-        [sort_by]
-      else
-        abort "Error: @sort_by was specified as '#{sort_by}'; it must either be a string or an array of strings"
-      end
     end
 
     JekyllSupport::JekyllPluginHelper.register(self, PLUGIN_NAME)

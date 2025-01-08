@@ -1,4 +1,8 @@
 module AllCollectionsHooks
+  class << self
+    attr_accessor :all_collections, :all_documents, :everything, :sorted_lru_files
+  end
+
   # @sort_by = ->(apages, criteria) { [apages.sort(criteria)] }
 
   def self.all_collections_defined?(site)
