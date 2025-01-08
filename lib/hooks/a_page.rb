@@ -61,7 +61,7 @@ module AllCollectionsHooks
       @relative_path = obj.relative_path if obj.respond_to? :relative_path
       @type = obj.type if obj.respond_to? :type
       @url = obj.url
-      @url = "#{@url}/index.html" if @url.end_with? '/'
+      @url = "#{@url}index.html" if @url.end_with? '/'
     end
   end
 end
