@@ -26,6 +26,7 @@ module AllCollectionsHooks
                   .values
                   .map { |x| x.class.method_defined?(:docs) ? x.docs : x }
                   .flatten
+                  .compact
     @all_collections  = AllCollectionsHooks.apages_from_objects(objects, 'collection')
     @all_documents    = @all_collections +
                         AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
