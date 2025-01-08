@@ -12,23 +12,6 @@ class MSlinnBinarySearch
     @accessor_chain = accessor_chain
   end
 
-  # TODO: Cache this method
-  # @param suffix [String] to use stem search on
-  # @return nil if @array is empty
-  # @return the first item in @array if suffix is nil or an empty string
-  def prefix_search(suffix)
-    return nil if @array.empty?
-    return @array[0] if suffix.empty? || suffix.nil?
-
-    low = search_index { |x| x.evaluate_with suffix }
-    return [] if low.nil?
-
-    high = low
-    high += 1 while high < @array.length &&
-                    @array[high].evaluate_with(suffix)
-    @array[low..high]
-  end
-
   # @param value [String]
   # @return item from array that matches value, or nil if no match
   def find(value)
@@ -52,16 +35,6 @@ class MSlinnBinarySearch
     _find_index(value, 0, @array.length - 1)
   end
 
-  # @param lru_file [LruFile]
-  def insert(lru_file)
-    raise MSlinnBinarySearchError, 'Invalid insert because new item is nil.' if lru_file.nil?
-    raise MSlinnBinarySearchError, "Invalid insert because new item has no chain (#{lru_file})" if lru_file.chain.nil?
-
-    insert_at = find_index(lru_file.url) # TODO: replace .url with chain eval
-    insert_at ||= 0
-    @array.insert(insert_at, lru_file)
-  end
-
   # @param item [String]
   # @return [int] index of matching item in @array, or nil if not found
   def index_of(item)
@@ -79,6 +52,33 @@ class MSlinnBinarySearch
     raise MSlinnBinarySearchError, "Invalid item_at index (#{index}) is less than zero." if index.negative?
 
     @array[index]
+  end
+
+  # @param lru_file [LruFile]
+  def insert(lru_file)
+    raise MSlinnBinarySearchError, 'Invalid insert because new item is nil.' if lru_file.nil?
+    raise MSlinnBinarySearchError, "Invalid insert because new item has no chain (#{lru_file})" if lru_file.chain.nil?
+
+    insert_at = find_index(lru_file.url) # TODO: replace .url with chain eval
+    insert_at ||= 0
+    @array.insert(insert_at, lru_file)
+  end
+
+  # TODO: Cache this method
+  # @param suffix [String] to use stem search on
+  # @return nil if @array is empty
+  # @return the first item in @array if suffix is nil or an empty string
+  def prefix_search(suffix)
+    return nil if @array.empty?
+    return @array[0] if suffix.empty? || suffix.nil?
+
+    low = search_index { |x| x.evaluate_with suffix }
+    return [] if low.nil?
+
+    high = low
+    high += 1 while high < @array.length &&
+                    @array[high].evaluate_with(suffix)
+    @array[low..high]
   end
 
   private

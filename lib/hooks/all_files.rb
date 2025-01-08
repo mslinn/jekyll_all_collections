@@ -21,7 +21,7 @@ class SortedLruFiles
   def insert(url, file)
     lru_file = LruFile.new(url, file)
     lru_file.new_chain [:url, %i[start_with? placeholder]]
-    @msbs.binary_insert(url, lru_file)
+    @msbs.insert(lru_file)
   end
 
   def select(suffix)
