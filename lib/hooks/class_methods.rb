@@ -22,17 +22,17 @@ module AllCollectionsHooks
   def self.compute(site)
     site.class.module_eval { attr_accessor :all_collections, :all_documents, :everything, :sorted_lru_files }
 
-    objects = site.collections
-                  .values
-                  .map { |x| x.class.method_defined?(:docs) ? x.docs : x }
-                  .flatten
-                  .compact
-    @all_collections  = AllCollectionsHooks.apages_from_objects(objects, 'collection')
-    @all_documents    = @all_collections +
-                        AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
+    documents = site.collections
+                    .values
+                    .map { |x| x.class.method_defined?(:docs) ? x.docs : x }
+                    .flatten
+                    .compact
+    @all_collections = AllCollectionsHooks.apages_from_objects(documents, 'collection')
+    @all_documents   = @all_collections +
+                       AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
 
-    @everything       = @all_documents +
-                        AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
+    @everything      = @all_documents +
+                       AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
     # @sorted_lru_files = SortedLruFiles.new.add_pages @everything # Not working yet
 
     site.all_collections  = @all_collections

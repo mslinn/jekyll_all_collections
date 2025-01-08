@@ -71,6 +71,9 @@ RSpec/SpecFilePathSuffix:
 RSpec/IndexedLet:
   Enabled: false
 
+RSpec/MultipleDescribes:
+  Enabled: false
+
 RSpec/MultipleExpectations:
   Max: 15
 

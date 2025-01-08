@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+# Exploring how to invoke methods from classes and modules
+# See https://mslinn.com/jekyll/10700-designing-for-testability.html
+
 module TestModule
   def a_method
     'a_method says Hi!'
@@ -16,7 +19,7 @@ class TestClass
   end
 end
 
-RSpec.describe(TestModule) do # rubocop:disable RSpec/MultipleDescribes
+RSpec.describe(TestModule) do
   extend described_class
 
   it 'Invokes a_method from module' do

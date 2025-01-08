@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-# Ruby's binary search is unsuitable because the value to be searched for changes the required ordering
+# Ruby's binary search is unsuitable because ordering requirements are not stable.
+# the value to be searched for changes the required ordering
 
 RSpec.describe(Array) do
   sorted_ints = [0, 4, 7, 10, 12]

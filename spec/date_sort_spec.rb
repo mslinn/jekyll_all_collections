@@ -1,6 +1,8 @@
 require 'spec_helper'
 require_relative '../lib/jekyll_all_collections'
 
+# Verifies how data comparisons work
+
 class Obj
   # `last_modified` is primary sort key
   # `date` (when specified) is secondary sort key

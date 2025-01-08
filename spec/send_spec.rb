@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+# Exploring how to set date attributes in an object
+
 class Obj
   # `last_modified` is primary sort key
   # `date` (when specified) is secondary sort key

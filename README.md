@@ -22,7 +22,7 @@ All three collections *could* be combined like this:
 site.all_collections + site.pages + site.static_files
 ```
 
-HOWEVER:
+However:
 
 * While the `url` attributes of items in `site.posts` and `site.pages` start with a slash (/),
   `site.static_files` items do not have a `url` attribute.
