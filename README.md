@@ -1,22 +1,22 @@
 # `jekyll_all_collections` [![Gem Version](https://badge.fury.io/rb/jekyll_all_collections.svg)](https://badge.fury.io/rb/jekyll_all_collections)
 
 
-`Jekyll_all_collections` is a Jekyll plugin that adds new properties called `all_collections`,
-`all_documents` and `everything` to `site`.
+`Jekyll_all_collections` is a Jekyll plugin that includes a generator,
+triggered by a high-priority hook, and a block tag called `all_collections`.
 
-It also provides a new Jekyll tag called `all_collections`,
-which creates a formatted listing of all posts and documents from all collections,
-sorted by age, newest to oldest.
-The Jekyll tag can do the same for `everything`.
 
-The `all_collections` collection consists of an array of objects with the following properties:
-`content` (HTML or Markdown), `data` (array), `date` (Ruby Date), `description`, `destination`,
-`draft` (Boolean), `excerpt` (HTML or Markdown), `ext`, `label`, `last_modified` or `last_modified_at` (Ruby Date),
-`layout`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
+## Generator
 
-See [`site.pages`](https://jekyllrb.com/docs/pages/) and [`site.posts`](https://jekyllrb.com/docs/posts/) and [`site.static_files`](https://jekyllrb.com/docs/static-files/).
+The generator adds the following new attributes to
+[`site`](https://jekyllrb.com/docs/variables/#site-variables):
+`all_collections`, `all_documents` and `everything`.
+Taken together, the three new attributes of `site` include all the files that make up a Jekyll website.
 
-You *could* combine all three collections like this:
+However, Jekyll is inconsistent in the attributes for
+[`site.pages`](https://jekyllrb.com/docs/pages/),
+[`site.posts`](https://jekyllrb.com/docs/posts/) and [`site.static_files`](https://jekyllrb.com/docs/static-files/).
+
+All three collections *could* be combined like this:
 
 ```ruby
 site.all_collections + site.pages + site.static_files
@@ -24,15 +24,33 @@ site.all_collections + site.pages + site.static_files
 
 HOWEVER:
 
-* While the `url` attributes of pages and documents in a collection starts with a slash (/),
-  static files do not have a `url` attribute.
+* While the `url` attributes of items in `site.posts` and `site.pages` start with a slash (/),
+  `site.static_files` items do not have a `url` attribute.
 * Static files have a `relative_path` attribute, which starts with a slash (/),
-  but although that attribute is also provided in pages and documents in a collection, those values do not start with a slash.
+  but although that attribute is also provided in `site.posts` and `site.pages`,
+  those values do not start with a slash.
+* HTML redirect files created by the
+  [`jekyll-redirect-from`](https://github.com/jekyll/jekyll-redirect-from),
+  which are included in `site.static_files`, should be ignored.
 
-SO:
+The generator normalizes these inconsistencies by utilizing the `APage` class,
+and filtering out HTML redirect files.
+The `everything` collection contains `APage` representations of:
 
-The `everything` collection contains `site.all_collections + site.pages + site.static_files`,
-with a few attributes added to each item:
+```text
+site.collections + site.pages + site.static_files - HTML_redirect_files
+```
+
+
+## The APage Class
+
+The `site.all_collections`, `site.all_documents` and `site.everything`
+attributes consist arrays of [`APage`](lib/hooks/a_page.rb) instances.
+
+The `APage` class has the following attributes:
+`content` (HTML or Markdown), `data` (array), `date` (Ruby Date), `description`, `destination`,
+`draft` (Boolean), `ext`, `href`, `label`, `last_modified` or `last_modified_at` (Ruby Date),
+`layout`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
 
 * `href` always starts with a slash.
   This value is consistent with `a href` values in website HTML.
@@ -40,6 +58,14 @@ with a few attributes added to each item:
 * `origin` indicates the original source of the item.
   Possible values are `collection`, `individual_page` and `static_file`.
   Knowing the origin of each item allows code to process each type of item appropriately.
+
+
+## Block Tag
+
+The `all_collections` block tag creates a formatted listing of Jekyll files.
+The ordering is configurable; by default, the listing is sorted by age, newest to oldest.
+The `all_collections` tag has a `data_source` parameter that specifies which new property to report on
+(`all_collections`, `all_documents`, or `everything`).
 
 
 ## Installation
@@ -97,27 +123,41 @@ the `date` value will be used last modified date value.
 ### `Site.all_collections`
 
 No explicit initialization or setup is required.
-Jekyll plugins can access the value of `site.all_collections`, however Liquid code in Jekyll pages and documents cannot.
+Jekyll plugins can access the value of
+`site.all_collections`, `site.all_documents` and `site.everything`,
+however Liquid code in Jekyll pages and documents cannot.
+
+
+### Excluding Pages
+
+1) The [`exclude` entry in `_config.yml`](https://jekyllrb.com/docs/configuration/options#global-configuration)
+   can be used as it normally would.
+
+2) Adding the following entry to a page&rsquo;s front matter causes that page to be excluded
+  from the collection created by this plugin:
+
+   ```html
+   ---
+   exclude_from_all: true
+   ---
+   ```
 
 
 ### Plugin Usage
 
 Jekyll generators and tags receive an enhanced version of the `site` Jekyll variable.
-A new array of `APage` instance called `all_collections` is added, one for each Jekyll document and page.
-Examine [`APage.rb`](https://github.com/mslinn/jekyll_all_collections/blob/v0.3.4/lib/all_collections_hooks.rb#L68-L102)
-to see the available properties.
-One particularly useful property is `url`, which is difficult to obtain from Jekyll.
 
-All `Jekyll::Page`s and `Jekyll:Document`s can be processed with the following sample code:
+In the following example of how to use the `all_collections` plugin in a custom plugin,
+the `do_something_with` function processes all `Jekyll::Page`s, `Jekyll:Document`s, and static files.
 
 ```ruby
-(@site.all_collections + @site.pages).each do |page_or_apage|
-  do_something_with page_or_apage
+@site.everything.each do |apage|
+  do_something_with apage
 end
 ```
 
 
-### `All_collections` Tag
+### Using the `All_collections` Tag
 
 Add the following CSS to your stylesheet:
 
@@ -142,21 +182,9 @@ Add the following CSS to your stylesheet:
 ```
 
 
-#### Excluding Pages
-
-Adding the following entry to a page&rsquo;s front matter causes that page to be excluded
-from the collection created by this plugin:
-
-```html
----
-exclude_from_all: true
----
-```
-
-
 #### General Form
 
-The general form of the Jekyll tag is:
+The general form of the Jekyll tag, including all options, is:
 
 ```html
 {% all_collections
@@ -185,7 +213,7 @@ for example:
 {% all_collections id='abcdef' sort_by="last_modified" %}
 ```
 
-Generates a heading like:
+The above generates a heading like:
 
 ```html
 <h2 id="abcdef">All Posts Sorted By last_modified</h2>
@@ -203,7 +231,8 @@ specify an empty string for the value of `heading`:
 
 If your Jekyll layout employs [`jekyll-toc`](https://github.com/allejo/jekyll-toc), then `id` attributes are important.
 The `jekyll-toc` include checks for `id` attributes in `h2` ... `h6` tags, and if found,
-and if the attribute value is enclosed in double quotes (`id="my_id"`, not `id='my_id'`),
+and if the attribute value is enclosed in double quotes
+(`id="my_id"`, not single quotes like `id='my_id'`),
 then the heading is included in the table of contents.
 
 To suppress an `id` from being generated,
@@ -304,6 +333,7 @@ The [`demo`](./demo) directory contains a demonstration website, which uses the 
 To run, type:
 
 ```console
+$ bin/setup
 $ demo/_bin/debug -r
 ```
 
@@ -319,10 +349,13 @@ plugin_loggers:
   AllCollectionsTag::AllCollectionsTag: warn
 ```
 
+1. First set breakpoints in the Ruby code that interests you.
 
-1. You have two options for initiating a debug session:
+2. You have several options for initiating a debug session:
 
-   1. Run `demo/_bin/debug`, without the `-r` options shown above.
+   1. Use the **Debug Demo** Visual Studio Code launch configuration.
+
+   2. Type the `demo/_bin/debug` command, without the `-r` options shown above.
 
       ```console
       ... lots of output as bundle update runs...
@@ -339,7 +372,7 @@ plugin_loggers:
       Fast Debugger (ruby-debug-ide 0.7.3, debase 0.2.5.beta2, file filtering is supported) listens on 0.0.0.0:1234
       ```
 
-   2. Run `bin/attach` and pass the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
+   3. Run `bin/attach` and pass the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
       The `demo` subdirectory fits this description.
 
       ```console
@@ -350,18 +383,20 @@ plugin_loggers:
       Fast Debugger (ruby-debug-ide 0.7.3, debase 0.2.4.1, file filtering is supported) listens on 0.0.0.0:1234
       ```
 
-2. Set breakpoints in Ruby code.
 
-3. Attach to the debugger process.
+3. Attach to the debugger process if required.
   This git repo includes a [Visual Studio Code launcher](./.vscode/launch.json) for this purpose labeled `Listen for rdebug-ide`.
 
 4. Point your web browser to http://localhost:4444
+
+If a debugging session terminates and leaves ports tied up,
+run the `demo/_bin/release_port` script.
 
 
 ## Additional Information
 
 More information is available on Mike Slinn's website about
-[Jekyll plugins](https://www.mslinn.com/blog/index.html#Jekyll).
+[Jekyll plugins](https://mslinn.com/jekyll_plugins/jekyll_all_collections.html).
 
 
 ## Development
@@ -377,8 +412,8 @@ To build and install this gem onto your local machine, run:
 
 ```shell
 $ bundle exec rake install
-jekyll_all_collections 0.1.0 built to pkg/jekyll_all_collections-0.1.0.gem.
-jekyll_all_collections (0.1.0) installed.
+jekyll_all_collections 0.3.8 built to pkg/jekyll_all_collections-0.3.8.gem.
+jekyll_all_collections (0.3.8) installed.
 ```
 
 Examine the newly built gem:
@@ -388,11 +423,12 @@ $ gem info jekyll_all_collections
 
 *** LOCAL GEMS ***
 
-jekyll_all_collections (0.1.0)
+jekyll_all_collections (0.3.8)
     Author: Mike Slinn
-    Homepage: https://www.mslinn.com/blog/2020/12/30/jekyll-plugin-template-collection.html
+    Homepage:
+    https://www.mslinn.com/jekyll_plugins/jekyll_all_collections.html
     License: MIT
-    Installed at: /home/mslinn/.rbenv/versions/3.1.0/lib/ruby/gems/3.1.0
+    Installed at (0.3.8): /home/mslinn/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0
 
     Provides a collection of all collections in site.all_collections.
 ```

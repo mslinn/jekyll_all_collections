@@ -5,5 +5,5 @@ def release(port)
   `sudo kill -9 #{pid}` unless pid.empty?
 end
 
-release 4006 # Jekyll HTTPS
-release 35_719 # Webapp reload
+release 4444 # Jekyll HTTPS
+release 25_729 # Webapp reload
