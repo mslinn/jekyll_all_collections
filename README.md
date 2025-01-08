@@ -70,6 +70,27 @@ The `all_collections` tag has a `data_source` parameter that specifies which new
 
 ## Installation
 
+### Installing In A Jekyll Website
+
+1. Add the CSS found in
+   [`demo/assets/css/jekyll_all_collections.css`](demo/assets/css/jekyll_all_collections.css)
+   to your Jekyll layout(s).
+
+2. Add the following to your Jekyll website's `Gemfile`, within the `jekyll_plugins` group:
+
+   ```ruby
+   group :jekyll_plugins do
+     gem 'jekyll_all_collections', '>= 0.3.8'
+     gem 'jekyll_draft', '>=2.1.0'
+   end
+   ```
+
+3. Type:
+
+   ```shell
+   $ bundle
+   ```
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -83,6 +104,19 @@ And then execute:
 ```shell
 $ bundle
 ```
+
+
+## Demo
+
+The [`demo`](./demo) directory contains a demonstration website, which uses the plugin.
+To run, type:
+
+```console
+$ bin/setup
+$ demo/_bin/debug -r
+```
+
+Now point your web browser to http://localhost:4444
 
 
 ## Requirements
@@ -147,6 +181,9 @@ however Liquid code in Jekyll pages and documents cannot.
 
 Jekyll generators and tags receive an enhanced version of the `site` Jekyll variable.
 
+
+#### From a Custom Plugin
+
 In the following example of how to use the `all_collections` plugin in a custom plugin,
 the `do_something_with` function processes all `Jekyll::Page`s, `Jekyll:Document`s, and static files.
 
@@ -157,32 +194,7 @@ end
 ```
 
 
-### Using the `All_collections` Tag
-
-Add the following CSS to your stylesheet:
-
-```css
-.posts {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  line-height: 170%;
-}
-
-.posts > *:nth-child(odd) {
-  width: 120px;
-  font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  font-stretch: semi-condensed;
-  font-size: 10pt;
-}
-
-.posts > *:nth-child(even) {
-  width: calc(100% - 120px);
-}
-```
-
-
-#### General Form
+#### Using the Block Tag
 
 The general form of the Jekyll tag, including all options, is:
 
@@ -196,7 +208,7 @@ The general form of the Jekyll tag, including all options, is:
 ```
 
 
-#### `date_column` Attribute
+##### `date_column` Attribute
 
 One of two date columns can be displayed in the generated HTML:
 either `date` (when the article was originally written),
@@ -204,7 +216,7 @@ or `last_modified`.
 The default value for the `date_column` attribute is `date`.
 
 
-#### `heading` Attribute
+##### `heading` Attribute
 
 If no `heading` attribute is specified, a heading will automatically be generated, which contains the `sort_by` values,
 for example:
@@ -227,7 +239,7 @@ specify an empty string for the value of `heading`:
 ```
 
 
-#### `id` Attribute
+##### `id` Attribute
 
 If your Jekyll layout employs [`jekyll-toc`](https://github.com/allejo/jekyll-toc), then `id` attributes are important.
 The `jekyll-toc` include checks for `id` attributes in `h2` ... `h6` tags, and if found,
@@ -244,7 +256,7 @@ specify an empty string for the value of `id`, like this:
 ```
 
 
-#### `SORT_KEYS` Values
+##### `SORT_KEYS` Values
 
 `SORT_KEYS` specifies how to sort the collection.
 Values can include one or more of the following attributes:
@@ -325,19 +337,6 @@ The following two examples produce the same output:
 {% all_collections sort_by="-last_modified,-date" %}
 {% all_collections sort_by="-last_modified, -date" %}
 ```
-
-
-## Demo
-
-The [`demo`](./demo) directory contains a demonstration website, which uses the plugin.
-To run, type:
-
-```console
-$ bin/setup
-$ demo/_bin/debug -r
-```
-
-Now point your web browser to http://localhost:4444
 
 
 ## Debugging
