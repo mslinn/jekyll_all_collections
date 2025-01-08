@@ -10,7 +10,8 @@ triggered by a high-priority hook, and a block tag called `all_collections`.
 The generator adds three new attributes to
 [`site`](https://jekyllrb.com/docs/variables/#site-variables):
 `all_collections`, `all_documents` and `everything`.
-Taken together, the three new attributes of `site` include all the files that make up a Jekyll website.
+Taken together, the three new attributes of `site` include all the files that
+might need to be processed in a Jekyll website.
 
 These three attributes can be referenced as `site.everything`, `site.all_collections`
 and `site.all_documents`.
@@ -18,7 +19,7 @@ and `site.all_documents`.
 
 ### Why Do This?
 
-Because Jekyll provides inconsistent attributes for
+Jekyll provides inconsistent attributes for
 [`site.pages`](https://jekyllrb.com/docs/pages/),
 [`site.posts`](https://jekyllrb.com/docs/posts/) and
 [`site.static_files`](https://jekyllrb.com/docs/static-files/).
@@ -33,10 +34,12 @@ Because Jekyll provides inconsistent attributes for
   [`jekyll-redirect-from`](https://github.com/jekyll/jekyll-redirect-from),
   which are included in `site.static_files`, should be ignored.
 
-These inconsistencies mean that combining the above three collections
-creates a new collection that is difficult to process in a consistent manner:
+These inconsistencies mean that combining the standard three collections of files
+provided as `site` attributes will create a new collection that is difficult
+to process in a consistent manner:
 
 ```ruby
+# This pseudocode creates `all_files` in a way that is problematic to process consistently
 all_files = site.all_collections + site.pages + site.static_files
 ```
 
@@ -122,6 +125,21 @@ And then execute:
 ```shell
 $ bundle
 ```
+
+### Installing As a Gem Dependency
+
+1. Add the following to your gem&rsquo;s `.gemspec`:
+
+   ```ruby
+   spec.add_dependency 'jekyll_all_collections', '>= 0.3.8'
+   spec.add_dependency 'jekyll_draft', '>=2.1.0'
+   ```
+
+2. Type:
+
+   ```shell
+   $ bundle
+   ```
 
 
 ## Demo
