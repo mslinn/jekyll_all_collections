@@ -39,11 +39,11 @@ provided as `site` attributes will create a new collection that is difficult
 to process in a consistent manner:
 
 ```ruby
-# This pseudocode creates `all_files`, which is problematic to process consistently
-all_files = site.all_collections + site.pages + site.static_files
+# This pseudocode creates `oops`, which is problematic to process consistently
+oops = site.all_collections + site.pages + site.static_files
 ```
 
-`all_files`, above, is difficult to process because of inconsistencies in the provided attributes,
+`oops`, above, is difficult to process because of inconsistencies in the provided attributes,
 and how the attributes are constructed.
 
 
