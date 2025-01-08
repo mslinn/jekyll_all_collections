@@ -59,6 +59,7 @@ The `all_documents` collection contains `APage` representations of `site.pages`.
 The `everything` collection contains `APage` representations of:
 
 ```text
+# Pseudocode
 site.collections + site.pages + site.static_files - HTML_redirect_files
 ```
 
@@ -112,19 +113,6 @@ The `all_collections` tag has a `data_source` parameter that specifies which new
    $ bundle
    ```
 
-Add this line to your application's Gemfile:
-
-```ruby
-group :jekyll_plugins do
-  gem 'jekyll_all_collections'
-end
-```
-
-And then execute:
-
-```shell
-$ bundle
-```
 
 ### Installing As a Gem Dependency
 
