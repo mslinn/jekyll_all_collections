@@ -30,6 +30,7 @@ Jekyll provides inconsistent attributes for
 * Static files have a `relative_path` attribute, which starts with a slash (/),
   but although that attribute is also provided in `site.posts` and `site.pages`,
   those values do not start with a slash.
+* Paths ending with a slash (`/`) imply that a file called `index.html` should be fetched.
 * HTML redirect files created by the
   [`jekyll-redirect-from`](https://github.com/jekyll/jekyll-redirect-from),
   which are included in `site.static_files`, should be ignored.
@@ -76,6 +77,7 @@ The `APage` class has the following attributes:
 
 * `href` always starts with a slash.
   This value is consistent with `a href` values in website HTML.
+  Paths ending with a slash (`/`) have `index.html` appended so the path specifies an actual file.
 
 * `origin` indicates the original source of the item.
   Possible values are `collection`, `individual_page` and `static_file`.
