@@ -10,8 +10,8 @@ triggered by a high-priority hook, and a block tag called `all_collections`.
 The generator adds three new attributes to
 [`site`](https://jekyllrb.com/docs/variables/#site-variables):
 `all_collections`, `all_documents` and `everything`.
-Taken together, the three new attributes of `site` include all the files that
-might need to be processed in a Jekyll website.
+Taken together, the three new attributes of `site` reference all the files that
+are likely to be processed in a Jekyll website.
 
 These three attributes can be referenced as `site.everything`, `site.all_collections`
 and `site.all_documents`.
@@ -32,7 +32,7 @@ Jekyll provides inconsistent attributes for
   those values do not start with a slash.
 * Paths ending with a slash (`/`) imply that a file called `index.html` should be fetched.
 * HTML redirect files created by the
-  [`jekyll-redirect-from`](https://github.com/jekyll/jekyll-redirect-from),
+  [`jekyll-redirect-from`](https://github.com/jekyll/jekyll-redirect-from) Jekyll plugin,
   which are included in `site.static_files`, should be ignored.
 
 These inconsistencies mean that combining the standard three collections of files
@@ -73,7 +73,7 @@ consist of arrays of [`APage`](lib/hooks/a_page.rb) instances.
 The `APage` class has the following attributes:
 `content` (HTML or Markdown), `data` (array), `date` (Ruby Date), `description`, `destination`,
 `draft` (Boolean), `ext`, `href`, `label`, `last_modified` or `last_modified_at` (Ruby Date),
-`layout`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
+`layout`, `origin`, `path`, `relative_path`, `tags`, `title`, `type`, and `url`.
 
 * `href` always starts with a slash.
   This value is consistent with `a href` values in website HTML.
@@ -87,7 +87,7 @@ The `APage` class has the following attributes:
 ## Block Tag
 
 The `all_collections` block tag creates a formatted listing of Jekyll files.
-The ordering is configurable; by default, the listing is sorted by age, newest to oldest.
+The ordering is configurable; by default, the listing is sorted by `date`, newest to oldest.
 The `all_collections` tag has a `data_source` parameter that specifies which new property to report on
 (`all_collections`, `all_documents`, or `everything`).
 
@@ -325,7 +325,9 @@ title: Testing, 1, 2, 3
 {% all_collections %}
 ```
 
-Explicitly express the default sort
+Following are examples of how to specify the sort parameters.
+
+**Explicitly express the default sort**<br>
 (sort by the date originally written, newest to oldest):
 
 ```html
@@ -338,19 +340,20 @@ Sort by date, from oldest to newest:
 {% all_collections sort_by="date" %}
 ```
 
-Sort by the date last modified, oldest to newest:
+**Sort by the date last modified, oldest to newest:**
 
 ```html
 {% all_collections sort_by="last_modified" %}
 ```
 
-Sort by the date last modified, newest to oldest:
+**Sort by the date last modified, newest to oldest:**
 
 ```html
 {% all_collections sort_by="-last_modified" %}
 ```
 
-Several attributes can be specified as sort criteria by passing them as a comma-delimited string.
+**Several attributes can be specified as sort criteria**<br>
+by passing them as a comma-delimited string.
 Included spaces are ignored:
 
 ```html
@@ -359,7 +362,7 @@ Included spaces are ignored:
 {% all_collections sort_by="-last_modified, -date, title" %}
 ```
 
-The following two examples produce the same output:
+**The following two examples produce the same output:**
 
 ```html
 {% all_collections sort_by="-last_modified,-date" %}
