@@ -37,20 +37,20 @@ Jekyll provides inconsistent attributes for
 
 These inconsistencies mean that combining the standard three collections of files
 provided as `site` attributes will create a new collection that is difficult
-to process in a consistent manner:
+to process consistently:
 
 ```ruby
 # This pseudocode creates `oops`, which is problematic to process consistently
 oops = site.all_collections + site.pages + site.static_files
 ```
 
-`oops`, above, is difficult to process because of inconsistencies in the provided attributes,
+`oops`, above, is difficult to process because of inconsistencies in the provided attributes
 and how the attributes are constructed.
 
 
 ### Solving The Problem
 
-The generator normalizes these inconsistencies by utilizing the `APage` class,
+The generator normalizes these inconsistencies by utilizing the `APage` class
 and filtering out HTML redirect files.
 
 The `all_collections` collection contains `APage` representations of `site.collections`.
@@ -184,8 +184,8 @@ the `date` value will be used last modified date value.
 
 No explicit initialization or setup is required.
 Jekyll plugins can access the value of
-`site.all_collections`, `site.all_documents` and `site.everything`,
-however Liquid code in Jekyll pages and documents cannot.
+`site.all_collections`, `site.all_documents` and `site.everything`;
+however, Liquid code in Jekyll pages and documents cannot.
 
 
 ### Excluding Files
@@ -290,7 +290,7 @@ specify an empty string for the value of `id`, like this:
 Values can include one or more of the following attributes:
 `date`, `destination`, `draft`, `label`, `last_modified`, `last_modified_at`, `path`, `relative_path`,
 `title`, `type`, and `url`.
-Ascending sorts are the default, however a descending sort can be achieved by prepending `-` before an attribute.
+Ascending sorts are the default; however, a descending sort can be achieved by prepending `-` before an attribute.
 
 To specify more than one sort key, provide a comma-delimited string of values.
 Included spaces are ignored.
