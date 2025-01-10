@@ -8,7 +8,7 @@ class MSlinnBinarySearch
   attr_reader :array # For testing only
 
   def initialize(accessor_chain)
-    @array = [] # Ordered highest to lowest
+    @array = [] # [LruFile] Ordered highest to lowest
     @accessor_chain = accessor_chain
   end
 
@@ -26,7 +26,7 @@ class MSlinnBinarySearch
   end
 
   # @param value [String]
-  # @return index of matching value, or nil if @array is empty
+  # @return index of first matching value, or nil if @array is empty, or 0 if no value specified
   def find_index(value)
     raise MSlinnBinarySearchError, 'Invalid find_index because value to search for is nil.' if value.nil?
     return nil if @array.empty?
@@ -35,12 +35,25 @@ class MSlinnBinarySearch
     _find_index(value, 0, @array.length - 1)
   end
 
-  # @param item [String]
-  # @return [int] index of matching item in @array, or nil if not found
-  def index_of(item)
-    raise MSlinnBinarySearchError, 'Invalid index_of item (nil).' if item.nil?
+  # @param value [String]
+  # @return [index] of matching values, or [] if @array is empty, or entire array if no value specified
+  def find_indices(value)
+    raise MSlinnBinarySearchError, 'Invalid find_indices because value to search for is nil.' if value.nil?
+    return [] if @array.empty?
+    return @array if value.nil? || value.empty?
 
-    find_index item.url
+    first_index = _find_index(value, 0, @array.length - 1)
+    last_index = first_index
+    last_index += 1 while @array[last_index].url.start_with? value
+    [first_index..last_index]
+  end
+
+  # @param item [LruFile]
+  # @return [int] index of matching LruFile in @array, or nil if not found
+  def index_of(lru_file)
+    raise MSlinnBinarySearchError, 'Invalid index_of lru_file (nil).' if lru_file.nil?
+
+    find_index lru_file.url
   end
 
   # @return [LruFile] item at given index in @array
@@ -81,6 +94,15 @@ class MSlinnBinarySearch
     @array[low..high]
   end
 
+  # @param value [String]
+  # @return [APage] matching APages, or [] if @array is empty, or entire array if no value specified
+  def select_pages(value)
+    first_index = find_index(value)
+    last_index = first_index
+    last_index += 1 while @array[last_index].url.start_with? value
+    [first_index..last_index].map { |i| @array[i].page }
+  end
+
   private
 
   # @param target [String]
@@ -104,7 +126,7 @@ class MSlinnBinarySearch
     end
 
     mid_index = (min_index + max_index) / 2
-    mid_item = @array[mid_index]
+    mid_item = @array[mid_index] # [LruFile]
     len = [mid_item.url.length, target.length].min # TODO: use chain eval for item
     case mid_item.url[0..len - 1] <=> target[0..len - 1] # TODO: use chain eval for item
     when 0 # mid_item.url[0..len-1] == target[0..len-1]
