@@ -1,8 +1,10 @@
 require 'spec_helper'
 require_relative '../lib/util/send_chain'
 
-LruFile = Struct.new(:url, :page) do
-  include SendChain
+unless defined? LruFile
+  LruFile = Struct.new(:url, :page) do
+    include SendChain
+  end
 end
 
 RSpec.describe(LruFile) do
