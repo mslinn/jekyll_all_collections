@@ -16,17 +16,17 @@ class SortedLruFiles
     @msbs = MSlinnBinarySearch.new %i[url start_with?]
   end
 
-  def add_pages(pages)
+  def add_pages(pages) # TODO: test this
     pages.each { |page| insert page.href, page }
   end
 
-  def insert(url, file)
+  def insert(url, file) # TODO: test this
     lru_file = LruFile.new(url, file)
     lru_file.new_chain [:url, %i[start_with? placeholder]]
     @msbs.insert(lru_file)
   end
 
-  def select(suffix)
+  def select(suffix) # TODO: test this
     @msbs.select_pages suffix
   end
 end

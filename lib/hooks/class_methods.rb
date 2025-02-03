@@ -36,10 +36,9 @@ module AllCollectionsHooks
     @all_collections = AllCollectionsHooks.apages_from_objects(documents, 'collection')
     @all_documents   = @all_collections +
                        AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
-
     @everything      = @all_documents +
                        AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
-    # @sorted_lru_files = SortedLruFiles.new.add_pages @everything # Not working yet
+    @sorted_lru_files = SortedLruFiles.new.add_pages @everything # Not working yet
 
     site.all_collections  = @all_collections
     site.all_documents    = @all_documents

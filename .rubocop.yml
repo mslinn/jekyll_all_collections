@@ -61,14 +61,14 @@ Naming/FileName:
 RSpec/ExampleLength:
   Max: 30
 
+RSpec/IndexedLet:
+  Enabled: false
+
 RSpec/SpecFilePathFormat:
   Enabled: false
   IgnoreMethods: true
 
 RSpec/SpecFilePathSuffix:
-  Enabled: false
-
-RSpec/IndexedLet:
   Enabled: false
 
 RSpec/MultipleDescribes:
@@ -78,6 +78,9 @@ RSpec/MultipleExpectations:
   Max: 15
 
 Style/ClassVars:
+  Enabled: false
+
+Style/CommentedKeyword:
   Enabled: false
 
 Style/Documentation:

@@ -99,7 +99,7 @@ class MSlinnBinarySearch
   def select_pages(value)
     first_index = find_index(value)
     last_index = first_index
-    last_index += 1 while @array[last_index].url.start_with? value
+    last_index += 1 while @array[last_index].url.start_with?(value) && @array.length < last_index
     [first_index..last_index].map { |i| @array[i].page }
   end
 
