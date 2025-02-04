@@ -23,8 +23,7 @@ module AllCollectionsHooks
   end
 
   # Called by early, high-priority hook.
-  # Computes site.all_collections, site.all_documents, site.everything
-  # Soon will also compute site.sorted_lru_files
+  # Computes site.all_collections, site.all_documents, site.everything, and site.sorted_lru_files
   def self.compute(site)
     site.class.module_eval { attr_accessor :all_collections, :all_documents, :everything, :sorted_lru_files }
 
@@ -38,7 +37,7 @@ module AllCollectionsHooks
                        AllCollectionsHooks.apages_from_objects(site.pages, 'individual_page')
     @everything      = @all_documents +
                        AllCollectionsHooks.apages_from_objects(site.static_files, 'static_file')
-    @sorted_lru_files = SortedLruFiles.new.add_pages @everything # Not working yet
+    @sorted_lru_files = SortedLruFiles.new.add_pages @everything
 
     site.all_collections  = @all_collections
     site.all_documents    = @all_documents

@@ -23,6 +23,7 @@ class SortedLruFiles
   # @param apages [Array[APage]]
   def add_pages(apages)
     apages.each { |apage| insert apage.href, apage }
+    @msbs.enable_search
   end
 
   def enable_search
