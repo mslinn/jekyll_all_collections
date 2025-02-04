@@ -5,6 +5,10 @@ require_relative '../util/send_chain'
 # todo: replace references to url and :url with reverse_url and :reverse_url
 LruFile = Struct.new(:url, :page) do
   include SendChain
+
+  def <=>(other)
+    url <=> other.url
+  end
 end
 
 # Matches suffixes of an array of urls
@@ -16,17 +20,17 @@ class SortedLruFiles
     @msbs = MSlinnBinarySearch.new %i[url start_with?]
   end
 
-  def add_pages(pages) # TODO: test this
+  def add_pages(pages)
     pages.each { |page| insert page.href, page }
   end
 
-  def insert(url, file) # TODO: test this
-    lru_file = LruFile.new(url, file)
+  def insert(url, file)
+    lru_file = LruFile.new(url.reverse, file)
     lru_file.new_chain [:url, %i[start_with? placeholder]]
     @msbs.insert(lru_file)
   end
 
-  def select(suffix) # TODO: test this
+  def select(suffix)
     @msbs.select_pages suffix
   end
 end

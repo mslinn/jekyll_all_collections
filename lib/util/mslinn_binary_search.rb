@@ -5,46 +5,50 @@ end
 
 # Ruby's binary search is unsuitable because the value to be searched for changes the required ordering for String compares
 class MSlinnBinarySearch
-  attr_reader :array # For testing only
+  attr_reader :accessor_chain, :array # For testing only
 
   def initialize(accessor_chain)
-    @array = [] # [LruFile] Ordered highest to lowest
+    @array = SortedSet.new # [LruFile] Ordered highest to lowest
     @accessor_chain = accessor_chain
   end
 
-  # @param value [String]
-  # @return item from array that matches value, or nil if no match
-  def find(value)
-    raise MSlinnBinarySearchError, 'Invalid find because value to search for is nil.' if value.nil?
-    return nil if @array.empty?
-    return @array[0] if value.nil? || value.empty?
+  # Convert the SortedSet to an Array
+  def enable_search
+    @array = @array.to_a
+  end
 
-    index = _find_index(value, 0, @array.length - 1)
+  # A match is found when the Array[LruFile] has an href which starts with the given stem
+  # @param stem [String]
+  # @return first item from @array.url that matches, or nil if no match
+  def find(stem)
+    raise MSlinnBinarySearchError, 'Invalid find because stem to search for is nil.' if stem.nil?
+    return nil if @array.empty?
+    return @array[0] if stem.nil? || stem.empty?
+
+    index = _find_index(stem, 0, @array.length - 1)
     return nil if index.nil?
 
     @array[index]
   end
 
-  # @param value [String]
-  # @return index of first matching value, or nil if @array is empty, or 0 if no value specified
-  def find_index(value)
-    raise MSlinnBinarySearchError, 'Invalid find_index because value to search for is nil.' if value.nil?
+  # @param stem [String]
+  # @return index of first matching stem, or nil if @array is empty, or 0 if no stem specified
+  def find_index(stem)
     return nil if @array.empty?
-    return 0 if value.nil? || value.empty?
+    return 0 if stem.nil? || stem.empty?
 
-    _find_index(value, 0, @array.length - 1)
+    _find_index(stem, 0, @array.length - 1)
   end
 
-  # @param value [String]
-  # @return [index] of matching values, or [] if @array is empty, or entire array if no value specified
-  def find_indices(value)
-    raise MSlinnBinarySearchError, 'Invalid find_indices because value to search for is nil.' if value.nil?
+  # @param stem [String]
+  # @return [index] of matching values, or [] if @array is empty, or entire array if no stem specified
+  def find_indices(stem)
     return [] if @array.empty?
-    return @array if value.nil? || value.empty?
+    return @array if stem.nil? || stem.empty?
 
-    first_index = _find_index(value, 0, @array.length - 1)
+    first_index = _find_index(stem, 0, @array.length - 1)
     last_index = first_index
-    last_index += 1 while @array[last_index].url.start_with? value
+    last_index += 1 while @array[last_index].url.start_with? stem
     [first_index..last_index]
   end
 
@@ -60,7 +64,7 @@ class MSlinnBinarySearch
   def item_at(index)
     if index > @array.length - 1
       raise MSlinnBinarySearchError,
-            "Invalid item_at index (#{index}) is greater than maximum value (#{@array.length - 1})."
+            "Invalid item_at index (#{index}) is greater than maximum stem (#{@array.length - 1})."
     end
     raise MSlinnBinarySearchError, "Invalid item_at index (#{index}) is less than zero." if index.negative?
 
@@ -72,9 +76,7 @@ class MSlinnBinarySearch
     raise MSlinnBinarySearchError, 'Invalid insert because new item is nil.' if lru_file.nil?
     raise MSlinnBinarySearchError, "Invalid insert because new item has no chain (#{lru_file})" if lru_file.chain.nil?
 
-    insert_at = find_index(lru_file.url) # TODO: replace .url with chain eval
-    insert_at ||= 0
-    @array.insert(insert_at, lru_file)
+    @array.add lru_file
   end
 
   # TODO: Cache this method
@@ -94,52 +96,55 @@ class MSlinnBinarySearch
     @array[low..high]
   end
 
-  # @param value [String]
-  # @return [APage] matching APages, or [] if @array is empty, or entire array if no value specified
-  def select_pages(value)
-    first_index = find_index(value)
+  # @param stem [String]
+  # @return [APage] matching APages, or [] if @array is empty, or entire array if no stem specified
+  def select_pages(stem)
+    first_index = find_index(stem.reverse)
     last_index = first_index
-    last_index += 1 while @array[last_index].url.start_with?(value) && @array.length < last_index
-    [first_index..last_index].map { |i| @array[i].page }
+    while last_index < @array.length - 1
+      # LruFile.url is reversed, bug LruFile.page is not
+      break unless @array[last_index + 1].url.start_with?(stem.reverse)
+
+      last_index += 1
+    end
+    Range.new(first_index, last_index).map { |i| @array[i].page }
   end
 
   private
 
-  # @param target [String]
-  # @return [int] index of matching item in @array
-  def _find_index(target, min_index, max_index)
-    raise MSlinnBinarySearchError, 'min_index<0' if min_index.negative?
-    raise MSlinnBinarySearchError, 'max_index>=@array.length' if max_index >= @array.length
+  # A match is found when the Array[LruFile] has an href which starts with the given stem
+  # @param stem [String]
+  # @return [int] first index in @array that matches, or nil if no match
+  def _find_index(stem, min_index, max_index)
+    raise MSlinnBinarySearchError, "_find_index min_index(#{min_index})<0" if min_index.negative?
+    raise MSlinnBinarySearchError, "_find_index min_index(#{min_index})>max_index(#{max_index})" if min_index > max_index
+    raise MSlinnBinarySearchError, "_find_index max_index(#{max_index})>=@array.length(#{@array.length})" if max_index >= @array.length
 
+    mets = stem.reverse
     return nil if @array.empty?
-    return 0 if @array[0].url >= target # TODO: use chain eval for item
+    return nil if @array[0].url[0...mets.size] > mets # TODO: use chain eval for item
+    return nil if @array[0].url[0] != mets[0]
 
-    if min_index == max_index
-      case @array[min_index].url <=> target # TODO: use chain eval for item
-      when -1
-        return [min_index + 1, 0].max
-      when 0
-        return min_index
+    while min_index < max_index
+      mid_index = (min_index + max_index) / 2
+      mid_value = @array[mid_index].url[0...(mets.size)] # TODO: use chain eval for item
+
+      if mid_value == mets # back up until the first match is found
+        index = mid_index
+        loop do
+          return 0 if index.zero?
+
+          return index unless @array[index - 1].url.start_with?(mets)
+
+          index -= 1
+        end
+      elsif mid_value > mets
+        max_index = mid_index - 1
       else
-        return min_index - 1
+        min_index = mid_index + 1
       end
+      _find_index(stem, min_index, max_index)
     end
-
-    mid_index = (min_index + max_index) / 2
-    mid_item = @array[mid_index] # [LruFile]
-    len = [mid_item.url.length, target.length].min # TODO: use chain eval for item
-    case mid_item.url[0..len - 1] <=> target[0..len - 1] # TODO: use chain eval for item
-    when 0 # mid_item.url[0..len-1] == target[0..len-1]
-      # puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) == target[0..#{len - 1}] (#{target[0..len - 1]})"
-      mid_index
-    when -1 # mid_item.url[len-1] < target[len-1]
-      # puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) < target[0..#{len - 1}] (#{target[0..len - 1]})"
-      min_index = mid_index + 1
-      _find_index(target, min_index, max_index)
-    when  1 # mid_item.url[len-1] > target[len-1]
-      # puts "min_index=#{min_index} mid_index=#{mid_index} max_index=#{max_index} mid_item.url[0..#{len - 1}] (#{mid_item.url[0..len - 1]}) > target[0..#{len - 1}] (#{target[0..len - 1]})"
-      max_index = mid_index - 1
-      _find_index(target, min_index, max_index)
-    end
+    nil
   end
 end
