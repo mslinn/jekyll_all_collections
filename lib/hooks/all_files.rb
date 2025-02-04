@@ -20,12 +20,17 @@ class SortedLruFiles
     @msbs = MSlinnBinarySearch.new %i[url start_with?]
   end
 
-  def add_pages(pages)
-    pages.each { |page| insert page.href, page }
+  # @param apages [Array[APage]]
+  def add_pages(apages)
+    apages.each { |apage| insert apage.href, apage }
   end
 
   def enable_search
     @msbs.enable_search
+  end
+
+  def find(suffix)
+    @msbs.find suffix
   end
 
   def insert(url, file)

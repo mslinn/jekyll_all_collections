@@ -18,8 +18,6 @@ module AllCollectionsTag
       parse_arguments # Defines instance variables like @sort_by
       sort_lambda = init_sort_by @sort_by, @sort_by_param
       @heading = @helper.parameter_specified?('heading') || default_head(@sort_by)
-
-      AllCollectionsHooks.compute(@site) if !@site.class.method_defined?(:all_documents) || @site.all_documents.nil?
       generate_output sort_lambda
     rescue StandardError => e
       JekyllSupport.error_short_trace @logger, e
