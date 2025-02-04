@@ -24,6 +24,10 @@ class SortedLruFiles
     pages.each { |page| insert page.href, page }
   end
 
+  def enable_search
+    @msbs.enable_search
+  end
+
   def insert(url, file)
     lru_file = LruFile.new(url.reverse, file)
     lru_file.new_chain [:url, %i[start_with? placeholder]]

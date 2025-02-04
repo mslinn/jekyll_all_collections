@@ -33,15 +33,15 @@ RSpec.describe(MSlinnBinarySearch) do
 
   it 'returns the item of the first match' do
     item = $msbs.find 'a.html' # { |x| x.url.start_with? 'a.html' }
-    expect(item.url).to eq('aaa.html')
+    expect(item.url.reverse).to eq('aaa.html')
 
     item = $msbs.find 'baa.html' # { |x| x.url.start_with? 'baa.html' }
-    expect(item.url).to eq('baa.html')
+    expect(item.url.reverse).to eq('baa.html')
 
     item = $msbs.find 'c.html' # { |x| x.url.start_with? 'c.html' }
-    expect(item.url).to eq('ccc.html')
+    expect(item.url.reverse).to eq('ccc.html')
 
     item = $msbs.find 'cce.html' # { |x| x.url.start_with? 'cce.html' }
-    expect(item.url).to eq('cce.html')
+    expect(item.url.reverse).to eq('cce.html')
   end
 end
