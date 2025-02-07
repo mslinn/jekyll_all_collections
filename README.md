@@ -7,17 +7,24 @@ triggered by a high-priority hook, and a block tag called `all_collections`.
 
 ## Generator
 
-The generator adds three new attributes to
+The generator adds four new attributes to
 [`site`](https://jekyllrb.com/docs/variables/#site-variables):
-`all_collections`, `all_documents` and `everything`.
-Taken together, the three new attributes of `site` reference all the files that
-are likely to be processed in a Jekyll website.
+`all_collections`, `all_documents`, `everything`, and `sorted_lru_files`.
 
 These three attributes can be referenced as `site.everything`, `site.all_collections`
 and `site.all_documents`.
 
+* `all_collections` includes all documents in all collections.
 
-### Why Do This?
+* `all_documents` includes `all_collections` plus all standalone pages.
+
+* `everything` includes `all_documents` plus all static files.
+
+* `sorted_lru_files` is used by a new binary search lookup for matching page suffixes.
+  Currently only `jekyll_href` and `jekyll_draft` use this feature.
+
+
+### Collection Management
 
 Jekyll provides inconsistent attributes for
 [`site.pages`](https://jekyllrb.com/docs/pages/),

@@ -1,15 +1,24 @@
 # Changelog
 
-## 0.3.8 / 2024-12-30
+## 0.4.0 / 2025-02-07
 
+* **This plugin is deprecated.**
+  The functionality will be folded into <code>jekyll_plugin_support</code>.
+  The last release of this plugin will halt Jekyll and tell you to remove it from the Jekyll website <code>Gemfile</code>
+  and to use <code>jekyll_plugin_support</code> instead.
 * Added `AllCollectionsHooks.all_documents`, `AllCollectionsHooks.everything`,
-  and `AllCollectionsHooks.site` properties,
+  `AllCollectionsHooks.site`, and `AllCollectionsHooks.sorted_lru_files` properties,
   accessible from every other module.
-* Added `site.all_documents` and `site.everything` properties.
+* Added `site.all_documents`, `site.everything`, and `sorted_lru_files` properties.
+
+  * `all_collections` includes all documents in all collections.
 
   * `all_documents` includes `all_collections` plus all standalone pages.
 
   * `everything` includes `all_documents` plus all static files.
+
+  * `sorted_lru_files` is used by a new binary search lookup for matching page suffixes.
+    Currently only `jekyll_href` and `jekyll_draft` use this feature.
 
 
 ## 0.3.7 / 2024-12-21
