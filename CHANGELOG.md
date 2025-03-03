@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.0 / 2024-03-03
+
+* This gem was subsumed into `jekyll_plugin_support` v3.0.0.
+  Attempting to use this gem in a Jekyll project causes an error message to be generated and Jekyll to halt.
+
+
 ## 0.4.0 / 2025-02-07
 
 * **This plugin is deprecated.**

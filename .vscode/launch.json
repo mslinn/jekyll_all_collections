@@ -18,23 +18,63 @@
         "--unpublished"
       ],
       "cwd": "${workspaceRoot}/demo",
-      "debugPort": "0",
-      "name": "Debug Demo",
+      "debugPort": "45373",
+      "env": {
+        "JEKYLL_ENV": "development"
+      },
+      "name": "Debug Demo development",
       "request": "launch",
       "script": "${workspaceRoot}/binstub/jekyll",
       "type": "rdbg",
       "useBundler": true,
     },
     {
-      "debugPort": "0",
-      "name": "Attach rdbg",
-      "request": "attach",
+      "args": [
+        "serve",
+        "--livereload_port", "35732",
+        "--force_polling",
+        "--host", "0.0.0.0",
+        "--port", "4444",
+        "--incremental",
+        "--livereload"
+      ],
+      "cwd": "${workspaceRoot}/demo",
+      "debugPort": "45373",
+      "env": {
+        "JEKYLL_ENV": "production"
+      },
+      "name": "Debug Demo production",
+      "request": "launch",
+      "script": "${workspaceRoot}/binstub/jekyll",
       "type": "rdbg",
+      "useBundler": true,
     },
     {
-      "name": "Attach with ruby_lsp",
-      "request": "attach",
       "type": "ruby_lsp",
+      "request": "launch",
+      "name": "Debug release_kraken",
+      "program": "ruby bin/release_kraken"
+    },
+    {
+      "type": "rdbg",
+      "name": "Debug custom_error_take_2.rb",
+      "request": "launch",
+      "script": "experiments/custom_error_take_2.rb",
+      "useBundler": true,
+    },
+    {
+      "debugPort": "0",
+      "name": "Debug CallChain",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "${workspaceRoot}/lib/call_chain.rb",
+      "useBundler": true,
+    },
+    {
+      "debugPort": "45373",
+      "name": "Attach with rdbg to 45373",
+      "request": "attach",
+      "type": "rdbg",
     },
     {
       "args": [
